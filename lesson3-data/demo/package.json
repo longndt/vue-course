@@ -1,0 +1,30 @@
+{
+  "name": "vue-data-demo",
+  "version": "1.0.0",
+  "description": "Vue 3 API integration demo with Node.js and MongoDB",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "server": "nodemon server/index.js",
+    "dev:full": "concurrently \"npm run server\" \"npm run dev\""
+  },
+  "dependencies": {
+    "vue": "^3.5.13",
+    "@tanstack/vue-query": "^5.0.0",
+    "axios": "^1.5.0"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^5.2.1",
+    "typescript": "~5.6.3",
+    "vue-tsc": "^2.1.10",
+    "vite": "^5.0.0",
+    "concurrently": "^8.2.0",
+    "nodemon": "^3.0.0",
+    "express": "^4.18.0",
+    "mongoose": "^7.5.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.3.0"
+  }
+}

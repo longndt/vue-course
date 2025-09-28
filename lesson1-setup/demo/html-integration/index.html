@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+   <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <title>Vue 3 Direct Integration</title>
+   <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+   <style>
+      body {
+         font-family: Arial, sans-serif;
+         max-width: 800px;
+         margin: 0 auto;
+         padding: 2rem;
+      }
+
+      .counter {
+         text-align: center;
+         padding: 2rem;
+         border: 1px solid #ccc;
+         border-radius: 8px;
+         margin: 2rem 0;
+      }
+
+      button {
+         padding: 0.5rem 1rem;
+         margin: 0 0.5rem;
+         border: none;
+         border-radius: 4px;
+         background-color: #0066cc;
+         color: white;
+         cursor: pointer;
+      }
+
+      button:hover {
+         background-color: #0052a3;
+      }
+   </style>
+</head>
+
+<body>
+   <div id="app">
+      <h1>Vue 3 Direct HTML Integration</h1>
+      <div class="counter">
+         <h2>Simple Counter</h2>
+         <p>Count: {{ count }}</p>
+         <div>
+            <button @click="count--">-</button>
+            <button @click="count = 0">Reset</button>
+            <button @click="count++">+</button>
+         </div>
+      </div>
+      <div>
+         <h3>Features Demonstrated:</h3>
+         <ul>
+            <li>Direct Vue 3 integration in HTML</li>
+            <li>No build tools required</li>
+            <li>Reactive state management</li>
+            <li>Template syntax with directives</li>
+         </ul>
+      </div>
+   </div>
+
+   <script>
+      const { createApp, ref } = Vue;
+
+      createApp({
+         setup() {
+            const count = ref(0);
+
+            return {
+               count
+            };
+         }
+      }).mount('#app');
+   </script>
+</body>
+
+</html>
