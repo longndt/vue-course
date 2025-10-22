@@ -1,6 +1,6 @@
-# React Components Demo
+# Vue 3 Components Demo
 
-This demo project showcases various reusable React components built with TypeScript. It demonstrates important React patterns and best practices.
+This demo project showcases various reusable Vue 3 components built with TypeScript. It demonstrates important Vue 3 patterns and best practices using the Composition API.
 
 ## Components Showcased
 
@@ -18,146 +18,117 @@ A flexible and reusable table component that supports:
 
 A reusable form component with:
 
-- Field validation
+- Validation
 - Error handling
 - TypeScript support
 - Accessibility features
-- Custom validation rules
 
 ### 3. Modal
 
-A reusable modal component with:
+A modal component featuring:
 
-- Keyboard support (Esc to close)
-- Click outside to close
-- Focus trapping
-- Accessibility features
+- Teleport for proper DOM placement
+- Focus management
+- Keyboard navigation
 - TypeScript integration
+
+## Features Demonstrated
+
+- **Vue 3 Composition API**: Modern Vue 3 patterns
+- **TypeScript**: Full type safety
+- **Composables**: Reusable logic with `useDataTable`
+- **Provide/Inject**: Theme management
+- **Teleport**: Modal rendering
+- **Error Boundaries**: Error handling with `onErrorCaptured`
+- **Testing**: Unit tests with Vitest
 
 ## Getting Started
 
-1. Install dependencies:
+### Prerequisites
+
+- Node.js 18+
+- npm or yarn
+
+### Installation
 
 ```bash
+# Install dependencies
 npm install
-```
 
-2. Start the development server:
-
-```bash
+# Start development server
 npm run dev
-```
 
-3. Run tests:
-
-```bash
+# Run tests
 npm test
+
+# Build for production
+npm run build
 ```
 
-## Component Usage Examples
-
-### DataTable
-
-```tsx
-<DataTable<User>
-  data={users}
-  columns={[
-    { key: "name", header: "Name" },
-    { key: "email", header: "Email" },
-    {
-      key: "status",
-      header: "Status",
-      render: (value) => <StatusBadge status={value} />,
-    },
-  ]}
-/>
-```
-
-### Form
-
-```tsx
-<Form
-  fields={[
-    {
-      name: "email",
-      label: "Email",
-      type: "email",
-      required: true,
-      validate: (value) => {
-        if (!value.includes("@")) {
-          return "Please enter a valid email";
-        }
-      },
-    },
-  ]}
-  initialValues={{ email: "" }}
-  onSubmit={handleSubmit}
-/>
-```
-
-### Modal
-
-```tsx
-<Modal isOpen={isOpen} onClose={handleClose} title="Edit User">
-  <Form {...formProps} />
-</Modal>
-```
-
-## Best Practices Demonstrated
-
-1. Component Design
-
-   - Single Responsibility Principle
-   - Composition over Inheritance
-   - Proper TypeScript Usage
-
-2. State Management
-
-   - Controlled Components
-   - Custom Hooks
-   - Proper Event Handling
-
-3. Accessibility
-
-   - ARIA Attributes
-   - Keyboard Navigation
-   - Screen Reader Support
-
-4. Performance
-   - Memoization
-   - Event Handler Optimization
-   - Proper Dependencies
-
-## Testing
-
-The components are tested using:
-
-- Jest
-- React Testing Library
-- TypeScript Integration Tests
-
-Run the tests with:
-
-```bash
-npm test
-```
-
-## Project Structure
+### Project Structure
 
 ```
 src/
-├── components/
-│   ├── DataTable/
-│   ├── Form/
-│   └── Modal/
-├── hooks/
-├── types/
-└── utils/
+├── components/          # Vue components
+│   ├── DataTable.vue   # Reusable table component
+│   ├── Form.vue        # Form component
+│   └── Modal.vue       # Modal component
+├── composables/        # Reusable composables
+│   └── useDataTable.ts # Data table logic
+├── hooks/             # Custom hooks
+├── types/             # TypeScript type definitions
+└── main.ts            # Application entry point
 ```
 
-## Additional Resources
+## Key Learning Points
 
-- [React Documentation](https://react.dev)
-- [TypeScript Handbook](https://www.typescriptlang.org/docs)
-- [Testing Library](https://testing-library.com/docs/react-testing-library/intro)
-- [Accessibility Guidelines](https://www.w3.org/WAI/ARIA/apg/)
+### 1. Component Composition
+
+Learn how to build complex components by composing smaller, reusable pieces.
+
+### 2. TypeScript Integration
+
+See how TypeScript enhances Vue 3 development with better IDE support and type safety.
+
+### 3. Composables Pattern
+
+Understand how to extract and reuse component logic using Vue 3's composables.
+
+### 4. Advanced Vue 3 Features
+
+Explore Teleport, Provide/Inject, and error handling patterns.
+
+## Development
+
+### Available Scripts
+
+- `npm run dev` - Start development server
+- `npm run build` - Build for production
+- `npm run preview` - Preview production build
+- `npm test` - Run unit tests
+- `npm run lint` - Run ESLint
+
+### Code Quality
+
+This project uses:
+
+- **ESLint** for code linting
+- **Prettier** for code formatting
+- **TypeScript** for type checking
+- **Vitest** for testing
+
+## Next Steps
+
+After exploring this demo:
+
+1. Try modifying the components
+2. Add new features
+3. Experiment with different patterns
+4. Check out the lab exercises in `../lab/`
+
+## Resources
+
+- [Vue 3 Documentation](https://vuejs.org/)
+- [TypeScript Documentation](https://www.typescriptlang.org/)
+- [Vitest Documentation](https://vitest.dev/)
+- [Vue Test Utils](https://test-utils.vuejs.org/)

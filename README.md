@@ -71,7 +71,7 @@ This course teaches Vue 3 app development with industry-standard practices throu
 
 - [**Advanced State Management Guide**](./extras/state-management-guide.md) - Pinia, Vuex, and reactive patterns
 - [**Testing Guide**](./extras/testing-guide.md) - Unit, integration, and e2e testing with Vitest
-- [**Modern Vue Stack 2025**](./extras/modern-stack-2025.md) - Latest tools and technologies
+- [**Modern Vue Stack 2025**](./extras/modern-stack.md) - Latest tools and technologies
 - [**Troubleshooting Guide**](./extras/troubleshooting-guide.md) - Common issues and solutions
 - [**Advanced Vue Patterns**](./extras/advanced-patterns.md) - Enterprise-level patterns
 - [**Project Templates**](./extras/project-templates.md) - Ready-to-use project structures
@@ -82,7 +82,7 @@ This course teaches Vue 3 app development with industry-standard practices throu
 
 **📋 First, ensure you have all required software installed:**
 
-👉 **[Go to Environment Setup Guide](./setup/environment-setup.md)**
+👉 **[Go to Environment Setup Guide](./extras/setup/environment-setup.md)**
 
 Make sure you have installed:
 - Node.js (version 18 or higher)
@@ -128,7 +128,7 @@ cd vue-course
 📚 **The `extras/` folder contains advanced documentation:**
 - **[State Management Guide](./extras/state-management-guide.md)** - Advanced state management with Pinia
 - **[Testing Guide](./extras/testing-guide.md)** - Testing strategies with Vitest
-- **[Modern Vue Stack 2025](./extras/modern-stack-2025.md)** - Latest technologies
+- **[Modern Vue Stack 2025](./extras/modern-stack.md)** - Latest technologies
 - **[Advanced Vue Patterns](./extras/advanced-patterns.md)** - Enterprise-level patterns
 - **[Project Templates](./extras/project-templates.md)** - Ready-to-use project templates
 - **[Troubleshooting Guide](./extras/troubleshooting-guide.md)** - Common issues and solutions

@@ -8,23 +8,15 @@ This folder contains visual diagrams and aids to help you understand Vue 3 conce
 - **[Course Roadmap](./course-roadmap.md)** - Complete learning path overview
 - **[Vue 3 Architecture](./vue3-architecture.md)** - Vue 3 system architecture
 - **[Component Lifecycle](./component-lifecycle.md)** - Vue 3 component lifecycle hooks
-- **[Project Structure](./project-structure.md)** - Recommended project organization
 
 ### 🔄 Data Flow & State Management
 - **[Reactivity System](./reactivity-system.md)** - Vue 3 reactivity fundamentals
 - **[Data Flow Patterns](./data-flow-patterns.md)** - Component communication patterns
 - **[Pinia State Management](./pinia-state-management.md)** - State management with Pinia
-- **[API Integration Flow](./api-integration-flow.md)** - Frontend-backend data flow
+- **[API Integration & Data Fetching](./api-integration-data-fetching.md)** - Frontend-backend data flow
 
 ### 🛠️ Development Workflows
-- **[Development Process](./development-process.md)** - Step-by-step development workflow
-- **[Testing Strategy](./testing-strategy.md)** - Testing pyramid and strategies
-- **[Deployment Pipeline](./deployment-pipeline.md)** - CI/CD and deployment process
-
-### 🎨 UI/UX Patterns
-- **[Component Composition](./component-composition.md)** - Component design patterns
-- **[Responsive Design](./responsive-design.md)** - Mobile-first design approach
-- **[Accessibility Guidelines](./accessibility-guidelines.md)** - A11y best practices
+- **[Vue Router & Navigation](./vue-router-navigation.md)** - Routing and navigation patterns
 
 ## How to Use These Diagrams
 

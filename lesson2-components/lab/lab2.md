@@ -4,7 +4,7 @@
 
 In this lab, you'll apply component composition patterns and architecture concepts covered in the lesson. Focus on hands-on implementation of reusable component systems using Vue 3's Composition API and modern patterns.
 
-_For learning objectives and prerequisites, see [../README.md](../README.md)_
+_For learning objectives and prerequisites, see [../readme.md](../readme.md)_
 
 ## Pre-Lab Checklist
 

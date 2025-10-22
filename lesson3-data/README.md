@@ -2,176 +2,96 @@
 
 ## Overview
 
+**Difficulty**: Intermediate
+**Status**: Required
+
 In this lesson, you'll learn how to integrate Vue 3 applications with backend APIs and manage data effectively. We'll cover REST API integration, data fetching patterns, error handling, and state management for complex data workflows.
 
-## Learning Objectives
+---
 
-After this lesson, you will be able to:
+## 🎯 Learning Objectives
 
-- Understand REST API concepts and HTTP methods
-- Integrate Vue 3 with Node.js/Express backends and MongoDB
-- Implement proper data fetching patterns with composables
-- Handle loading states, errors, and edge cases professionally
-- Build CRUD operations with reactive state updates
-- Manage complex application state with Pinia
-- Implement search, filtering, and pagination
-- Handle file uploads and media management
+After completing this lesson, you will be able to:
 
-## Prerequisites
-
-- Completion of Lessons 1-2
-- Understanding of JavaScript ES6+ features
-- Basic knowledge of HTTP and web APIs
-- Familiarity with async/await and Promises
-
-_For detailed development environment setup, see [Complete Environment Setup Guide](../setup/environment-setup.md)_
-
-## What You'll Build
-
-In this lesson, you'll create a comprehensive task management application that demonstrates:
-
-- **API Integration**: Connect to a REST API for data operations
-- **CRUD Operations**: Create, read, update, and delete tasks
-- **Advanced Features**: Search, filtering, sorting, and pagination
-- **Error Handling**: Professional error states and retry mechanisms
-- **Loading States**: Skeleton screens and progress indicators
-- **Real-time Updates**: Live data synchronization
-
-## Key Concepts Covered
-
-### 1. REST API Fundamentals
-
-- HTTP methods (GET, POST, PUT, DELETE)
-- Status codes and error handling
-- Request/response patterns
-- API authentication
-
-## 🔍 **Knowledge Checkpoint 1**
-
-Before diving into code, make sure you understand:
-
-1. **What does REST stand for and why is it important?**
-2. **What's the difference between GET and POST requests?**
-3. **What HTTP status code indicates a successful request?**
-4. **Why do we need error handling in API calls?**
-
-_💡 Think of APIs as restaurants - you make requests (orders) and get responses (food)!_
+- ✅ Understand REST API concepts and HTTP methods
+- ✅ Integrate Vue 3 with Node.js/Express backends and MongoDB
+- ✅ Implement proper data fetching patterns with composables
+- ✅ Handle loading states, errors, and edge cases professionally
+- ✅ Build CRUD operations with reactive state updates
+- ✅ Manage complex application state with Pinia
 
 ---
 
-### 2. Data Fetching Strategies
+## 📋 Prerequisites
 
-- Native fetch vs axios
-- Composables for data management
-- Reactive caching and background updates
-- Optimistic updates with reactive state
-
-### 3. State Management Patterns
-
-- Local reactive state vs Pinia stores
-- Loading and error states with ref/reactive
-- Data synchronization with watchers
-- Cache invalidation strategies
-
-### 4. Professional UX Patterns
-
-- Skeleton screens
-- Error boundaries
-- Retry mechanisms
-- Offline handling
-
-## Lab Exercises
-
-The lesson includes 4 progressive exercises:
-
-1. **Basic API Integration**
-
-   - Set up API client
-   - Implement basic CRUD operations
-   - Handle loading and error states
-
-2. **Advanced Data Management**
-
-   - Create data fetching composables
-   - Add search and filtering with computed properties
-   - Create pagination with reactive state
-
-3. **User Experience Enhancements**
-
-   - Add optimistic updates
-   - Implement retry mechanisms
-   - Create skeleton screens
-
-4. **Real-time Features**
-   - WebSocket integration
-   - Live data updates
-   - Conflict resolution
-
-## Resources
-
-- **Lab Guide**: [lab3.md](./lab/lab3.md) - Step-by-step implementation guide
-
-## 📊 **Final Knowledge Assessment**
-
-Complete this self-assessment to check your API integration skills:
-
-### **API Integration (Must Know)**
-
-- [ ] I can make GET requests to fetch data from APIs
-- [ ] I understand how to send POST requests with JSON data
-- [ ] I can handle API errors gracefully with try/catch
-- [ ] I know how to display loading states during API calls
-
-### **Data Management (Must Know)**
-
-- [ ] I can manage API response data in reactive state
-- [ ] I understand when to re-fetch data (watchers and lifecycle)
-- [ ] I can implement basic CRUD operations
-- [ ] I know how to handle form submissions to APIs
-
-### **User Experience (Good to Know)**
-
-- [ ] I can implement search and filtering functionality
-- [ ] I understand how to show meaningful error messages
-- [ ] I can create loading skeletons for better UX
-- [ ] I know how to implement pagination for large datasets
-
-### **Professional Patterns (Good to Know)**
-
-- [ ] I understand composables for advanced data management
-- [ ] I can implement optimistic updates with reactive state
-- [ ] I know how to handle network errors and retries
-- [ ] I understand caching strategies with Pinia
-
-**🎯 Goal: Check at least 10/16 items before moving to Lesson 4**
-
-### **Self-Reflection Questions**
-
-1. What's the most challenging part of API integration?
-2. How would you handle slow internet connections in your app?
-3. What kind of data will your applications need to manage?
+- ✅ Vue 3 component architecture and reactive state
+- ✅ Understanding of composables and component patterns
+- ✅ Basic knowledge of HTTP and web APIs
+- ✅ Familiarity with async/await and Promises
 
 ---
 
-## 🎓 **Ready for Lesson 4?**
+## 🚀 Quick Start
 
-If you completed the assessment above and feel comfortable with API integration, you're ready to move on to [Lesson 4: Routing & Authentication](../lesson4-routing-auth/).
+> 🎯 Goal: Master API integration and data management in Vue 3 applications
 
-**Still need practice?** Consider:
+### Setup
+```bash
+# 1. Create full-stack project
+npm create vue@latest task-manager
+cd task-manager
+npm install
 
-- Building more complex API integrations
-- Experimenting with different error handling approaches
-- Adding advanced features like search and pagination
-- Practicing with real APIs (not just mock data)
-- **Theory**: [theory3.md](./theory/theory3.md) - Theory and concepts presentation
-- **Demo Code**: Available in the demo folder
-- **API Documentation**: Links to external APIs used in exercises
+# 2. Install API dependencies
+npm install @tanstack/vue-query axios
+npm install -D @types/node
 
-## Next Steps
+# 3. Set up backend (optional)
+mkdir server && cd server
+npm init -y
+npm install express cors mongoose
 
-After completing this lesson, you'll be ready for:
+# 4. Start development
+cd .. && npm run dev
+```
 
-- **Lesson 4**: Routing, Authentication & Advanced Patterns
-- **Lesson 5**: Full-Stack Integration & Production Deployment
+### Learning Path (Choose Your Style)
+- 📖 **Theory First**: Start with [Theory](./theory/theory3.md) → [Example](./example/) → [Lab](./lab/lab3.md)
+- ⚡ **Hands-On**: Start with [Reference](./reference/reference3.md) → [Example](./example/) → [Theory](./theory/theory3.md)
+- 🎯 **Quick Review**: [Reference](./reference/reference3.md) → [Quiz](./quiz/quiz3.html) → Focus on weak areas
 
-The data management skills learned here form the foundation for building complex, production-ready Vue 3 applications.
+---
+
+## What's Next
+
+### Ready to Continue?
+- **Completed this lesson?** → Proceed to [Lesson 4: Routing, Authentication & Advanced Patterns](../lesson4-routing-auth/)
+
+### Need More Practice?
+- **Study theory** → [theory3.md](./theory/theory3.md) - Deep dive into API integration
+- **View examples** → [example/](./example/) - See data management in action
+- **Practice exercises** → [lab3.md](./lab/lab3.md) - Task management project
+
+### Additional Resources
+- **Quiz yourself** → [quiz3.html](./quiz/quiz3.html) - Test your API knowledge
+- **General questions?** → Review the reference guide
+- **Still confused?** → [Check Troubleshooting Guide](../../extras/troubleshooting-guide.md)
+
+---
+
+## Resources & References
+
+### Official Documentation
+- [Vue 3 Data Fetching](https://vuejs.org/guide/essentials/component-basics.html) - Data fetching patterns
+- [Vue Query](https://tanstack.com/query/latest/docs/vue/overview) - Powerful data synchronization
+- [Axios Documentation](https://axios-http.com/docs/intro) - HTTP client library
+
+### Video Tutorials
+- [Vue 3 API Integration](https://www.youtube.com/watch?v=2KBHvaAWJOA) - Vue Mastery
+- [Vue Query Tutorial](https://www.youtube.com/watch?v=JbIzmGQXjO4) - Vue School
+
+### Practice Resources
+- [Vue 3 API Examples](https://github.com/vuejs/vue-next/tree/master/packages/vue/examples) - Official examples
+- [REST API Testing](https://httpie.io/) - API testing tool
+
+---

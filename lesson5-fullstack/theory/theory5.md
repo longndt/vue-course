@@ -4,7 +4,7 @@
 
 ### Quick Reference 📋
 
-*For detailed learning objectives and deployment concepts, see [README.md](../README.md)*
+*For detailed learning objectives and deployment concepts, see [readme.md](../readme.md)*
 
 ---
 

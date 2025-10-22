@@ -4,7 +4,7 @@
 
 ### Quick Reference 📋
 
-*For detailed learning objectives and prerequisites, see [README.md](../README.md)*
+*For detailed learning objectives and prerequisites, see [readme.md](../readme.md)*
 
 ---
 

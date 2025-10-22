@@ -19,17 +19,11 @@
   </div>
 </template>
 
-<script>
+<script setup lang="ts">
+import { ref } from 'vue'
 import logo from './assets/logo.svg'
 
-export default {
-  name: 'App',
-  data() {
-    return {
-      logo
-    }
-  }
-}
+const logo = ref(logo)
 </script>
 
 <style>
