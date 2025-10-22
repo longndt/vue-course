@@ -1,8 +1,10 @@
-# Theory 4: Vue Router & Authentication 🧭
+# Vue 3 Routing, Authentication & Advanced Patterns
 
-## Quick Reference 📋
+## Theory 4: Vue Router & Authentication 🧭
 
-_For detailed learning objectives and concepts, see [readme.md](../readme.md)_
+### Quick Reference 📋
+
+*For detailed learning objectives and concepts, see [README.md](../README.md)*
 
 ---
 
@@ -25,6 +27,12 @@ Think of a website like a book:
 └── ⚙️ Settings Page (private)
 ```
 
+**Modern SPA Benefits:**
+- No page refreshes
+- Faster navigation
+- Better user experience
+- State preservation between pages
+
 ---
 
 ## Setting Up Vue Router 🛠️
@@ -40,19 +48,42 @@ npm install vue-router@4
 ```typescript
 // router/index.ts
 import { createRouter, createWebHistory } from 'vue-router'
+import type { RouteRecordRaw } from 'vue-router'
 import Home from '@/pages/Home.vue'
 import About from '@/pages/About.vue'
 import Contact from '@/pages/Contact.vue'
 
-const routes = [
-  { path: '/', component: Home },
-  { path: '/about', component: About },
-  { path: '/contact', component: Contact }
+const routes: RouteRecordRaw[] = [
+  {
+    path: '/',
+    name: 'Home',
+    component: Home,
+    meta: { title: 'Home' }
+  },
+  {
+    path: '/about',
+    name: 'About',
+    component: About,
+    meta: { title: 'About' }
+  },
+  {
+    path: '/contact',
+    name: 'Contact',
+    component: Contact,
+    meta: { title: 'Contact' }
+  }
 ]
 
 export const router = createRouter({
   history: createWebHistory(),
-  routes
+  routes,
+  scrollBehavior(to, from, savedPosition) {
+    if (savedPosition) {
+      return savedPosition
+    } else {
+      return { top: 0 }
+    }
+  }
 })
 ```
 
@@ -62,37 +93,70 @@ export const router = createRouter({
 <!-- App.vue -->
 <template>
   <div id="app">
-    <nav>
-      <RouterLink to="/">Home</RouterLink>
-      <RouterLink to="/about">About</RouterLink>
-      <RouterLink to="/contact">Contact</RouterLink>
+    <nav class="navbar">
+      <div class="nav-brand">
+        <RouterLink to="/">My App</RouterLink>
+      </div>
+      <div class="nav-links">
+        <RouterLink to="/">Home</RouterLink>
+        <RouterLink to="/about">About</RouterLink>
+        <RouterLink to="/contact">Contact</RouterLink>
+      </div>
     </nav>
 
-    <main>
+    <main class="main-content">
       <RouterView />
     </main>
   </div>
 </template>
 
-<script setup>
-import { RouterView, RouterLink } from 'vue-router'</script>
+<script setup lang="ts">
+import { RouterView, RouterLink } from 'vue-router'
+</script>
 
 <style scoped>
-nav {
+.navbar {
   background: #f8f9fa;
-  padding: 1rem;
+  padding: 1rem 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 
-nav a {
-  margin-right: 1rem;
+.nav-brand a {
+  font-size: 1.5rem;
+  font-weight: bold;
   color: #333;
   text-decoration: none;
-  padding: 0.5rem;
 }
 
-nav a.router-link-active {
+.nav-links {
+  display: flex;
+  gap: 2rem;
+}
+
+.nav-links a {
+  color: #333;
+  text-decoration: none;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  transition: all 0.2s ease;
+}
+
+.nav-links a:hover {
+  background: #e9ecef;
+}
+
+.nav-links a.router-link-active {
   color: #007bff;
   font-weight: bold;
+  background: #e3f2fd;
+}
+
+.main-content {
+  min-height: calc(100vh - 80px);
+  padding: 2rem;
 }
 </style>
 ```
@@ -107,29 +171,61 @@ nav a.router-link-active {
 // router/index.ts
 import { useAuthStore } from '@/stores/auth'
 
-const routes = [
+const routes: RouteRecordRaw[] = [
+  // Public routes
+  {
+    path: '/',
+    name: 'Home',
+    component: Home,
+    meta: { requiresAuth: false }
+  },
+  {
+    path: '/login',
+    name: 'Login',
+    component: () => import('@/pages/Login.vue'),
+    meta: { requiresAuth: false, guestOnly: true }
+  },
+
+  // Protected routes
   {
     path: '/profile',
+    name: 'Profile',
     component: () => import('@/pages/Profile.vue'),
     meta: { requiresAuth: true }
   },
   {
-    path: '/login',
-    component: () => import('@/pages/Login.vue'),
-    meta: { requiresGuest: true }
+    path: '/admin',
+    name: 'Admin',
+    component: () => import('@/pages/Admin.vue'),
+    meta: { requiresAuth: true, requiresRole: 'admin' }
   }
 ]
 
-router.beforeEach((to, from, next) => {
+router.beforeEach(async (to, from, next) => {
   const authStore = useAuthStore()
 
+  // Check if route requires authentication
   if (to.meta.requiresAuth && !authStore.isAuthenticated) {
-    next('/login')
-  } else if (to.meta.requiresGuest && authStore.isAuthenticated) {
-    next('/profile')
-  } else {
-    next()
+    next({
+      name: 'Login',
+      query: { redirect: to.fullPath }
+    })
+    return
   }
+
+  // Check if route is guest only
+  if (to.meta.guestOnly && authStore.isAuthenticated) {
+    next({ name: 'Profile' })
+    return
+  }
+
+  // Check role requirements
+  if (to.meta.requiresRole && !authStore.hasRole(to.meta.requiresRole as string)) {
+    next({ name: 'Profile' })
+    return
+  }
+
+  next()
 })
 ```
 
@@ -140,13 +236,32 @@ router.beforeEach((to, from, next) => {
 import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
 
+interface User {
+  id: string
+  name: string
+  email: string
+  role: string
+  avatar?: string
+}
+
+interface LoginCredentials {
+  email: string
+  password: string
+}
+
 export const useAuthStore = defineStore('auth', () => {
-  const user = ref(null)
-  const token = ref(localStorage.getItem('token'))
+  const user = ref<User | null>(null)
+  const token = ref<string | null>(localStorage.getItem('token'))
+  const loading = ref(false)
+  const error = ref<string | null>(null)
 
-  const isAuthenticated = computed(() => !!token.value)
+  const isAuthenticated = computed(() => !!token.value && !!user.value)
+  const userRole = computed(() => user.value?.role || '')
 
-  const login = async (credentials) => {
+  const login = async (credentials: LoginCredentials) => {
+    loading.value = true
+    error.value = null
+
     try {
       const response = await fetch('/api/login', {
         method: 'POST',
@@ -162,10 +277,14 @@ export const useAuthStore = defineStore('auth', () => {
         localStorage.setItem('token', data.token)
         return { success: true }
       } else {
+        error.value = data.message
         return { success: false, error: data.message }
       }
-    } catch (error) {
+    } catch (err) {
+      error.value = 'Network error'
       return { success: false, error: 'Network error' }
+    } finally {
+      loading.value = false
     }
   }
 
@@ -175,12 +294,46 @@ export const useAuthStore = defineStore('auth', () => {
     localStorage.removeItem('token')
   }
 
+  const hasRole = (role: string) => {
+    return user.value?.role === role
+  }
+
+  const hasAnyRole = (roles: string[]) => {
+    return roles.includes(user.value?.role || '')
+  }
+
+  const fetchUser = async () => {
+    if (!token.value) return
+
+    try {
+      const response = await fetch('/api/me', {
+        headers: {
+          'Authorization': `Bearer ${token.value}`
+        }
+      })
+
+      if (response.ok) {
+        user.value = await response.json()
+      } else {
+        logout()
+      }
+    } catch (err) {
+      logout()
+    }
+  }
+
   return {
     user,
     token,
+    loading,
+    error,
     isAuthenticated,
+    userRole,
     login,
-    logout
+    logout,
+    hasRole,
+    hasAnyRole,
+    fetchUser
   }
 })
 ```
@@ -191,66 +344,114 @@ export const useAuthStore = defineStore('auth', () => {
 <!-- pages/Login.vue -->
 <template>
   <div class="login-page">
-    <form @submit.prevent="handleLogin" class="login-form">
-      <h2>Login</h2>
+    <div class="login-container">
+      <form @submit.prevent="handleLogin" class="login-form">
+        <h2>Welcome Back</h2>
+        <p class="subtitle">Sign in to your account</p>
 
-      <div v-if="error" class="error">
-        {{ error }}
-      </div>
+        <div v-if="error" class="error-message">
+          {{ error }}
+        </div>
 
-      <div class="form-group">
-        <label for="email">Email:</label>
-        <input
-          id="email"
-          v-model="form.email"
-          type="email"
-          required
-        />
-      </div>
+        <div class="form-group">
+          <label for="email">Email Address</label>
+          <input
+            id="email"
+            v-model="form.email"
+            type="email"
+            :class="{ error: errors.email }"
+            placeholder="Enter your email"
+            required
+          />
+          <span v-if="errors.email" class="field-error">{{ errors.email }}</span>
+        </div>
 
-      <div class="form-group">
-        <label for="password">Password:</label>
-        <input
-          id="password"
-          v-model="form.password"
-          type="password"
-          required
-        />
-      </div>
+        <div class="form-group">
+          <label for="password">Password</label>
+          <input
+            id="password"
+            v-model="form.password"
+            type="password"
+            :class="{ error: errors.password }"
+            placeholder="Enter your password"
+            required
+          />
+          <span v-if="errors.password" class="field-error">{{ errors.password }}</span>
+        </div>
 
-      <button type="submit" :disabled="loading">
-        {{ loading ? 'Logging in...' : 'Login' }}
-      </button>
-    </form>
+        <div class="form-options">
+          <label class="checkbox-label">
+            <input v-model="form.remember" type="checkbox" />
+            Remember me
+          </label>
+          <a href="#" class="forgot-password">Forgot password?</a>
+        </div>
+
+        <button type="submit" :disabled="loading" class="login-button">
+          {{ loading ? 'Signing in...' : 'Sign In' }}
+        </button>
+
+        <div class="signup-link">
+          Don't have an account? <a href="#">Sign up</a>
+        </div>
+      </form>
+    </div>
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { ref, reactive } from 'vue'
-import { useRouter } from 'vue-router'
+import { useRouter, useRoute } from 'vue-router'
 import { useAuthStore } from '@/stores/auth'
 
 const router = useRouter()
+const route = useRoute()
 const authStore = useAuthStore()
 
 const form = reactive({
   email: '',
-  password: ''
+  password: '',
+  remember: false
 })
 
+const errors = reactive<Record<string, string>>({})
 const loading = ref(false)
 const error = ref('')
 
+const validateForm = () => {
+  Object.keys(errors).forEach(key => delete errors[key])
+
+  if (!form.email.trim()) {
+    errors.email = 'Email is required'
+  } else if (!form.email.includes('@')) {
+    errors.email = 'Please enter a valid email'
+  }
+
+  if (!form.password.trim()) {
+    errors.password = 'Password is required'
+  } else if (form.password.length < 6) {
+    errors.password = 'Password must be at least 6 characters'
+  }
+}
+
 const handleLogin = async () => {
+  validateForm()
+
+  if (Object.keys(errors).length > 0) return
+
   loading.value = true
   error.value = ''
 
-  const result = await authStore.login(form)
+  const result = await authStore.login({
+    email: form.email,
+    password: form.password
+  })
 
   if (result.success) {
-    router.push('/profile')
+    const redirect = route.query.redirect as string || '/profile'
+    router.push(redirect)
   } else {
-    error.value = result.error
+    error.value = result.error || 'Login failed'
   }
 
   loading.value = false
@@ -259,41 +460,148 @@ const handleLogin = async () => {
 
 <style scoped>
 .login-page {
+  min-height: 100vh;
   display: flex;
-  justify-content: center;
   align-items: center;
-  min-height: 80vh;
+  justify-content: center;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  padding: 20px;
+}
+
+.login-container {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+  overflow: hidden;
+  width: 100%;
+  max-width: 400px;
 }
 
 .login-form {
-  background: white;
-  padding: 2rem;
-  border-radius: 8px;
-  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-  min-width: 300px;
+  padding: 40px;
+}
+
+.login-form h2 {
+  text-align: center;
+  margin-bottom: 8px;
+  color: #333;
+  font-size: 2rem;
+}
+
+.subtitle {
+  text-align: center;
+  color: #666;
+  margin-bottom: 30px;
 }
 
 .form-group {
-  margin-bottom: 1rem;
+  margin-bottom: 20px;
 }
 
-.error {
-  background: #fee;
-  color: #c33;
-  padding: 0.75rem;
-  border-radius: 4px;
-  margin-bottom: 1rem;
+.form-group label {
+  display: block;
+  margin-bottom: 8px;
+  color: #333;
+  font-weight: 500;
 }
 
-button {
+.form-group input {
   width: 100%;
-  padding: 0.75rem;
+  padding: 12px 16px;
+  border: 2px solid #e1e5e9;
+  border-radius: 8px;
+  font-size: 16px;
+  transition: border-color 0.2s ease;
+}
+
+.form-group input:focus {
+  outline: none;
+  border-color: #007bff;
+}
+
+.form-group input.error {
+  border-color: #dc3545;
+}
+
+.field-error {
+  color: #dc3545;
+  font-size: 0.875rem;
+  margin-top: 4px;
+  display: block;
+}
+
+.error-message {
+  background: #f8d7da;
+  color: #721c24;
+  padding: 12px;
+  border-radius: 6px;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.form-options {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+}
+
+.checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #666;
+  font-size: 0.875rem;
+}
+
+.forgot-password {
+  color: #007bff;
+  text-decoration: none;
+  font-size: 0.875rem;
+}
+
+.forgot-password:hover {
+  text-decoration: underline;
+}
+
+.login-button {
+  width: 100%;
+  padding: 12px;
   background: #007bff;
   color: white;
   border: none;
-  border-radius: 4px;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.login-button:hover:not(:disabled) {
+  background: #0056b3;
+}
+
+.login-button:disabled {
+  background: #6c757d;
+  cursor: not-allowed;
+}
+
+.signup-link {
+  text-align: center;
+  margin-top: 20px;
+  color: #666;
+}
+
+.signup-link a {
+  color: #007bff;
+  text-decoration: none;
+}
+
+.signup-link a:hover {
+  text-decoration: underline;
 }
 </style>
+```
 
 ---
 
@@ -302,12 +610,20 @@ button {
 ### 1. Route Parameters
 
 ```typescript
-// Dynamic user profile route
-const routes = [
+// router/index.ts
+const routes: RouteRecordRaw[] = [
   {
     path: '/user/:id',
-    component: UserProfile,
-    props: true // Pass params as props
+    name: 'UserProfile',
+    component: () => import('@/pages/UserProfile.vue'),
+    props: true, // Pass params as props
+    meta: { requiresAuth: true }
+  },
+  {
+    path: '/post/:slug',
+    name: 'PostDetail',
+    component: () => import('@/pages/PostDetail.vue'),
+    props: true
   }
 ]
 ```
@@ -317,56 +633,372 @@ const routes = [
 ```vue
 <!-- pages/UserProfile.vue -->
 <template>
-  <div v-if="loading">Loading...</div>
-  <div v-else-if="user" class="user-profile">
-    <h2>{{ user.name }}</h2>
-    <p>{{ user.email }}</p>
+  <div v-if="loading" class="loading-container">
+    <div class="spinner"></div>
+    <p>Loading user profile...</p>
   </div>
-  <div v-else>User not found</div>
+
+  <div v-else-if="error" class="error-container">
+    <h3>Error loading profile</h3>
+    <p>{{ error }}</p>
+    <button @click="fetchUser" class="retry-btn">Try Again</button>
+  </div>
+
+  <div v-else-if="user" class="user-profile">
+    <div class="profile-header">
+      <img :src="user.avatar || '/default-avatar.png'" :alt="user.name" class="avatar" />
+      <div class="profile-info">
+        <h1>{{ user.name }}</h1>
+        <p class="email">{{ user.email }}</p>
+        <span class="role-badge">{{ user.role }}</span>
+      </div>
+    </div>
+
+    <div class="profile-content">
+      <div class="profile-section">
+        <h3>About</h3>
+        <p>{{ user.bio || 'No bio available' }}</p>
+      </div>
+
+      <div class="profile-section">
+        <h3>Activity</h3>
+        <div class="activity-list">
+          <div v-for="activity in user.activities" :key="activity.id" class="activity-item">
+            {{ activity.description }}
+            <span class="activity-date">{{ formatDate(activity.date) }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div v-else class="not-found">
+    <h3>User not found</h3>
+    <p>The user you're looking for doesn't exist.</p>
+    <RouterLink to="/" class="home-link">Go Home</RouterLink>
+  </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { ref, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
 
-const route = useRoute()
-const user = ref(null)
-const loading = ref(true)
+interface User {
+  id: string
+  name: string
+  email: string
+  role: string
+  avatar?: string
+  bio?: string
+  activities: Array<{
+    id: string
+    description: string
+    date: string
+  }>
+}
 
-onMounted(async () => {
+interface Props {
+  id: string
+}
+
+const props = defineProps<Props>()
+const route = useRoute()
+
+const user = ref<User | null>(null)
+const loading = ref(true)
+const error = ref<string | null>(null)
+
+const fetchUser = async () => {
+  loading.value = true
+  error.value = null
+
   try {
-    const response = await fetch(`/api/users/${route.params.id}`)
+    const response = await fetch(`/api/users/${props.id}`)
+
     if (response.ok) {
       user.value = await response.json()
+    } else if (response.status === 404) {
+      user.value = null
+    } else {
+      throw new Error('Failed to fetch user')
     }
-  } catch (error) {
-    console.error('Error loading user:', error)
+  } catch (err) {
+    error.value = err instanceof Error ? err.message : 'Unknown error'
   } finally {
     loading.value = false
   }
+}
+
+const formatDate = (dateString: string) => {
+  return new Date(dateString).toLocaleDateString()
+}
+
+onMounted(() => {
+  fetchUser()
 })
 </script>
 
-```typescript
-// Using Protected Routes with Vue Router
-const routes = [
-  // Public pages
-  { path: '/', component: Home },
-  { path: '/about', component: About },
+<style scoped>
+.loading-container, .error-container, .not-found {
+  text-align: center;
+  padding: 40px;
+}
 
-  // Private pages
+.spinner {
+  width: 40px;
+  height: 40px;
+  border: 4px solid #f3f3f3;
+  border-top: 4px solid #007bff;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin: 0 auto 20px;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.user-profile {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.profile-header {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  margin-bottom: 30px;
+  padding: 20px;
+  background: #f8f9fa;
+  border-radius: 12px;
+}
+
+.avatar {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.profile-info h1 {
+  margin: 0 0 8px 0;
+  color: #333;
+}
+
+.email {
+  color: #666;
+  margin: 0 0 8px 0;
+}
+
+.role-badge {
+  background: #007bff;
+  color: white;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.profile-section {
+  margin-bottom: 30px;
+}
+
+.profile-section h3 {
+  color: #333;
+  margin-bottom: 15px;
+  padding-bottom: 8px;
+  border-bottom: 2px solid #e9ecef;
+}
+
+.activity-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.activity-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px;
+  background: white;
+  border: 1px solid #e9ecef;
+  border-radius: 6px;
+}
+
+.activity-date {
+  color: #666;
+  font-size: 0.875rem;
+}
+
+.retry-btn, .home-link {
+  background: #007bff;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 6px;
+  text-decoration: none;
+  display: inline-block;
+  margin-top: 15px;
+}
+
+.retry-btn:hover, .home-link:hover {
+  background: #0056b3;
+}
+</style>
+```
+
+---
+
+## Advanced Routing Patterns 🚀
+
+### 1. Nested Routes
+
+```typescript
+// router/index.ts
+const routes: RouteRecordRaw[] = [
   {
-    path: '/profile',
-    component: ProfilePage,
-    meta: { requiresAuth: true }
-  },
-  {
-    path: '/settings',
-    component: SettingsPage,
-    meta: { requiresAuth: true }
+    path: '/dashboard',
+    component: () => import('@/layouts/DashboardLayout.vue'),
+    meta: { requiresAuth: true },
+    children: [
+      {
+        path: '',
+        name: 'Dashboard',
+        component: () => import('@/pages/Dashboard.vue')
+      },
+      {
+        path: 'profile',
+        name: 'DashboardProfile',
+        component: () => import('@/pages/Profile.vue')
+      },
+      {
+        path: 'settings',
+        name: 'DashboardSettings',
+        component: () => import('@/pages/Settings.vue')
+      }
+    ]
   }
 ]
-````
+```
+
+### 2. Route Meta Fields
+
+```typescript
+// router/index.ts
+interface RouteMeta {
+  requiresAuth?: boolean
+  guestOnly?: boolean
+  requiresRole?: string
+  title?: string
+  description?: string
+  breadcrumb?: string
+}
+
+const routes: RouteRecordRaw[] = [
+  {
+    path: '/admin',
+    name: 'Admin',
+    component: () => import('@/pages/Admin.vue'),
+    meta: {
+      requiresAuth: true,
+      requiresRole: 'admin',
+      title: 'Admin Panel',
+      breadcrumb: 'Administration'
+    }
+  }
+]
+```
+
+### 3. Breadcrumb Component
+
+```vue
+<!-- components/Breadcrumb.vue -->
+<template>
+  <nav class="breadcrumb" v-if="breadcrumbs.length > 0">
+    <ol class="breadcrumb-list">
+      <li v-for="(item, index) in breadcrumbs" :key="item.path" class="breadcrumb-item">
+        <RouterLink
+          v-if="index < breadcrumbs.length - 1"
+          :to="item.path"
+          class="breadcrumb-link"
+        >
+          {{ item.name }}
+        </RouterLink>
+        <span v-else class="breadcrumb-current">
+          {{ item.name }}
+        </span>
+
+        <span v-if="index < breadcrumbs.length - 1" class="breadcrumb-separator">
+          /
+        </span>
+      </li>
+    </ol>
+  </nav>
+</template>
+
+<script setup lang="ts">
+import { computed } from 'vue'
+import { useRoute } from 'vue-router'
+
+const route = useRoute()
+
+const breadcrumbs = computed(() => {
+  const matched = route.matched.filter(record => record.meta.breadcrumb)
+
+  return matched.map(record => ({
+    name: record.meta.breadcrumb as string,
+    path: record.path
+  }))
+})
+</script>
+
+<style scoped>
+.breadcrumb {
+  padding: 10px 0;
+  margin-bottom: 20px;
+}
+
+.breadcrumb-list {
+  display: flex;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.breadcrumb-item {
+  display: flex;
+  align-items: center;
+}
+
+.breadcrumb-link {
+  color: #007bff;
+  text-decoration: none;
+  padding: 4px 8px;
+  border-radius: 4px;
+  transition: background-color 0.2s ease;
+}
+
+.breadcrumb-link:hover {
+  background: #f8f9fa;
+}
+
+.breadcrumb-current {
+  color: #666;
+  padding: 4px 8px;
+  font-weight: 500;
+}
+
+.breadcrumb-separator {
+  color: #999;
+  margin: 0 4px;
+}
+</style>
+```
+
+---
 
 ## Common Mistakes to Avoid ⚠️
 
@@ -397,29 +1029,108 @@ import { RouterView, RouterLink } from 'vue-router'
 </script>
 ```
 
+### 2. Not Handling Route Parameters
+
+```vue
+<!-- ❌ Wrong - Not accessing route params -->
+<script setup>
+const userId = '123' // Hardcoded
+</script>
+
+<!-- ✅ Correct - Using route params -->
+<script setup>
+import { useRoute } from 'vue-router'
+
+const route = useRoute()
+const userId = route.params.id
+</script>
+```
+
+### 3. Missing Error Handling
+
+```vue
+<!-- ❌ Wrong - No error handling -->
+<script setup>
+const fetchUser = async () => {
+  const response = await fetch(`/api/users/${userId}`)
+  const user = await response.json()
+  // What if the request fails?
+}
+</script>
+
+<!-- ✅ Correct - With error handling -->
+<script setup>
+const user = ref(null)
+const loading = ref(false)
+const error = ref(null)
+
+const fetchUser = async () => {
+  loading.value = true
+  error.value = null
+
+  try {
+    const response = await fetch(`/api/users/${userId}`)
+    if (response.ok) {
+      user.value = await response.json()
+    } else {
+      throw new Error('Failed to fetch user')
+    }
+  } catch (err) {
+    error.value = err.message
+  } finally {
+    loading.value = false
+  }
+}
+</script>
+```
+
 ---
 
 ## Practice Time! 💪
 
 ### Exercise: Build a Mini Blog
+
 Create a simple blog with:
-1. Home page (list of posts)
-2. Single post page
-3. Admin page (protected)
-4. Login page
+
+1. **Home page** (list of posts)
+2. **Single post page** (dynamic route)
+3. **Admin page** (protected)
+4. **Login page**
 
 ```vue
-<!-- Example Structure -->
+<!-- App.vue -->
 <template>
   <div id="app">
-    <nav>
-      <RouterLink to="/">Home</RouterLink>
-      <template v-if="authStore.user">
-        <RouterLink to="/admin">Admin</RouterLink>
-        <button @click="authStore.logout">Logout
-            </button>
-          </>
-        ) : (
+    <nav class="navbar">
+      <div class="nav-brand">
+        <RouterLink to="/">My Blog</RouterLink>
+      </div>
+      <div class="nav-links">
+        <RouterLink to="/">Home</RouterLink>
+        <template v-if="authStore.isAuthenticated">
+          <RouterLink to="/admin">Admin</RouterLink>
+          <button @click="authStore.logout" class="logout-btn">Logout</button>
+        </template>
+        <template v-else>
+          <RouterLink to="/login">Login</RouterLink>
+        </template>
+      </div>
+    </nav>
+
+    <main class="main-content">
+      <RouterView />
+    </main>
+  </div>
+</template>
+
+<script setup>
+import { RouterView, RouterLink } from 'vue-router'
+import { useAuthStore } from '@/stores/auth'
+
+const authStore = useAuthStore()
+</script>
+```
+
 ---
 
 ## Key Concepts Summary 📝
@@ -449,28 +1160,33 @@ Create a simple blog with:
 
 ### Common Problems:
 
-1. Page not found?
+1. **Page not found?**
    - Check route path spelling
    - Make sure component exists
    - Verify router setup
 
-2. Can't access private page?
+2. **Can't access private page?**
    - Check if user is authenticated
    - Verify navigation guards
    - Check Pinia store state
+
+3. **Route parameters not working?**
+   - Check route definition
+   - Verify parameter names
+   - Use `useRoute()` to access params
 
 ### Useful Resources:
 
 - [Vue Router Guide](https://router.vuejs.org/)
 - [Pinia Documentation](https://pinia.vuejs.org/)
+- [Vue 3 Composition API](https://vuejs.org/guide/composition-api-introduction.html)
 - Ask your teacher!
 
 ---
 
 This completes the Vue Router and Authentication theory! 🎉
 
-Tips:
-
+**Tips:**
 - Start with public pages
 - Add navigation
 - Then add protected pages

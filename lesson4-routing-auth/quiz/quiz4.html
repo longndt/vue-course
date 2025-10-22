@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vue 3 Routing, Authentication & Advanced Patterns Quiz</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .quiz-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .quiz-header {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .quiz-header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        .quiz-header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        .quiz-content {
+            padding: 40px;
+        }
+
+        .question {
+            margin-bottom: 30px;
+            padding: 25px;
+            background: #f8f9fa;
+            border-radius: 15px;
+            border-left: 5px solid #4facfe;
+        }
+
+        .question h3 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+            font-size: 1.3rem;
+        }
+
+        .code-block {
+            background: #2d3748;
+            color: #e2e8f0;
+            padding: 15px;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            margin: 10px 0;
+            overflow-x: auto;
+        }
+
+        .options {
+            list-style: none;
+        }
+
+        .option {
+            margin: 10px 0;
+            padding: 15px;
+            background: white;
+            border: 2px solid #e9ecef;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .option:hover {
+            border-color: #4facfe;
+            background: #f0f8ff;
+        }
+
+        .option.selected {
+            border-color: #4facfe;
+            background: #e3f2fd;
+        }
+
+        .option.correct {
+            border-color: #28a745;
+            background: #d4edda;
+        }
+
+        .option.incorrect {
+            border-color: #dc3545;
+            background: #f8d7da;
+        }
+
+        .submit-btn {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            font-size: 1.1rem;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: block;
+            margin: 30px auto;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(79, 172, 254, 0.3);
+        }
+
+        .submit-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .results {
+            text-align: center;
+            padding: 30px;
+            background: #f8f9fa;
+            border-radius: 15px;
+            margin-top: 20px;
+        }
+
+        .score {
+            font-size: 2rem;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+        .score.excellent { color: #28a745; }
+        .score.good { color: #ffc107; }
+        .score.needs-improvement { color: #dc3545; }
+
+        .explanation {
+            background: #e9ecef;
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 15px;
+            text-align: left;
+        }
+
+        .retry-btn {
+            background: #6c757d;
+            color: white;
+            border: none;
+            padding: 10px 25px;
+            border-radius: 25px;
+            cursor: pointer;
+            margin-top: 15px;
+        }
+
+        .retry-btn:hover {
+            background: #5a6268;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: #e9ecef;
+            border-radius: 4px;
+            margin-bottom: 20px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #4facfe 0%, #00f2fe 100%);
+            transition: width 0.3s ease;
+        }
+    </style>
+</head>
+<body>
+    <div class="quiz-container">
+        <div class="quiz-header">
+            <h1>🎯 Vue 3 Routing & Authentication Quiz</h1>
+            <p>Test your knowledge of Vue Router and authentication patterns</p>
+        </div>
+
+        <div class="quiz-content">
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+
+            <div id="quizQuestions">
+                <!-- Question 1 -->
+                <div class="question" data-question="1">
+                    <h3>1. What is the correct way to create a Vue Router instance?</h3>
+                    <div class="code-block">// router/index.ts</div>
+                    <ul class="options">
+                        <li class="option" data-answer="a">const router = createRouter({ history: createWebHistory(), routes })</li>
+                        <li class="option" data-answer="b">const router = new VueRouter({ mode: 'history', routes })</li>
+                        <li class="option" data-answer="c">const router = createRouter({ mode: 'history', routes })</li>
+                        <li class="option" data-answer="d">const router = new Router({ history: createWebHistory(), routes })</li>
+                    </ul>
+                </div>
+
+                <!-- Question 2 -->
+                <div class="question" data-question="2">
+                    <h3>2. How do you navigate programmatically in Vue 3?</h3>
+                    <div class="code-block">// In Composition API</div>
+                    <ul class="options">
+                        <li class="option" data-answer="a">const router = useRouter(); router.push('/dashboard')</li>
+                        <li class="option" data-answer="b">this.$router.push('/dashboard')</li>
+                        <li class="option" data-answer="c">router.push('/dashboard')</li>
+                        <li class="option" data-answer="d">Both a and b are correct</li>
+                    </ul>
+                </div>
+
+                <!-- Question 3 -->
+                <div class="question" data-question="3">
+                    <h3>3. What is the correct way to access route parameters in Vue 3?</h3>
+                    <div class="code-block">// Access :id parameter</div>
+                    <ul class="options">
+                        <li class="option" data-answer="a">const route = useRoute(); const id = route.params.id</li>
+                        <li class="option" data-answer="b">const id = this.$route.params.id</li>
+                        <li class="option" data-answer="c">const id = route.params.id</li>
+                        <li class="option" data-answer="d">Both a and b are correct</li>
+                    </ul>
+                </div>
+
+                <!-- Question 4 -->
+                <div class="question" data-question="4">
+                    <h3>4. How do you create a navigation guard in Vue 3?</h3>
+                    <div class="code-block">// Route guard</div>
+                    <ul class="options">
+                        <li class="option" data-answer="a">router.beforeEach((to, from, next) => { if (requiresAuth(to)) next('/login') else next() })</li>
+                        <li class="option" data-answer="b">router.beforeEach((to, from) => { if (requiresAuth(to)) return '/login' })</li>
+                        <li class="option" data-answer="c">router.guard((to, from, next) => { if (requiresAuth(to)) next('/login') })</li>
+                        <li class="option" data-answer="d">All of the above are correct</li>
+                    </ul>
+                </div>
+
+                <!-- Question 5 -->
+                <div class="question" data-question="5">
+                    <h3>5. What is the correct way to implement authentication state in Pinia?</h3>
+                    <div class="code-block">// stores/auth.ts</div>
+                    <ul class="options">
+                        <li class="option" data-answer="a">const user = ref(null); const isAuthenticated = computed(() => !!user.value)</li>
+                        <li class="option" data-answer="b">const state = reactive({ user: null, isAuthenticated: false })</li>
+                        <li class="option" data-answer="c">const user = ref(null); const token = ref(localStorage.getItem('token'))</li>
+                        <li class="option" data-answer="d">All of the above are correct</li>
+                    </ul>
+                </div>
+
+                <!-- Question 6 -->
+                <div class="question" data-question="6">
+                    <h3>6. How do you protect routes that require authentication?</h3>
+                    <div class="code-block">// Route protection</div>
+                    <ul class="options">
+                        <li class="option" data-answer="a">router.beforeEach((to, from, next) => { if (to.meta.requiresAuth && !isAuthenticated) next('/login') else next() })</li>
+                        <li class="option" data-answer="b">const ProtectedRoute = { template: '&lt;router-view v-if="isAuthenticated" /&gt;' }</li>
+                        <li class="option" data-answer="c">const ProtectedRoute = { template: '&lt;div v-if="isAuthenticated"&gt;&lt;router-view /&gt;&lt;/div&gt;' }</li>
+                        <li class="option" data-answer="d">All of the above are correct</li>
+                    </ul>
+                </div>
+
+                <!-- Question 7 -->
+                <div class="question" data-question="7">
+                    <h3>7. What is the correct way to handle login in Vue 3?</h3>
+                    <div class="code-block">// Login function</div>
+                    <ul class="options">
+                        <li class="option" data-answer="a">const login = async (credentials) => { const response = await api.post('/login', credentials); user.value = response.data.user; token.value = response.data.token }</li>
+                        <li class="option" data-answer="b">const login = async (credentials) => { const response = await api.post('/login', credentials); localStorage.setItem('token', response.data.token) }</li>
+                        <li class="option" data-answer="c">const login = async (credentials) => { const response = await api.post('/login', credentials); user.value = response.data.user; token.value = response.data.token; localStorage.setItem('token', response.data.token) }</li>
+                        <li class="option" data-answer="d">All of the above are correct</li>
+                    </ul>
+                </div>
+
+                <!-- Question 8 -->
+                <div class="question" data-question="8">
+                    <h3>8. How do you implement role-based access control in Vue 3?</h3>
+                    <div class="code-block">// Role-based access</div>
+                    <ul class="options">
+                        <li class="option" data-answer="a">const hasRole = (role) => user.value?.role === role</li>
+                        <li class="option" data-answer="b">const hasRole = (role) => user.value && user.value.role === role</li>
+                        <li class="option" data-answer="c">const hasRole = (role) => user.value?.role === role || user.value?.roles?.includes(role)</li>
+                        <li class="option" data-answer="d">All of the above are correct</li>
+                    </ul>
+                </div>
+
+                <!-- Question 9 -->
+                <div class="question" data-question="9">
+                    <h3>9. What is the correct way to handle logout in Vue 3?</h3>
+                    <div class="code-block">// Logout function</div>
+                    <ul class="options">
+                        <li class="option" data-answer="a">const logout = () => { user.value = null; token.value = null; localStorage.removeItem('token') }</li>
+                        <li class="option" data-answer="b">const logout = async () => { await api.post('/logout'); user.value = null; token.value = null; localStorage.removeItem('token') }</li>
+                        <li class="option" data-answer="c">const logout = () => { user.value = null; token.value = null; localStorage.removeItem('token'); router.push('/login') }</li>
+                        <li class="option" data-answer="d">All of the above are correct</li>
+                    </ul>
+                </div>
+
+                <!-- Question 10 -->
+                <div class="question" data-question="10">
+                    <h3>10. How do you create nested routes in Vue 3?</h3>
+                    <div class="code-block">// Nested routes</div>
+                    <ul class="options">
+                        <li class="option" data-answer="a">{ path: '/dashboard', component: Dashboard, children: [{ path: 'profile', component: Profile }] }</li>
+                        <li class="option" data-answer="b">{ path: '/dashboard', component: Dashboard, routes: [{ path: 'profile', component: Profile }] }</li>
+                        <li class="option" data-answer="c">{ path: '/dashboard', component: Dashboard, nested: [{ path: 'profile', component: Profile }] }</li>
+                        <li class="option" data-answer="d">All of the above are correct</li>
+                    </ul>
+                </div>
+
+                <!-- Question 11 -->
+                <div class="question" data-question="11">
+                    <h3>11. What is the correct way to handle route transitions in Vue 3?</h3>
+                    <div class="code-block">// Route transitions</div>
+                    <ul class="options">
+                        <li class="option" data-answer="a">&lt;router-view v-slot="{ Component }"&gt;&lt;transition name="fade"&gt;&lt;component :is="Component" /&gt;&lt;/transition&gt;&lt;/router-view&gt;</li>
+                        <li class="option" data-answer="b">&lt;transition name="fade"&gt;&lt;router-view /&gt;&lt;/transition&gt;</li>
+                        <li class="option" data-answer="c">&lt;router-view&gt;&lt;transition name="fade"&gt;&lt;component :is="Component" /&gt;&lt;/transition&gt;&lt;/router-view&gt;</li>
+                        <li class="option" data-answer="d">Both a and b are correct</li>
+                    </ul>
+                </div>
+
+                <!-- Question 12 -->
+                <div class="question" data-question="12">
+                    <h3>12. How do you implement breadcrumbs in Vue 3?</h3>
+                    <div class="code-block">// Breadcrumb component</div>
+                    <ul class="options">
+                        <li class="option" data-answer="a">const breadcrumbs = computed(() => route.matched.filter(record => record.meta.breadcrumb))</li>
+                        <li class="option" data-answer="b">const breadcrumbs = computed(() => route.matched.map(record => ({ name: record.meta.breadcrumb, path: record.path })))</li>
+                        <li class="option" data-answer="c">const breadcrumbs = computed(() => route.matched.filter(record => record.meta.breadcrumb).map(record => ({ name: record.meta.breadcrumb, path: record.path })))</li>
+                        <li class="option" data-answer="d">All of the above are correct</li>
+                    </ul>
+                </div>
+            </div>
+
+            <button class="submit-btn" id="submitBtn" onclick="submitQuiz()">Submit Quiz</button>
+
+            <div id="results" class="results" style="display: none;">
+                <div class="score" id="score"></div>
+                <p id="message"></p>
+                <div class="explanation" id="explanation"></div>
+                <button class="retry-btn" onclick="retryQuiz()">Retry Quiz</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const questions = [
+            {
+                question: 1,
+                correct: 'a',
+                explanation: 'Vue 3 Router uses createRouter with createWebHistory for HTML5 history mode. The old Vue 2 syntax is not used in Vue 3.'
+            },
+            {
+                question: 2,
+                correct: 'd',
+                explanation: 'Both useRouter() in Composition API and this.$router in Options API are correct ways to navigate programmatically.'
+            },
+            {
+                question: 3,
+                correct: 'd',
+                explanation: 'Both useRoute() in Composition API and this.$route in Options API are correct ways to access route parameters.'
+            },
+            {
+                question: 4,
+                correct: 'a',
+                explanation: 'Navigation guards use beforeEach with to, from, and next parameters. The next() function must be called to continue navigation.'
+            },
+            {
+                question: 5,
+                correct: 'd',
+                explanation: 'Authentication state can be implemented with refs, reactive objects, or a combination. The choice depends on the specific requirements.'
+            },
+            {
+                question: 6,
+                correct: 'd',
+                explanation: 'Route protection can be implemented with navigation guards, protected route components, or conditional rendering. All approaches are valid.'
+            },
+            {
+                question: 7,
+                correct: 'c',
+                explanation: 'Login should update both the store state and localStorage. This ensures the user stays logged in across browser sessions.'
+            },
+            {
+                question: 8,
+                correct: 'd',
+                explanation: 'Role-based access can check single roles, multiple roles, or handle both single and multiple role scenarios. All approaches are valid.'
+            },
+            {
+                question: 9,
+                correct: 'd',
+                explanation: 'Logout should clear state, remove tokens, and optionally redirect. The exact implementation depends on requirements.'
+            },
+            {
+                question: 10,
+                correct: 'a',
+                explanation: 'Nested routes use the children property, not routes or nested. This is the correct Vue Router syntax.'
+            },
+            {
+                question: 11,
+                correct: 'd',
+                explanation: 'Both approaches work for route transitions. The first is more explicit, the second is simpler for basic transitions.'
+            },
+            {
+                question: 12,
+                correct: 'c',
+                explanation: 'Breadcrumbs should filter routes with breadcrumb meta, then map to breadcrumb objects. This provides the most complete implementation.'
+            }
+        ];
+
+        let userAnswers = {};
+        let currentQuestion = 0;
+
+        // Initialize quiz
+        document.addEventListener('DOMContentLoaded', function() {
+            setupQuiz();
+        });
+
+        function setupQuiz() {
+            // Add click handlers to options
+            document.querySelectorAll('.option').forEach(option => {
+                option.addEventListener('click', function() {
+                    selectOption(this);
+                });
+            });
+
+            updateProgress();
+        }
+
+        function selectOption(option) {
+            const question = option.closest('.question');
+            const questionNumber = question.dataset.question;
+
+            // Remove previous selection
+            question.querySelectorAll('.option').forEach(opt => {
+                opt.classList.remove('selected');
+            });
+
+            // Select current option
+            option.classList.add('selected');
+            userAnswers[questionNumber] = option.dataset.answer;
+
+            updateProgress();
+        }
+
+        function updateProgress() {
+            const totalQuestions = questions.length;
+            const answeredQuestions = Object.keys(userAnswers).length;
+            const progress = (answeredQuestions / totalQuestions) * 100;
+
+            document.getElementById('progressFill').style.width = progress + '%';
+        }
+
+        function submitQuiz() {
+            const totalQuestions = questions.length;
+            const answeredQuestions = Object.keys(userAnswers).length;
+
+            if (answeredQuestions < totalQuestions) {
+                alert(`Please answer all questions. You have answered ${answeredQuestions} out of ${totalQuestions} questions.`);
+                return;
+            }
+
+            let correctAnswers = 0;
+            let explanations = [];
+
+            // Check answers and show results
+            questions.forEach(q => {
+                const userAnswer = userAnswers[q.question];
+                const isCorrect = userAnswer === q.correct;
+
+                if (isCorrect) {
+                    correctAnswers++;
+                }
+
+                // Highlight correct/incorrect answers
+                const questionEl = document.querySelector(`[data-question="${q.question}"]`);
+                questionEl.querySelectorAll('.option').forEach(option => {
+                    option.classList.remove('selected');
+                    if (option.dataset.answer === q.correct) {
+                        option.classList.add('correct');
+                    } else if (option.dataset.answer === userAnswer && !isCorrect) {
+                        option.classList.add('incorrect');
+                    }
+                });
+
+                explanations.push(`Q${q.question}: ${q.explanation}`);
+            });
+
+            const score = Math.round((correctAnswers / totalQuestions) * 100);
+            const scoreEl = document.getElementById('score');
+            const messageEl = document.getElementById('message');
+            const explanationEl = document.getElementById('explanation');
+
+            scoreEl.textContent = `${score}% (${correctAnswers}/${totalQuestions})`;
+            scoreEl.className = 'score ' + (score >= 80 ? 'excellent' : score >= 60 ? 'good' : 'needs-improvement');
+
+            if (score >= 80) {
+                messageEl.textContent = 'Excellent! You have mastered Vue 3 routing and authentication!';
+            } else if (score >= 60) {
+                messageEl.textContent = 'Good job! Review the explanations and practice more.';
+            } else {
+                messageEl.textContent = 'You need more practice with routing and authentication. Study the reference materials and try again.';
+            }
+
+            explanationEl.innerHTML = explanations.join('<br><br>');
+
+            // Show results
+            document.getElementById('quizQuestions').style.display = 'none';
+            document.getElementById('submitBtn').style.display = 'none';
+            document.getElementById('results').style.display = 'block';
+        }
+
+        function retryQuiz() {
+            // Reset quiz
+            userAnswers = {};
+            currentQuestion = 0;
+
+            // Reset UI
+            document.querySelectorAll('.option').forEach(option => {
+                option.classList.remove('selected', 'correct', 'incorrect');
+            });
+
+            document.getElementById('quizQuestions').style.display = 'block';
+            document.getElementById('submitBtn').style.display = 'block';
+            document.getElementById('results').style.display = 'none';
+
+            updateProgress();
+        }
+    </script>
+</body>
+</html>

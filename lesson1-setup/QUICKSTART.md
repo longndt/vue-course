@@ -1,6 +1,6 @@
 # Quick Start Guide - Lesson 1
 
-## Build Your First React Application
+## Build Your First Vue 3 Application
 
 ### 1. Create New React Project
 

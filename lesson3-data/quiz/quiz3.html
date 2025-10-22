@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vue 3 API Integration & Data Management Quiz</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .quiz-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .quiz-header {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .quiz-header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        .quiz-header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        .quiz-content {
+            padding: 40px;
+        }
+
+        .question {
+            margin-bottom: 30px;
+            padding: 25px;
+            background: #f8f9fa;
+            border-radius: 15px;
+            border-left: 5px solid #4facfe;
+        }
+
+        .question h3 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+            font-size: 1.3rem;
+        }
+
+        .code-block {
+            background: #2d3748;
+            color: #e2e8f0;
+            padding: 15px;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            margin: 10px 0;
+            overflow-x: auto;
+        }
+
+        .options {
+            list-style: none;
+        }
+
+        .option {
+            margin: 10px 0;
+            padding: 15px;
+            background: white;
+            border: 2px solid #e9ecef;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .option:hover {
+            border-color: #4facfe;
+            background: #f0f8ff;
+        }
+
+        .option.selected {
+            border-color: #4facfe;
+            background: #e3f2fd;
+        }
+
+        .option.correct {
+            border-color: #28a745;
+            background: #d4edda;
+        }
+
+        .option.incorrect {
+            border-color: #dc3545;
+            background: #f8d7da;
+        }
+
+        .submit-btn {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            font-size: 1.1rem;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: block;
+            margin: 30px auto;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(79, 172, 254, 0.3);
+        }
+
+        .submit-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .results {
+            text-align: center;
+            padding: 30px;
+            background: #f8f9fa;
+            border-radius: 15px;
+            margin-top: 20px;
+        }
+
+        .score {
+            font-size: 2rem;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+        .score.excellent { color: #28a745; }
+        .score.good { color: #ffc107; }
+        .score.needs-improvement { color: #dc3545; }
+
+        .explanation {
+            background: #e9ecef;
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 15px;
+            text-align: left;
+        }
+
+        .retry-btn {
+            background: #6c757d;
+            color: white;
+            border: none;
+            padding: 10px 25px;
+            border-radius: 25px;
+            cursor: pointer;
+            margin-top: 15px;
+        }
+
+        .retry-btn:hover {
+            background: #5a6268;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: #e9ecef;
+            border-radius: 4px;
+            margin-bottom: 20px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #4facfe 0%, #00f2fe 100%);
+            transition: width 0.3s ease;
+        }
+    </style>
+</head>
+<body>
+    <div class="quiz-container">
+        <div class="quiz-header">
+            <h1>🎯 Vue 3 API Integration Quiz</h1>
+            <p>Test your knowledge of API integration and data management</p>
+        </div>
+
+        <div class="quiz-content">
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+
+            <div id="quizQuestions">
+                <!-- Question 1 -->
+                <div class="question" data-question="1">
+                    <h3>1. What is the correct way to handle API errors in Vue 3?</h3>
+                    <div class="code-block">// API error handling</div>
+                    <ul class="options">
+                        <li class="option" data-answer="a">try { const data = await api.get() } catch (error) { console.error(error) }</li>
+                        <li class="option" data-answer="b">const { data, error } = await api.get()</li>
+                        <li class="option" data-answer="c">api.get().then(data => {}).catch(error => {})</li>
+                        <li class="option" data-answer="d">All of the above are correct</li>
+                    </ul>
+                </div>
+
+                <!-- Question 2 -->
+                <div class="question" data-question="2">
+                    <h3>2. How do you create a composable for data fetching?</h3>
+                    <div class="code-block">// composables/useFetch.ts</div>
+                    <ul class="options">
+                        <li class="option" data-answer="a">export function useFetch(url) { const data = ref(null); return { data } }</li>
+                        <li class="option" data-answer="b">export function useFetch(url) { const data = ref(null); const loading = ref(false); const error = ref(null); return { data, loading, error } }</li>
+                        <li class="option" data-answer="c">export function useFetch(url) { return { data: await fetch(url) } }</li>
+                        <li class="option" data-answer="d">Both a and b are correct</li>
+                    </ul>
+                </div>
+
+                <!-- Question 3 -->
+                <div class="question" data-question="3">
+                    <h3>3. What is the correct way to implement CRUD operations with Pinia?</h3>
+                    <div class="code-block">// stores/users.ts</div>
+                    <ul class="options">
+                        <li class="option" data-answer="a">const createUser = async (userData) => { const user = await api.post('/users', userData); users.value.push(user) }</li>
+                        <li class="option" data-answer="b">const createUser = (userData) => { users.value.push(userData) }</li>
+                        <li class="option" data-answer="c">const createUser = async (userData) => { return await api.post('/users', userData) }</li>
+                        <li class="option" data-answer="d">All of the above are correct</li>
+                    </ul>
+                </div>
+
+                <!-- Question 4 -->
+                <div class="question" data-question="4">
+                    <h3>4. How do you handle loading states in a Vue 3 component?</h3>
+                    <div class="code-block">// Component with loading state</div>
+                    <ul class="options">
+                        <li class="option" data-answer="a">&lt;div v-if="loading"&gt;Loading...&lt;/div&gt;&lt;div v-else&gt;{{ data }}&lt;/div&gt;</li>
+                        <li class="option" data-answer="b">&lt;div v-show="loading"&gt;Loading...&lt;/div&gt;&lt;div v-show="!loading"&gt;{{ data }}&lt;/div&gt;</li>
+                        <li class="option" data-answer="c">&lt;div v-if="loading"&gt;Loading...&lt;/div&gt;&lt;div v-else-if="error"&gt;Error: {{ error }}&lt;/div&gt;&lt;div v-else&gt;{{ data }}&lt;/div&gt;</li>
+                        <li class="option" data-answer="d">All of the above are correct</li>
+                    </ul>
+                </div>
+
+                <!-- Question 5 -->
+                <div class="question" data-question="5">
+                    <h3>5. What is the correct way to implement form validation with API integration?</h3>
+                    <div class="code-block">// Form submission</div>
+                    <ul class="options">
+                        <li class="option" data-answer="a">const handleSubmit = async () => { if (isValid.value) { await api.post('/users', form) } }</li>
+                        <li class="option" data-answer="b">const handleSubmit = async () => { validateForm(); if (isValid.value) { try { await api.post('/users', form) } catch (error) { setError(error.message) } } }</li>
+                        <li class="option" data-answer="c">const handleSubmit = () => { api.post('/users', form) }</li>
+                        <li class="option" data-answer="d">Both a and b are correct</li>
+                    </ul>
+                </div>
+
+                <!-- Question 6 -->
+                <div class="question" data-question="6">
+                    <h3>6. How do you implement data caching in Vue 3?</h3>
+                    <div class="code-block">// Data caching</div>
+                    <ul class="options">
+                        <li class="option" data-answer="a">const cache = new Map(); if (cache.has(key)) return cache.get(key)</li>
+                        <li class="option" data-answer="b">const cached = ref(null); if (cached.value) return cached.value</li>
+                        <li class="option" data-answer="c">const { data } = useFetch('/api/data', { key: 'users', server: false })</li>
+                        <li class="option" data-answer="d">All of the above are correct</li>
+                    </ul>
+                </div>
+
+                <!-- Question 7 -->
+                <div class="question" data-question="7">
+                    <h3>7. What is the correct way to handle pagination in Vue 3?</h3>
+                    <div class="code-block">// Pagination implementation</div>
+                    <ul class="options">
+                        <li class="option" data-answer="a">const page = ref(1); const fetchData = () => api.get(`/users?page=${page.value}`)</li>
+                        <li class="option" data-answer="b">const { data } = useFetch('/users', { query: { page: 1 } })</li>
+                        <li class="option" data-answer="c">const pagination = reactive({ page: 1, limit: 10, total: 0 })</li>
+                        <li class="option" data-answer="d">All of the above are correct</li>
+                    </ul>
+                </div>
+
+                <!-- Question 8 -->
+                <div class="question" data-question="8">
+                    <h3>8. How do you implement search functionality with API calls?</h3>
+                    <div class="code-block">// Search implementation</div>
+                    <ul class="options">
+                        <li class="option" data-answer="a">const searchTerm = ref(''); watch(searchTerm, (newTerm) => { if (newTerm.length > 2) fetchData(newTerm) })</li>
+                        <li class="option" data-answer="b">const searchTerm = ref(''); const debouncedSearch = debounce(() => fetchData(searchTerm.value), 300)</li>
+                        <li class="option" data-answer="c">const { data } = useFetch('/users', { query: computed(() => ({ search: searchTerm.value })) })</li>
+                        <li class="option" data-answer="d">All of the above are correct</li>
+                    </ul>
+                </div>
+
+                <!-- Question 9 -->
+                <div class="question" data-question="9">
+                    <h3>9. What is the correct way to handle file uploads in Vue 3?</h3>
+                    <div class="code-block">// File upload</div>
+                    <ul class="options">
+                        <li class="option" data-answer="a">const formData = new FormData(); formData.append('file', file); await api.post('/upload', formData)</li>
+                        <li class="option" data-answer="b">const handleUpload = async (file) => { const formData = new FormData(); formData.append('file', file); await api.post('/upload', formData, { headers: { 'Content-Type': 'multipart/form-data' } }) }</li>
+                        <li class="option" data-answer="c">const uploadFile = (file) => { const reader = new FileReader(); reader.readAsDataURL(file) }</li>
+                        <li class="option" data-answer="d">Both a and b are correct</li>
+                    </ul>
+                </div>
+
+                <!-- Question 10 -->
+                <div class="question" data-question="10">
+                    <h3>10. How do you implement optimistic updates in Vue 3?</h3>
+                    <div class="code-block">// Optimistic update</div>
+                    <ul class="options">
+                        <li class="option" data-answer="a">const updateUser = async (id, data) => { users.value = users.value.map(u => u.id === id ? { ...u, ...data } : u); try { await api.put(`/users/${id}`, data) } catch { revert() } }</li>
+                        <li class="option" data-answer="b">const updateUser = async (id, data) => { await api.put(`/users/${id}`, data); users.value = users.value.map(u => u.id === id ? { ...u, ...data } : u) }</li>
+                        <li class="option" data-answer="c">const updateUser = (id, data) => { users.value = users.value.map(u => u.id === id ? { ...u, ...data } : u) }</li>
+                        <li class="option" data-answer="d">All of the above are correct</li>
+                    </ul>
+                </div>
+
+                <!-- Question 11 -->
+                <div class="question" data-question="11">
+                    <h3>11. What is the correct way to handle authentication tokens in API calls?</h3>
+                    <div class="code-block">// API with authentication</div>
+                    <ul class="options">
+                        <li class="option" data-answer="a">const token = localStorage.getItem('token'); const response = await fetch(url, { headers: { Authorization: `Bearer ${token}` } })</li>
+                        <li class="option" data-answer="b">axios.defaults.headers.common['Authorization'] = `Bearer ${token}`</li>
+                        <li class="option" data-answer="c">const api = axios.create({ headers: { Authorization: `Bearer ${token}` } })</li>
+                        <li class="option" data-answer="d">All of the above are correct</li>
+                    </ul>
+                </div>
+
+                <!-- Question 12 -->
+                <div class="question" data-question="12">
+                    <h3>12. How do you implement real-time data updates in Vue 3?</h3>
+                    <div class="code-block">// Real-time updates</div>
+                    <ul class="options">
+                        <li class="option" data-answer="a">const socket = new WebSocket('ws://localhost:3000'); socket.onmessage = (event) => { data.value = JSON.parse(event.data) }</li>
+                        <li class="option" data-answer="b">const { data } = useFetch('/api/data', { refreshInterval: 1000 })</li>
+                        <li class="option" data-answer="c">const { data } = useWebSocket('ws://localhost:3000')</li>
+                        <li class="option" data-answer="d">All of the above are correct</li>
+                    </ul>
+                </div>
+            </div>
+
+            <button class="submit-btn" id="submitBtn" onclick="submitQuiz()">Submit Quiz</button>
+
+            <div id="results" class="results" style="display: none;">
+                <div class="score" id="score"></div>
+                <p id="message"></p>
+                <div class="explanation" id="explanation"></div>
+                <button class="retry-btn" onclick="retryQuiz()">Retry Quiz</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const questions = [
+            {
+                question: 1,
+                correct: 'd',
+                explanation: 'All approaches are valid for error handling. try/catch is most common, but other patterns like returning error objects are also used.'
+            },
+            {
+                question: 2,
+                correct: 'b',
+                explanation: 'A proper data fetching composable should handle loading states, errors, and data. Just returning data without state management is incomplete.'
+            },
+            {
+                question: 3,
+                correct: 'a',
+                explanation: 'CRUD operations should update the local state after successful API calls. This provides immediate UI feedback and keeps state in sync.'
+            },
+            {
+                question: 4,
+                correct: 'd',
+                explanation: 'All approaches work for loading states. v-if/v-else is most common, v-show for toggling, and v-else-if for multiple states.'
+            },
+            {
+                question: 5,
+                correct: 'b',
+                explanation: 'Form submission should validate first, then handle API calls with proper error handling. Just checking validity without error handling is incomplete.'
+            },
+            {
+                question: 6,
+                correct: 'd',
+                explanation: 'Caching can be implemented with Map, reactive refs, or specialized libraries. The choice depends on complexity and requirements.'
+            },
+            {
+                question: 7,
+                correct: 'd',
+                explanation: 'Pagination can be implemented with reactive refs, query parameters, or reactive objects. All approaches are valid for different scenarios.'
+            },
+            {
+                question: 8,
+                correct: 'd',
+                explanation: 'Search can be implemented with watchers, debounced functions, or reactive queries. Debouncing is important for performance.'
+            },
+            {
+                question: 9,
+                correct: 'd',
+                explanation: 'File uploads require FormData and proper headers. Both approaches are correct, with the second being more explicit about headers.'
+            },
+            {
+                question: 10,
+                correct: 'a',
+                explanation: 'Optimistic updates change UI immediately, then revert if API call fails. This provides better user experience but requires error handling.'
+            },
+            {
+                question: 11,
+                correct: 'd',
+                explanation: 'Authentication tokens can be handled in various ways: manual headers, axios defaults, or axios instances. All are valid approaches.'
+            },
+            {
+                question: 12,
+                correct: 'd',
+                explanation: 'Real-time updates can be implemented with WebSockets, polling, or specialized libraries. The choice depends on requirements and complexity.'
+            }
+        ];
+
+        let userAnswers = {};
+        let currentQuestion = 0;
+
+        // Initialize quiz
+        document.addEventListener('DOMContentLoaded', function() {
+            setupQuiz();
+        });
+
+        function setupQuiz() {
+            // Add click handlers to options
+            document.querySelectorAll('.option').forEach(option => {
+                option.addEventListener('click', function() {
+                    selectOption(this);
+                });
+            });
+
+            updateProgress();
+        }
+
+        function selectOption(option) {
+            const question = option.closest('.question');
+            const questionNumber = question.dataset.question;
+
+            // Remove previous selection
+            question.querySelectorAll('.option').forEach(opt => {
+                opt.classList.remove('selected');
+            });
+
+            // Select current option
+            option.classList.add('selected');
+            userAnswers[questionNumber] = option.dataset.answer;
+
+            updateProgress();
+        }
+
+        function updateProgress() {
+            const totalQuestions = questions.length;
+            const answeredQuestions = Object.keys(userAnswers).length;
+            const progress = (answeredQuestions / totalQuestions) * 100;
+
+            document.getElementById('progressFill').style.width = progress + '%';
+        }
+
+        function submitQuiz() {
+            const totalQuestions = questions.length;
+            const answeredQuestions = Object.keys(userAnswers).length;
+
+            if (answeredQuestions < totalQuestions) {
+                alert(`Please answer all questions. You have answered ${answeredQuestions} out of ${totalQuestions} questions.`);
+                return;
+            }
+
+            let correctAnswers = 0;
+            let explanations = [];
+
+            // Check answers and show results
+            questions.forEach(q => {
+                const userAnswer = userAnswers[q.question];
+                const isCorrect = userAnswer === q.correct;
+
+                if (isCorrect) {
+                    correctAnswers++;
+                }
+
+                // Highlight correct/incorrect answers
+                const questionEl = document.querySelector(`[data-question="${q.question}"]`);
+                questionEl.querySelectorAll('.option').forEach(option => {
+                    option.classList.remove('selected');
+                    if (option.dataset.answer === q.correct) {
+                        option.classList.add('correct');
+                    } else if (option.dataset.answer === userAnswer && !isCorrect) {
+                        option.classList.add('incorrect');
+                    }
+                });
+
+                explanations.push(`Q${q.question}: ${q.explanation}`);
+            });
+
+            const score = Math.round((correctAnswers / totalQuestions) * 100);
+            const scoreEl = document.getElementById('score');
+            const messageEl = document.getElementById('message');
+            const explanationEl = document.getElementById('explanation');
+
+            scoreEl.textContent = `${score}% (${correctAnswers}/${totalQuestions})`;
+            scoreEl.className = 'score ' + (score >= 80 ? 'excellent' : score >= 60 ? 'good' : 'needs-improvement');
+
+            if (score >= 80) {
+                messageEl.textContent = 'Excellent! You have mastered Vue 3 API integration!';
+            } else if (score >= 60) {
+                messageEl.textContent = 'Good job! Review the explanations and practice more.';
+            } else {
+                messageEl.textContent = 'You need more practice with API integration. Study the reference materials and try again.';
+            }
+
+            explanationEl.innerHTML = explanations.join('<br><br>');
+
+            // Show results
+            document.getElementById('quizQuestions').style.display = 'none';
+            document.getElementById('submitBtn').style.display = 'none';
+            document.getElementById('results').style.display = 'block';
+        }
+
+        function retryQuiz() {
+            // Reset quiz
+            userAnswers = {};
+            currentQuestion = 0;
+
+            // Reset UI
+            document.querySelectorAll('.option').forEach(option => {
+                option.classList.remove('selected', 'correct', 'incorrect');
+            });
+
+            document.getElementById('quizQuestions').style.display = 'block';
+            document.getElementById('submitBtn').style.display = 'block';
+            document.getElementById('results').style.display = 'none';
+
+            updateProgress();
+        }
+    </script>
+</body>
+</html>

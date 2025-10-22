@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vue 3 Fundamentals & TypeScript Setup Quiz</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .quiz-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .quiz-header {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .quiz-header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        .quiz-header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        .quiz-content {
+            padding: 40px;
+        }
+
+        .question {
+            margin-bottom: 30px;
+            padding: 25px;
+            background: #f8f9fa;
+            border-radius: 15px;
+            border-left: 5px solid #4facfe;
+        }
+
+        .question h3 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+            font-size: 1.3rem;
+        }
+
+        .code-block {
+            background: #2d3748;
+            color: #e2e8f0;
+            padding: 15px;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            margin: 10px 0;
+            overflow-x: auto;
+        }
+
+        .options {
+            list-style: none;
+        }
+
+        .option {
+            margin: 10px 0;
+            padding: 15px;
+            background: white;
+            border: 2px solid #e9ecef;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .option:hover {
+            border-color: #4facfe;
+            background: #f0f8ff;
+        }
+
+        .option.selected {
+            border-color: #4facfe;
+            background: #e3f2fd;
+        }
+
+        .option.correct {
+            border-color: #28a745;
+            background: #d4edda;
+        }
+
+        .option.incorrect {
+            border-color: #dc3545;
+            background: #f8d7da;
+        }
+
+        .submit-btn {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            font-size: 1.1rem;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: block;
+            margin: 30px auto;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(79, 172, 254, 0.3);
+        }
+
+        .submit-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .results {
+            text-align: center;
+            padding: 30px;
+            background: #f8f9fa;
+            border-radius: 15px;
+            margin-top: 20px;
+        }
+
+        .score {
+            font-size: 2rem;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+        .score.excellent { color: #28a745; }
+        .score.good { color: #ffc107; }
+        .score.needs-improvement { color: #dc3545; }
+
+        .explanation {
+            background: #e9ecef;
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 15px;
+            text-align: left;
+        }
+
+        .retry-btn {
+            background: #6c757d;
+            color: white;
+            border: none;
+            padding: 10px 25px;
+            border-radius: 25px;
+            cursor: pointer;
+            margin-top: 15px;
+        }
+
+        .retry-btn:hover {
+            background: #5a6268;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: #e9ecef;
+            border-radius: 4px;
+            margin-bottom: 20px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #4facfe 0%, #00f2fe 100%);
+            transition: width 0.3s ease;
+        }
+    </style>
+</head>
+<body>
+    <div class="quiz-container">
+        <div class="quiz-header">
+            <h1>🎯 Vue 3 Fundamentals Quiz</h1>
+            <p>Test your Vue 3 and TypeScript knowledge</p>
+        </div>
+
+        <div class="quiz-content">
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+
+            <div id="quizQuestions">
+                <!-- Question 1 -->
+                <div class="question" data-question="1">
+                    <h3>1. What is the correct way to create a reactive variable in Vue 3 Composition API?</h3>
+                    <div class="code-block">// Which option is correct?</div>
+                    <ul class="options">
+                        <li class="option" data-answer="a">const count = reactive(0)</li>
+                        <li class="option" data-answer="b">const count = ref(0)</li>
+                        <li class="option" data-answer="c">const count = useState(0)</li>
+                        <li class="option" data-answer="d">const count = createReactive(0)</li>
+                    </ul>
+                </div>
+
+                <!-- Question 2 -->
+                <div class="question" data-question="2">
+                    <h3>2. How do you define props with TypeScript in a Vue 3 component?</h3>
+                    <div class="code-block">// In script setup</div>
+                    <ul class="options">
+                        <li class="option" data-answer="a">const props = defineProps(['title', 'count'])</li>
+                        <li class="option" data-answer="b">const props = defineProps&lt;{title: string, count: number}&gt;()</li>
+                        <li class="option" data-answer="c">const props = defineProps({title: String, count: Number})</li>
+                        <li class="option" data-answer="d">All of the above are correct</li>
+                    </ul>
+                </div>
+
+                <!-- Question 3 -->
+                <div class="question" data-question="3">
+                    <h3>3. What is the correct syntax for event handling in Vue 3 templates?</h3>
+                    <div class="code-block">// Template syntax</div>
+                    <ul class="options">
+                        <li class="option" data-answer="a">&lt;button onClick="handleClick"&gt;Click me&lt;/button&gt;</li>
+                        <li class="option" data-answer="b">&lt;button @click="handleClick"&gt;Click me&lt;/button&gt;</li>
+                        <li class="option" data-answer="c">&lt;button v-on:click="handleClick"&gt;Click me&lt;/button&gt;</li>
+                        <li class="option" data-answer="d">Both b and c are correct</li>
+                    </ul>
+                </div>
+
+                <!-- Question 4 -->
+                <div class="question" data-question="4">
+                    <h3>4. How do you create a computed property in Vue 3 Composition API?</h3>
+                    <div class="code-block">// Which is correct?</div>
+                    <ul class="options">
+                        <li class="option" data-answer="a">const doubleCount = computed(() => count.value * 2)</li>
+                        <li class="option" data-answer="b">const doubleCount = computed(count * 2)</li>
+                        <li class="option" data-answer="c">const doubleCount = computed(() => count * 2)</li>
+                        <li class="option" data-answer="d">const doubleCount = computed(count.value * 2)</li>
+                    </ul>
+                </div>
+
+                <!-- Question 5 -->
+                <div class="question" data-question="5">
+                    <h3>5. What is the correct way to emit events from a child component?</h3>
+                    <div class="code-block">// In child component</div>
+                    <ul class="options">
+                        <li class="option" data-answer="a">const emit = defineEmits(['update', 'delete'])</li>
+                        <li class="option" data-answer="b">const emit = defineEmits&lt;{update: [value: string], delete: [id: number]}&gt;()</li>
+                        <li class="option" data-answer="c">this.$emit('update', value)</li>
+                        <li class="option" data-answer="d">Both a and b are correct</li>
+                    </ul>
+                </div>
+
+                <!-- Question 6 -->
+                <div class="question" data-question="6">
+                    <h3>6. How do you use v-model with a custom component?</h3>
+                    <div class="code-block">// Parent component</div>
+                    <ul class="options">
+                        <li class="option" data-answer="a">&lt;CustomInput v-model="inputValue" /&gt;</li>
+                        <li class="option" data-answer="b">&lt;CustomInput :value="inputValue" @input="inputValue = $event" /&gt;</li>
+                        <li class="option" data-answer="c">&lt;CustomInput :modelValue="inputValue" @update:modelValue="inputValue = $event" /&gt;</li>
+                        <li class="option" data-answer="d">All of the above are correct</li>
+                    </ul>
+                </div>
+
+                <!-- Question 7 -->
+                <div class="question" data-question="7">
+                    <h3>7. What is the correct way to watch a reactive variable?</h3>
+                    <div class="code-block">// Watch count variable</div>
+                    <ul class="options">
+                        <li class="option" data-answer="a">watch(count, (newValue) => { console.log(newValue) })</li>
+                        <li class="option" data-answer="b">watch(() => count.value, (newValue) => { console.log(newValue) })</li>
+                        <li class="option" data-answer="c">watch(count.value, (newValue) => { console.log(newValue) })</li>
+                        <li class="option" data-answer="d">Both a and b are correct</li>
+                    </ul>
+                </div>
+
+                <!-- Question 8 -->
+                <div class="question" data-question="8">
+                    <h3>8. How do you access the current route in Vue 3 with Vue Router?</h3>
+                    <div class="code-block">// In Composition API</div>
+                    <ul class="options">
+                        <li class="option" data-answer="a">const route = useRoute()</li>
+                        <li class="option" data-answer="b">const route = this.$route</li>
+                        <li class="option" data-answer="c">const route = getCurrentRoute()</li>
+                        <li class="option" data-answer="d">const route = useRouter()</li>
+                    </ul>
+                </div>
+
+                <!-- Question 9 -->
+                <div class="question" data-question="9">
+                    <h3>9. What is the correct way to create a Pinia store?</h3>
+                    <div class="code-block">// Store definition</div>
+                    <ul class="options">
+                        <li class="option" data-answer="a">export const useCounterStore = defineStore('counter', { state: () => ({ count: 0 }) })</li>
+                        <li class="option" data-answer="b">export const useCounterStore = defineStore('counter', () => { const count = ref(0); return { count } })</li>
+                        <li class="option" data-answer="c">export const useCounterStore = createStore({ count: 0 })</li>
+                        <li class="option" data-answer="d">Both a and b are correct</li>
+                    </ul>
+                </div>
+
+                <!-- Question 10 -->
+                <div class="question" data-question="10">
+                    <h3>10. How do you handle form submission in Vue 3?</h3>
+                    <div class="code-block">// Form handling</div>
+                    <ul class="options">
+                        <li class="option" data-answer="a">&lt;form @submit="handleSubmit"&gt;</li>
+                        <li class="option" data-answer="b">&lt;form @submit.prevent="handleSubmit"&gt;</li>
+                        <li class="option" data-answer="c">&lt;form onSubmit="handleSubmit"&gt;</li>
+                        <li class="option" data-answer="d">Both a and b are correct</li>
+                    </ul>
+                </div>
+
+                <!-- Question 11 -->
+                <div class="question" data-question="11">
+                    <h3>11. What is the correct way to use slots in Vue 3?</h3>
+                    <div class="code-block">// Parent component</div>
+                    <ul class="options">
+                        <li class="option" data-answer="a">&lt;MyComponent&gt;Default slot content&lt;/MyComponent&gt;</li>
+                        <li class="option" data-answer="b">&lt;MyComponent&gt;&lt;template #header&gt;Header content&lt;/template&gt;&lt;/MyComponent&gt;</li>
+                        <li class="option" data-answer="c">&lt;MyComponent&gt;&lt;template v-slot:header&gt;Header content&lt;/template&gt;&lt;/MyComponent&gt;</li>
+                        <li class="option" data-answer="d">All of the above are correct</li>
+                    </ul>
+                </div>
+
+                <!-- Question 12 -->
+                <div class="question" data-question="12">
+                    <h3>12. How do you create a custom composable in Vue 3?</h3>
+                    <div class="code-block">// composables/useCounter.ts</div>
+                    <ul class="options">
+                        <li class="option" data-answer="a">export function useCounter() { const count = ref(0); return { count } }</li>
+                        <li class="option" data-answer="b">export const useCounter = () => { const count = ref(0); return { count } }</li>
+                        <li class="option" data-answer="c">export default function useCounter() { const count = ref(0); return { count } }</li>
+                        <li class="option" data-answer="d">All of the above are correct</li>
+                    </ul>
+                </div>
+            </div>
+
+            <button class="submit-btn" id="submitBtn" onclick="submitQuiz()">Submit Quiz</button>
+
+            <div id="results" class="results" style="display: none;">
+                <div class="score" id="score"></div>
+                <p id="message"></p>
+                <div class="explanation" id="explanation"></div>
+                <button class="retry-btn" onclick="retryQuiz()">Retry Quiz</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const questions = [
+            {
+                question: 1,
+                correct: 'b',
+                explanation: 'ref() is used for primitive values, reactive() is used for objects. ref(0) creates a reactive reference to the number 0.'
+            },
+            {
+                question: 2,
+                correct: 'b',
+                explanation: 'With TypeScript, use defineProps&lt;{...}&gt;() for type safety. The other options are for JavaScript or Options API.'
+            },
+            {
+                question: 3,
+                correct: 'd',
+                explanation: '@click is shorthand for v-on:click. Both are correct Vue 3 syntax for event handling.'
+            },
+            {
+                question: 4,
+                correct: 'a',
+                explanation: 'computed() takes a function that returns a value. For refs, you need to access .value inside the function.'
+            },
+            {
+                question: 5,
+                correct: 'd',
+                explanation: 'Both JavaScript array syntax and TypeScript interface syntax are valid for defineEmits in Vue 3.'
+            },
+            {
+                question: 6,
+                correct: 'd',
+                explanation: 'v-model is shorthand for :modelValue and @update:modelValue. All three approaches work for custom components.'
+            },
+            {
+                question: 7,
+                correct: 'd',
+                explanation: 'You can watch refs directly or use a getter function. Both approaches work in Vue 3 Composition API.'
+            },
+            {
+                question: 8,
+                correct: 'a',
+                explanation: 'useRoute() is the Composition API way to access route information. useRouter() is for navigation.'
+            },
+            {
+                question: 9,
+                correct: 'd',
+                explanation: 'Pinia supports both Options API style (object) and Composition API style (function) store definitions.'
+            },
+            {
+                question: 10,
+                correct: 'b',
+                explanation: '@submit.prevent prevents the default form submission and calls the handler. .prevent is essential for SPA behavior.'
+            },
+            {
+                question: 11,
+                correct: 'd',
+                explanation: 'Vue 3 supports default slots, named slots with # syntax, and v-slot directive. All are valid approaches.'
+            },
+            {
+                question: 12,
+                correct: 'a',
+                explanation: 'Custom composables are regular functions that use Composition API features. Named exports are preferred for better tree-shaking.'
+            }
+        ];
+
+        let userAnswers = {};
+        let currentQuestion = 0;
+
+        // Initialize quiz
+        document.addEventListener('DOMContentLoaded', function() {
+            setupQuiz();
+        });
+
+        function setupQuiz() {
+            // Add click handlers to options
+            document.querySelectorAll('.option').forEach(option => {
+                option.addEventListener('click', function() {
+                    selectOption(this);
+                });
+            });
+
+            updateProgress();
+        }
+
+        function selectOption(option) {
+            const question = option.closest('.question');
+            const questionNumber = question.dataset.question;
+
+            // Remove previous selection
+            question.querySelectorAll('.option').forEach(opt => {
+                opt.classList.remove('selected');
+            });
+
+            // Select current option
+            option.classList.add('selected');
+            userAnswers[questionNumber] = option.dataset.answer;
+
+            updateProgress();
+        }
+
+        function updateProgress() {
+            const totalQuestions = questions.length;
+            const answeredQuestions = Object.keys(userAnswers).length;
+            const progress = (answeredQuestions / totalQuestions) * 100;
+
+            document.getElementById('progressFill').style.width = progress + '%';
+        }
+
+        function submitQuiz() {
+            const totalQuestions = questions.length;
+            const answeredQuestions = Object.keys(userAnswers).length;
+
+            if (answeredQuestions < totalQuestions) {
+                alert(`Please answer all questions. You have answered ${answeredQuestions} out of ${totalQuestions} questions.`);
+                return;
+            }
+
+            let correctAnswers = 0;
+            let explanations = [];
+
+            // Check answers and show results
+            questions.forEach(q => {
+                const userAnswer = userAnswers[q.question];
+                const isCorrect = userAnswer === q.correct;
+
+                if (isCorrect) {
+                    correctAnswers++;
+                }
+
+                // Highlight correct/incorrect answers
+                const questionEl = document.querySelector(`[data-question="${q.question}"]`);
+                questionEl.querySelectorAll('.option').forEach(option => {
+                    option.classList.remove('selected');
+                    if (option.dataset.answer === q.correct) {
+                        option.classList.add('correct');
+                    } else if (option.dataset.answer === userAnswer && !isCorrect) {
+                        option.classList.add('incorrect');
+                    }
+                });
+
+                explanations.push(`Q${q.question}: ${q.explanation}`);
+            });
+
+            const score = Math.round((correctAnswers / totalQuestions) * 100);
+            const scoreEl = document.getElementById('score');
+            const messageEl = document.getElementById('message');
+            const explanationEl = document.getElementById('explanation');
+
+            scoreEl.textContent = `${score}% (${correctAnswers}/${totalQuestions})`;
+            scoreEl.className = 'score ' + (score >= 80 ? 'excellent' : score >= 60 ? 'good' : 'needs-improvement');
+
+            if (score >= 80) {
+                messageEl.textContent = 'Excellent! You have a solid understanding of Vue 3 fundamentals!';
+            } else if (score >= 60) {
+                messageEl.textContent = 'Good job! Review the explanations and practice more.';
+            } else {
+                messageEl.textContent = 'You need more practice with Vue 3. Study the reference materials and try again.';
+            }
+
+            explanationEl.innerHTML = explanations.join('<br><br>');
+
+            // Show results
+            document.getElementById('quizQuestions').style.display = 'none';
+            document.getElementById('submitBtn').style.display = 'none';
+            document.getElementById('results').style.display = 'block';
+        }
+
+        function retryQuiz() {
+            // Reset quiz
+            userAnswers = {};
+            currentQuestion = 0;
+
+            // Reset UI
+            document.querySelectorAll('.option').forEach(option => {
+                option.classList.remove('selected', 'correct', 'incorrect');
+            });
+
+            document.getElementById('quizQuestions').style.display = 'block';
+            document.getElementById('submitBtn').style.display = 'block';
+            document.getElementById('results').style.display = 'none';
+
+            updateProgress();
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vue 3 Full-Stack Integration & Production Deployment Quiz</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .quiz-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .quiz-header {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .quiz-header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        .quiz-header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        .quiz-content {
+            padding: 40px;
+        }
+
+        .question {
+            margin-bottom: 30px;
+            padding: 25px;
+            background: #f8f9fa;
+            border-radius: 15px;
+            border-left: 5px solid #4facfe;
+        }
+
+        .question h3 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+            font-size: 1.3rem;
+        }
+
+        .code-block {
+            background: #2d3748;
+            color: #e2e8f0;
+            padding: 15px;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            margin: 10px 0;
+            overflow-x: auto;
+        }
+
+        .options {
+            list-style: none;
+        }
+
+        .option {
+            margin: 10px 0;
+            padding: 15px;
+            background: white;
+            border: 2px solid #e9ecef;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .option:hover {
+            border-color: #4facfe;
+            background: #f0f8ff;
+        }
+
+        .option.selected {
+            border-color: #4facfe;
+            background: #e3f2fd;
+        }
+
+        .option.correct {
+            border-color: #28a745;
+            background: #d4edda;
+        }
+
+        .option.incorrect {
+            border-color: #dc3545;
+            background: #f8d7da;
+        }
+
+        .submit-btn {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            font-size: 1.1rem;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: block;
+            margin: 30px auto;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(79, 172, 254, 0.3);
+        }
+
+        .submit-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .results {
+            text-align: center;
+            padding: 30px;
+            background: #f8f9fa;
+            border-radius: 15px;
+            margin-top: 20px;
+        }
+
+        .score {
+            font-size: 2rem;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+        .score.excellent { color: #28a745; }
+        .score.good { color: #ffc107; }
+        .score.needs-improvement { color: #dc3545; }
+
+        .explanation {
+            background: #e9ecef;
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 15px;
+            text-align: left;
+        }
+
+        .retry-btn {
+            background: #6c757d;
+            color: white;
+            border: none;
+            padding: 10px 25px;
+            border-radius: 25px;
+            cursor: pointer;
+            margin-top: 15px;
+        }
+
+        .retry-btn:hover {
+            background: #5a6268;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: #e9ecef;
+            border-radius: 4px;
+            margin-bottom: 20px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #4facfe 0%, #00f2fe 100%);
+            transition: width 0.3s ease;
+        }
+    </style>
+</head>
+<body>
+    <div class="quiz-container">
+        <div class="quiz-header">
+            <h1>🎯 Vue 3 Full-Stack & Deployment Quiz</h1>
+            <p>Test your knowledge of full-stack integration and production deployment</p>
+        </div>
+
+        <div class="quiz-content">
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+
+            <div id="quizQuestions">
+                <!-- Question 1 -->
+                <div class="question" data-question="1">
+                    <h3>1. What is the correct way to structure a full-stack Vue 3 project?</h3>
+                    <div class="code-block">// Project structure</div>
+                    <ul class="options">
+                        <li class="option" data-answer="a">frontend/ and backend/ folders with shared/ for common code</li>
+                        <li class="option" data-answer="b">src/ folder with both frontend and backend code</li>
+                        <li class="option" data-answer="c">client/ and server/ folders</li>
+                        <li class="option" data-answer="d">All of the above are correct</li>
+                    </ul>
+                </div>
+
+                <!-- Question 2 -->
+                <div class="question" data-question="2">
+                    <h3>2. How do you handle CORS in a Vue 3 + Express backend?</h3>
+                    <div class="code-block">// Express CORS setup</div>
+                    <ul class="options">
+                        <li class="option" data-answer="a">app.use(cors({ origin: 'http://localhost:3000' }))</li>
+                        <li class="option" data-answer="b">app.use(cors({ origin: process.env.FRONTEND_URL }))</li>
+                        <li class="option" data-answer="c">app.use(cors({ origin: ['http://localhost:3000', 'https://myapp.com'] }))</li>
+                        <li class="option" data-answer="d">All of the above are correct</li>
+                    </ul>
+                </div>
+
+                <!-- Question 3 -->
+                <div class="question" data-question="3">
+                    <h3>3. What is the correct way to handle file uploads in Vue 3?</h3>
+                    <div class="code-block">// File upload component</div>
+                    <ul class="options">
+                        <li class="option" data-answer="a">const formData = new FormData(); formData.append('file', file); await api.post('/upload', formData)</li>
+                        <li class="option" data-answer="b">const handleUpload = async (file) => { const formData = new FormData(); formData.append('file', file); await api.post('/upload', formData, { headers: { 'Content-Type': 'multipart/form-data' } }) }</li>
+                        <li class="option" data-answer="c">const uploadFile = (file) => { const reader = new FileReader(); reader.readAsDataURL(file) }</li>
+                        <li class="option" data-answer="d">Both a and b are correct</li>
+                    </ul>
+                </div>
+
+                <!-- Question 4 -->
+                <div class="question" data-question="4">
+                    <h3>4. How do you implement WebSocket connections in Vue 3?</h3>
+                    <div class="code-block">// WebSocket composable</div>
+                    <ul class="options">
+                        <li class="option" data-answer="a">const socket = new WebSocket('ws://localhost:3000'); socket.onmessage = (event) => { data.value = JSON.parse(event.data) }</li>
+                        <li class="option" data-answer="b">const { data, send, connect } = useWebSocket('ws://localhost:3000')</li>
+                        <li class="option" data-answer="c">const socket = ref(null); const connect = () => { socket.value = new WebSocket('ws://localhost:3000') }</li>
+                        <li class="option" data-answer="d">All of the above are correct</li>
+                    </ul>
+                </div>
+
+                <!-- Question 5 -->
+                <div class="question" data-question="5">
+                    <h3>5. What is the correct way to configure environment variables in Vue 3?</h3>
+                    <div class="code-block">// Environment configuration</div>
+                    <ul class="options">
+                        <li class="option" data-answer="a">VITE_API_URL=http://localhost:5000/api</li>
+                        <li class="option" data-answer="b">REACT_APP_API_URL=http://localhost:5000/api</li>
+                        <li class="option" data-answer="c">VUE_APP_API_URL=http://localhost:5000/api</li>
+                        <li class="option" data-answer="d">All of the above are correct</li>
+                    </ul>
+                </div>
+
+                <!-- Question 6 -->
+                <div class="question" data-question="6">
+                    <h3>6. How do you optimize a Vue 3 application for production?</h3>
+                    <div class="code-block">// Production optimization</div>
+                    <ul class="options">
+                        <li class="option" data-answer="a">npm run build</li>
+                        <li class="option" data-answer="b">npm run build && npm run preview</li>
+                        <li class="option" data-answer="c">vite build --mode production</li>
+                        <li class="option" data-answer="d">All of the above are correct</li>
+                    </ul>
+                </div>
+
+                <!-- Question 7 -->
+                <div class="question" data-question="7">
+                    <h3>7. What is the correct way to deploy a Vue 3 application to a static host?</h3>
+                    <div class="code-block">// Deployment process</div>
+                    <ul class="options">
+                        <li class="option" data-answer="a">Build the app, upload dist/ folder to hosting service</li>
+                        <li class="option" data-answer="b">Use Vercel, Netlify, or GitHub Pages for automatic deployment</li>
+                        <li class="option" data-answer="c">Configure CI/CD pipeline to build and deploy automatically</li>
+                        <li class="option" data-answer="d">All of the above are correct</li>
+                    </ul>
+                </div>
+
+                <!-- Question 8 -->
+                <div class="question" data-question="8">
+                    <h3>8. How do you handle database connections in a Node.js backend?</h3>
+                    <div class="code-block">// Database connection</div>
+                    <ul class="options">
+                        <li class="option" data-answer="a">const mongoose = require('mongoose'); mongoose.connect(process.env.MONGODB_URI)</li>
+                        <li class="option" data-answer="b">const { Pool } = require('pg'); const pool = new Pool({ connectionString: process.env.DATABASE_URL })</li>
+                        <li class="option" data-answer="c">const mysql = require('mysql2'); const connection = mysql.createConnection(process.env.DATABASE_URL)</li>
+                        <li class="option" data-answer="d">All of the above are correct</li>
+                    </ul>
+                </div>
+
+                <!-- Question 9 -->
+                <div class="question" data-question="9">
+                    <h3>9. What is the correct way to implement error handling in a full-stack application?</h3>
+                    <div class="code-block">// Error handling</div>
+                    <ul class="options">
+                        <li class="option" data-answer="a">try { await api.get() } catch (error) { console.error(error) }</li>
+                        <li class="option" data-answer="b">app.use((err, req, res, next) => { res.status(500).json({ error: err.message }) })</li>
+                        <li class="option" data-answer="c">const { data, error } = await api.get(); if (error) handleError(error)</li>
+                        <li class="option" data-answer="d">All of the above are correct</li>
+                    </ul>
+                </div>
+
+                <!-- Question 10 -->
+                <div class="question" data-question="10">
+                    <h3>10. How do you implement logging in a production application?</h3>
+                    <div class="code-block">// Logging setup</div>
+                    <ul class="options">
+                        <li class="option" data-answer="a">const winston = require('winston'); const logger = winston.createLogger({ level: 'info' })</li>
+                        <li class="option" data-answer="b">app.use(morgan('combined'))</li>
+                        <li class="option" data-answer="c">console.log('Production log:', data)</li>
+                        <li class="option" data-answer="d">Both a and b are correct</li>
+                    </ul>
+                </div>
+
+                <!-- Question 11 -->
+                <div class="question" data-question="11">
+                    <h3>11. What is the correct way to implement security in a Vue 3 application?</h3>
+                    <div class="code-block">// Security measures</div>
+                    <ul class="options">
+                        <li class="option" data-answer="a">Use HTTPS, validate inputs, sanitize data</li>
+                        <li class="option" data-answer="b">Implement rate limiting, use helmet, set security headers</li>
+                        <li class="option" data-answer="c">Use JWT tokens, implement CORS, validate file uploads</li>
+                        <li class="option" data-answer="d">All of the above are correct</li>
+                    </ul>
+                </div>
+
+                <!-- Question 12 -->
+                <div class="question" data-question="12">
+                    <h3>12. How do you monitor a production Vue 3 application?</h3>
+                    <div class="code-block">// Monitoring setup</div>
+                    <ul class="options">
+                        <li class="option" data-answer="a">Use application performance monitoring (APM) tools</li>
+                        <li class="option" data-answer="b">Implement health checks and uptime monitoring</li>
+                        <li class="option" data-answer="c">Set up error tracking and logging</li>
+                        <li class="option" data-answer="d">All of the above are correct</li>
+                    </ul>
+                </div>
+            </div>
+
+            <button class="submit-btn" id="submitBtn" onclick="submitQuiz()">Submit Quiz</button>
+
+            <div id="results" class="results" style="display: none;">
+                <div class="score" id="score"></div>
+                <p id="message"></p>
+                <div class="explanation" id="explanation"></div>
+                <button class="retry-btn" onclick="retryQuiz()">Retry Quiz</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const questions = [
+            {
+                question: 1,
+                correct: 'a',
+                explanation: 'A full-stack project should separate frontend and backend code into different folders, with a shared folder for common types and utilities.'
+            },
+            {
+                question: 2,
+                correct: 'd',
+                explanation: 'CORS can be configured with specific origins, environment variables, or multiple origins. The choice depends on deployment requirements.'
+            },
+            {
+                question: 3,
+                correct: 'd',
+                explanation: 'File uploads require FormData and proper headers. Both approaches are correct, with the second being more explicit about headers.'
+            },
+            {
+                question: 4,
+                correct: 'd',
+                explanation: 'WebSocket connections can be implemented directly, with composables, or with reactive refs. All approaches are valid for different use cases.'
+            },
+            {
+                question: 5,
+                correct: 'a',
+                explanation: 'Vue 3 with Vite uses VITE_ prefix for environment variables. REACT_APP_ is for React, VUE_APP_ is for Vue CLI.'
+            },
+            {
+                question: 6,
+                correct: 'd',
+                explanation: 'All approaches work for production builds. The choice depends on the specific build tool and requirements.'
+            },
+            {
+                question: 7,
+                correct: 'd',
+                explanation: 'Vue 3 apps can be deployed manually, with automatic deployment services, or with CI/CD pipelines. All approaches are valid.'
+            },
+            {
+                question: 8,
+                correct: 'd',
+                explanation: 'Different databases require different connection methods. MongoDB uses mongoose, PostgreSQL uses pg, MySQL uses mysql2.'
+            },
+            {
+                question: 9,
+                correct: 'd',
+                explanation: 'Error handling should be implemented at multiple levels: frontend, backend, and API. All approaches are necessary for robust applications.'
+            },
+            {
+                question: 10,
+                correct: 'd',
+                explanation: 'Production logging should use proper logging libraries like winston and middleware like morgan. Console.log is not suitable for production.'
+            },
+            {
+                question: 11,
+                correct: 'd',
+                explanation: 'Security requires multiple layers: HTTPS, input validation, rate limiting, security headers, authentication, and file validation.'
+            },
+            {
+                question: 12,
+                correct: 'd',
+                explanation: 'Production monitoring requires APM tools, health checks, error tracking, and logging. All components are necessary for reliable applications.'
+            }
+        ];
+
+        let userAnswers = {};
+        let currentQuestion = 0;
+
+        // Initialize quiz
+        document.addEventListener('DOMContentLoaded', function() {
+            setupQuiz();
+        });
+
+        function setupQuiz() {
+            // Add click handlers to options
+            document.querySelectorAll('.option').forEach(option => {
+                option.addEventListener('click', function() {
+                    selectOption(this);
+                });
+            });
+
+            updateProgress();
+        }
+
+        function selectOption(option) {
+            const question = option.closest('.question');
+            const questionNumber = question.dataset.question;
+
+            // Remove previous selection
+            question.querySelectorAll('.option').forEach(opt => {
+                opt.classList.remove('selected');
+            });
+
+            // Select current option
+            option.classList.add('selected');
+            userAnswers[questionNumber] = option.dataset.answer;
+
+            updateProgress();
+        }
+
+        function updateProgress() {
+            const totalQuestions = questions.length;
+            const answeredQuestions = Object.keys(userAnswers).length;
+            const progress = (answeredQuestions / totalQuestions) * 100;
+
+            document.getElementById('progressFill').style.width = progress + '%';
+        }
+
+        function submitQuiz() {
+            const totalQuestions = questions.length;
+            const answeredQuestions = Object.keys(userAnswers).length;
+
+            if (answeredQuestions < totalQuestions) {
+                alert(`Please answer all questions. You have answered ${answeredQuestions} out of ${totalQuestions} questions.`);
+                return;
+            }
+
+            let correctAnswers = 0;
+            let explanations = [];
+
+            // Check answers and show results
+            questions.forEach(q => {
+                const userAnswer = userAnswers[q.question];
+                const isCorrect = userAnswer === q.correct;
+
+                if (isCorrect) {
+                    correctAnswers++;
+                }
+
+                // Highlight correct/incorrect answers
+                const questionEl = document.querySelector(`[data-question="${q.question}"]`);
+                questionEl.querySelectorAll('.option').forEach(option => {
+                    option.classList.remove('selected');
+                    if (option.dataset.answer === q.correct) {
+                        option.classList.add('correct');
+                    } else if (option.dataset.answer === userAnswer && !isCorrect) {
+                        option.classList.add('incorrect');
+                    }
+                });
+
+                explanations.push(`Q${q.question}: ${q.explanation}`);
+            });
+
+            const score = Math.round((correctAnswers / totalQuestions) * 100);
+            const scoreEl = document.getElementById('score');
+            const messageEl = document.getElementById('message');
+            const explanationEl = document.getElementById('explanation');
+
+            scoreEl.textContent = `${score}% (${correctAnswers}/${totalQuestions})`;
+            scoreEl.className = 'score ' + (score >= 80 ? 'excellent' : score >= 60 ? 'good' : 'needs-improvement');
+
+            if (score >= 80) {
+                messageEl.textContent = 'Excellent! You have mastered Vue 3 full-stack development!';
+            } else if (score >= 60) {
+                messageEl.textContent = 'Good job! Review the explanations and practice more.';
+            } else {
+                messageEl.textContent = 'You need more practice with full-stack development. Study the reference materials and try again.';
+            }
+
+            explanationEl.innerHTML = explanations.join('<br><br>');
+
+            // Show results
+            document.getElementById('quizQuestions').style.display = 'none';
+            document.getElementById('submitBtn').style.display = 'none';
+            document.getElementById('results').style.display = 'block';
+        }
+
+        function retryQuiz() {
+            // Reset quiz
+            userAnswers = {};
+            currentQuestion = 0;
+
+            // Reset UI
+            document.querySelectorAll('.option').forEach(option => {
+                option.classList.remove('selected', 'correct', 'incorrect');
+            });
+
+            document.getElementById('quizQuestions').style.display = 'block';
+            document.getElementById('submitBtn').style.display = 'block';
+            document.getElementById('results').style.display = 'none';
+
+            updateProgress();
+        }
+    </script>
+</body>
+</html>

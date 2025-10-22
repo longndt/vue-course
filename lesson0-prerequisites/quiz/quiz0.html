@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vue 3 Prerequisites Quiz - JavaScript ES6+</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .quiz-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .quiz-header {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .quiz-header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        .quiz-header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        .quiz-content {
+            padding: 40px;
+        }
+
+        .question {
+            margin-bottom: 30px;
+            padding: 25px;
+            background: #f8f9fa;
+            border-radius: 15px;
+            border-left: 5px solid #4facfe;
+        }
+
+        .question h3 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+            font-size: 1.3rem;
+        }
+
+        .options {
+            list-style: none;
+        }
+
+        .option {
+            margin: 10px 0;
+            padding: 15px;
+            background: white;
+            border: 2px solid #e9ecef;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .option:hover {
+            border-color: #4facfe;
+            background: #f0f8ff;
+        }
+
+        .option.selected {
+            border-color: #4facfe;
+            background: #e3f2fd;
+        }
+
+        .option.correct {
+            border-color: #28a745;
+            background: #d4edda;
+        }
+
+        .option.incorrect {
+            border-color: #dc3545;
+            background: #f8d7da;
+        }
+
+        .submit-btn {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            font-size: 1.1rem;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: block;
+            margin: 30px auto;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(79, 172, 254, 0.3);
+        }
+
+        .submit-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .results {
+            text-align: center;
+            padding: 30px;
+            background: #f8f9fa;
+            border-radius: 15px;
+            margin-top: 20px;
+        }
+
+        .score {
+            font-size: 2rem;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+        .score.excellent { color: #28a745; }
+        .score.good { color: #ffc107; }
+        .score.needs-improvement { color: #dc3545; }
+
+        .explanation {
+            background: #e9ecef;
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 15px;
+            text-align: left;
+        }
+
+        .retry-btn {
+            background: #6c757d;
+            color: white;
+            border: none;
+            padding: 10px 25px;
+            border-radius: 25px;
+            cursor: pointer;
+            margin-top: 15px;
+        }
+
+        .retry-btn:hover {
+            background: #5a6268;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: #e9ecef;
+            border-radius: 4px;
+            margin-bottom: 20px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #4facfe 0%, #00f2fe 100%);
+            transition: width 0.3s ease;
+        }
+    </style>
+</head>
+<body>
+    <div class="quiz-container">
+        <div class="quiz-header">
+            <h1>🎯 Vue 3 Prerequisites Quiz</h1>
+            <p>Test your JavaScript ES6+ knowledge for Vue 3 development</p>
+        </div>
+
+        <div class="quiz-content">
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+
+            <div id="quizQuestions">
+                <!-- Question 1 -->
+                <div class="question" data-question="1">
+                    <h3>1. What is the correct way to declare a variable that won't be reassigned?</h3>
+                    <ul class="options">
+                        <li class="option" data-answer="a">var name = 'John'</li>
+                        <li class="option" data-answer="b">let name = 'John'</li>
+                        <li class="option" data-answer="c">const name = 'John'</li>
+                        <li class="option" data-answer="d">All of the above</li>
+                    </ul>
+                </div>
+
+                <!-- Question 2 -->
+                <div class="question" data-question="2">
+                    <h3>2. Which arrow function syntax is correct?</h3>
+                    <ul class="options">
+                        <li class="option" data-answer="a">const add = (a, b) => a + b</li>
+                        <li class="option" data-answer="b">const add = a, b => a + b</li>
+                        <li class="option" data-answer="c">const add = (a, b) => { a + b }</li>
+                        <li class="option" data-answer="d">const add = (a, b) => return a + b</li>
+                    </ul>
+                </div>
+
+                <!-- Question 3 -->
+                <div class="question" data-question="3">
+                    <h3>3. How do you destructure an object to get name and age properties?</h3>
+                    <ul class="options">
+                        <li class="option" data-answer="a">const {name, age} = user</li>
+                        <li class="option" data-answer="b">const [name, age] = user</li>
+                        <li class="option" data-answer="c">const name, age = user</li>
+                        <li class="option" data-answer="d">const {name: userName, age: userAge} = user</li>
+                    </ul>
+                </div>
+
+                <!-- Question 4 -->
+                <div class="question" data-question="4">
+                    <h3>4. What is the correct way to use template literals?</h3>
+                    <ul class="options">
+                        <li class="option" data-answer="a">const message = 'Hello ' + name + '!'</li>
+                        <li class="option" data-answer="b">const message = `Hello ${name}!`</li>
+                        <li class="option" data-answer="c">const message = "Hello " + name + "!"</li>
+                        <li class="option" data-answer="d">Both a and c are correct</li>
+                    </ul>
+                </div>
+
+                <!-- Question 5 -->
+                <div class="question" data-question="5">
+                    <h3>5. Which method is used to transform an array?</h3>
+                    <ul class="options">
+                        <li class="option" data-answer="a">filter()</li>
+                        <li class="option" data-answer="b">map()</li>
+                        <li class="option" data-answer="c">find()</li>
+                        <li class="option" data-answer="d">reduce()</li>
+                    </ul>
+                </div>
+
+                <!-- Question 6 -->
+                <div class="question" data-question="6">
+                    <h3>6. How do you create a Promise that resolves after 1 second?</h3>
+                    <ul class="options">
+                        <li class="option" data-answer="a">new Promise(resolve => setTimeout(resolve, 1000))</li>
+                        <li class="option" data-answer="b">Promise.resolve(setTimeout(1000))</li>
+                        <li class="option" data-answer="c">new Promise(setTimeout(resolve, 1000))</li>
+                        <li class="option" data-answer="d">Promise.delay(1000)</li>
+                    </ul>
+                </div>
+
+                <!-- Question 7 -->
+                <div class="question" data-question="7">
+                    <h3>7. What is the correct async/await syntax?</h3>
+                    <ul class="options">
+                        <li class="option" data-answer="a">async function fetchData() { const data = await fetch('/api') }</li>
+                        <li class="option" data-answer="b">function async fetchData() { const data = await fetch('/api') }</li>
+                        <li class="option" data-answer="c">async function fetchData() { const data = fetch('/api') }</li>
+                        <li class="option" data-answer="d">function fetchData() { const data = await fetch('/api') }</li>
+                    </ul>
+                </div>
+
+                <!-- Question 8 -->
+                <div class="question" data-question="8">
+                    <h3>8. How do you use the spread operator to combine arrays?</h3>
+                    <ul class="options">
+                        <li class="option" data-answer="a">const combined = arr1.concat(arr2)</li>
+                        <li class="option" data-answer="b">const combined = [...arr1, ...arr2]</li>
+                        <li class="option" data-answer="c">const combined = arr1.push(...arr2)</li>
+                        <li class="option" data-answer="d">Both a and b are correct</li>
+                    </ul>
+                </div>
+
+                <!-- Question 9 -->
+                <div class="question" data-question="9">
+                    <h3>9. What does optional chaining (?.) do?</h3>
+                    <ul class="options">
+                        <li class="option" data-answer="a">It makes properties optional</li>
+                        <li class="option" data-answer="b">It safely accesses nested properties</li>
+                        <li class="option" data-answer="c">It creates optional parameters</li>
+                        <li class="option" data-answer="d">It validates property types</li>
+                    </ul>
+                </div>
+
+                <!-- Question 10 -->
+                <div class="question" data-question="10">
+                    <h3>10. How do you export a default function from a module?</h3>
+                    <ul class="options">
+                        <li class="option" data-answer="a">export default function myFunction() {}</li>
+                        <li class="option" data-answer="b">export function myFunction() {}</li>
+                        <li class="option" data-answer="c">default export function myFunction() {}</li>
+                        <li class="option" data-answer="d">export { myFunction as default }</li>
+                    </ul>
+                </div>
+            </div>
+
+            <button class="submit-btn" id="submitBtn" onclick="submitQuiz()">Submit Quiz</button>
+
+            <div id="results" class="results" style="display: none;">
+                <div class="score" id="score"></div>
+                <p id="message"></p>
+                <div class="explanation" id="explanation"></div>
+                <button class="retry-btn" onclick="retryQuiz()">Retry Quiz</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const questions = [
+            {
+                question: 1,
+                correct: 'c',
+                explanation: 'const is used for variables that won\'t be reassigned. It provides better performance and prevents accidental reassignment.'
+            },
+            {
+                question: 2,
+                correct: 'a',
+                explanation: 'Arrow functions with single expressions can omit the return keyword and curly braces. The syntax is (params) => expression.'
+            },
+            {
+                question: 3,
+                correct: 'a',
+                explanation: 'Object destructuring uses curly braces {} to extract properties by name. Array destructuring uses square brackets [].'
+            },
+            {
+                question: 4,
+                correct: 'b',
+                explanation: 'Template literals use backticks (`) and ${} for variable interpolation. This is more readable and efficient than string concatenation.'
+            },
+            {
+                question: 5,
+                correct: 'b',
+                explanation: 'map() transforms each element in an array and returns a new array. filter() filters elements, find() finds one element, reduce() accumulates values.'
+            },
+            {
+                question: 6,
+                correct: 'a',
+                explanation: 'Promises are created with new Promise() constructor. setTimeout is used for delays, and resolve is called after the delay.'
+            },
+            {
+                question: 7,
+                correct: 'a',
+                explanation: 'async functions must be declared with the async keyword, and await can only be used inside async functions.'
+            },
+            {
+                question: 8,
+                correct: 'd',
+                explanation: 'Both concat() and spread operator (...) can combine arrays. The spread operator is more modern and flexible.'
+            },
+            {
+                question: 9,
+                correct: 'b',
+                explanation: 'Optional chaining (?.) safely accesses nested properties without throwing errors if intermediate properties are null/undefined.'
+            },
+            {
+                question: 10,
+                correct: 'a',
+                explanation: 'Default exports use "export default" before the declaration. This allows importing without curly braces.'
+            }
+        ];
+
+        let userAnswers = {};
+        let currentQuestion = 0;
+
+        // Initialize quiz
+        document.addEventListener('DOMContentLoaded', function() {
+            setupQuiz();
+        });
+
+        function setupQuiz() {
+            // Add click handlers to options
+            document.querySelectorAll('.option').forEach(option => {
+                option.addEventListener('click', function() {
+                    selectOption(this);
+                });
+            });
+
+            updateProgress();
+        }
+
+        function selectOption(option) {
+            const question = option.closest('.question');
+            const questionNumber = question.dataset.question;
+
+            // Remove previous selection
+            question.querySelectorAll('.option').forEach(opt => {
+                opt.classList.remove('selected');
+            });
+
+            // Select current option
+            option.classList.add('selected');
+            userAnswers[questionNumber] = option.dataset.answer;
+
+            updateProgress();
+        }
+
+        function updateProgress() {
+            const totalQuestions = questions.length;
+            const answeredQuestions = Object.keys(userAnswers).length;
+            const progress = (answeredQuestions / totalQuestions) * 100;
+
+            document.getElementById('progressFill').style.width = progress + '%';
+        }
+
+        function submitQuiz() {
+            const totalQuestions = questions.length;
+            const answeredQuestions = Object.keys(userAnswers).length;
+
+            if (answeredQuestions < totalQuestions) {
+                alert(`Please answer all questions. You have answered ${answeredQuestions} out of ${totalQuestions} questions.`);
+                return;
+            }
+
+            let correctAnswers = 0;
+            let explanations = [];
+
+            // Check answers and show results
+            questions.forEach(q => {
+                const userAnswer = userAnswers[q.question];
+                const isCorrect = userAnswer === q.correct;
+
+                if (isCorrect) {
+                    correctAnswers++;
+                }
+
+                // Highlight correct/incorrect answers
+                const questionEl = document.querySelector(`[data-question="${q.question}"]`);
+                questionEl.querySelectorAll('.option').forEach(option => {
+                    option.classList.remove('selected');
+                    if (option.dataset.answer === q.correct) {
+                        option.classList.add('correct');
+                    } else if (option.dataset.answer === userAnswer && !isCorrect) {
+                        option.classList.add('incorrect');
+                    }
+                });
+
+                explanations.push(`Q${q.question}: ${q.explanation}`);
+            });
+
+            const score = Math.round((correctAnswers / totalQuestions) * 100);
+            const scoreEl = document.getElementById('score');
+            const messageEl = document.getElementById('message');
+            const explanationEl = document.getElementById('explanation');
+
+            scoreEl.textContent = `${score}% (${correctAnswers}/${totalQuestions})`;
+            scoreEl.className = 'score ' + (score >= 80 ? 'excellent' : score >= 60 ? 'good' : 'needs-improvement');
+
+            if (score >= 80) {
+                messageEl.textContent = 'Excellent! You\'re ready for Vue 3 development!';
+            } else if (score >= 60) {
+                messageEl.textContent = 'Good job! Review the explanations and try again.';
+            } else {
+                messageEl.textContent = 'You need more practice with JavaScript ES6+. Study the reference materials and try again.';
+            }
+
+            explanationEl.innerHTML = explanations.join('<br><br>');
+
+            // Show results
+            document.getElementById('quizQuestions').style.display = 'none';
+            document.getElementById('submitBtn').style.display = 'none';
+            document.getElementById('results').style.display = 'block';
+        }
+
+        function retryQuiz() {
+            // Reset quiz
+            userAnswers = {};
+            currentQuestion = 0;
+
+            // Reset UI
+            document.querySelectorAll('.option').forEach(option => {
+                option.classList.remove('selected', 'correct', 'incorrect');
+            });
+
+            document.getElementById('quizQuestions').style.display = 'block';
+            document.getElementById('submitBtn').style.display = 'block';
+            document.getElementById('results').style.display = 'none';
+
+            updateProgress();
+        }
+    </script>
+</body>
+</html>

@@ -151,7 +151,7 @@ npm run dev
 - **Complete all labs** to solidify your understanding
 - **Use Markdown Preview Enhanced** for better documentation reading experience
 - **Refer to the extras section** when you want to dive deeper
-- **Follow the "demo" folder** to see complete examples
+- **Follow the "example" folder** to see complete examples
 
 ## Development Tools
 
