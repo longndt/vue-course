@@ -14,7 +14,7 @@ const todos = ref([
 ])
 
 // Computed properties
-const completedTodos = computed(() => 
+const completedTodos = computed(() =>
   todos.value.filter(todo => todo.completed).length
 )
 
@@ -66,15 +66,15 @@ onMounted(() => {
     </header>
 
     <main class="app-main">
-      <WelcomeCard 
+      <WelcomeCard
         :count="count"
         :completed-todos="completedTodos"
         :total-todos="totalTodos"
       />
-      
+
       <div class="features-grid">
         <Counter v-model:count="count" />
-        <TodoList 
+        <TodoList
           :todos="todos"
           @add-todo="addTodo"
           @toggle-todo="toggleTodo"
@@ -190,11 +190,11 @@ code {
   #app {
     padding: 1rem;
   }
-  
+
   .app-title {
     font-size: 2.4em;
   }
-  
+
   .features-grid {
     grid-template-columns: 1fr;
   }

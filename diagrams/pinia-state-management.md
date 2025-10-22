@@ -12,14 +12,14 @@ graph TB
         A --> D[Actions]
         A --> E[Plugins]
     end
-    
+
     subgraph "Component Integration"
         F[Component A] --> G[useStore()]
         H[Component B] --> G
         I[Component C] --> G
         G --> J[Store Instance]
     end
-    
+
     subgraph "State Flow"
         J --> K[Reactive State]
         K --> L[Computed Getters]
@@ -28,13 +28,13 @@ graph TB
         N --> O[Action Dispatch]
         O --> J
     end
-    
+
     subgraph "DevTools Integration"
         P[Vue DevTools] --> Q[State Inspector]
         P --> R[Action Logger]
         P --> S[Time Travel]
     end
-    
+
     style A fill:#e3f2fd
     style G fill:#f3e5f5
     style J fill:#e8f5e8
@@ -54,14 +54,14 @@ graph LR
         B --> E[Actions: functions]
         B --> F[Return Object]
     end
-    
+
     subgraph "Options API Store"
         G[defineStore] --> H[Options Object]
         H --> I[state: function]
         H --> J[getters: object]
         H --> K[actions: object]
     end
-    
+
     style A fill:#e8f5e8
     style G fill:#f3e5f5
 ```
@@ -79,19 +79,19 @@ export const useUserStore = defineStore('user', () => {
   const currentUser = ref<User | null>(null)
   const loading = ref(false)
   const error = ref<string | null>(null)
-  
+
   // Getters
   const isAuthenticated = computed(() => currentUser.value !== null)
   const userCount = computed(() => users.value.length)
-  const activeUsers = computed(() => 
+  const activeUsers = computed(() =>
     users.value.filter(user => user.isActive)
   )
-  
+
   // Actions
   const fetchUsers = async () => {
     loading.value = true
     error.value = null
-    
+
     try {
       const response = await fetch('/api/users')
       if (!response.ok) throw new Error('Failed to fetch users')
@@ -102,18 +102,18 @@ export const useUserStore = defineStore('user', () => {
       loading.value = false
     }
   }
-  
+
   const login = async (credentials: LoginCredentials) => {
     loading.value = true
     error.value = null
-    
+
     try {
       const response = await fetch('/api/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(credentials)
       })
-      
+
       if (!response.ok) throw new Error('Login failed')
       currentUser.value = await response.json()
     } catch (err) {
@@ -123,19 +123,19 @@ export const useUserStore = defineStore('user', () => {
       loading.value = false
     }
   }
-  
+
   const logout = () => {
     currentUser.value = null
     users.value = []
   }
-  
+
   const updateUser = (id: string, updates: Partial<User>) => {
     const userIndex = users.value.findIndex(user => user.id === id)
     if (userIndex !== -1) {
       users.value[userIndex] = { ...users.value[userIndex], ...updates }
     }
   }
-  
+
   return {
     // State
     users,
@@ -165,7 +165,7 @@ export const useCartStore = defineStore('cart', {
     total: 0,
     discount: 0
   }),
-  
+
   getters: {
     itemCount: (state) => state.items.length,
     subtotal: (state) => state.items.reduce((sum, item) => sum + item.price * item.quantity, 0),
@@ -173,14 +173,14 @@ export const useCartStore = defineStore('cart', {
       const subtotal = state.items.reduce((sum, item) => sum + item.price * item.quantity, 0)
       return subtotal - state.discount
     },
-    isInCart: (state) => (productId: string) => 
+    isInCart: (state) => (productId: string) =>
       state.items.some(item => item.productId === productId)
   },
-  
+
   actions: {
     addItem(product: Product, quantity: number = 1) {
       const existingItem = this.items.find(item => item.productId === product.id)
-      
+
       if (existingItem) {
         existingItem.quantity += quantity
       } else {
@@ -192,10 +192,10 @@ export const useCartStore = defineStore('cart', {
           quantity
         })
       }
-      
+
       this.updateTotal()
     },
-    
+
     removeItem(itemId: string) {
       const index = this.items.findIndex(item => item.id === itemId)
       if (index > -1) {
@@ -203,7 +203,7 @@ export const useCartStore = defineStore('cart', {
         this.updateTotal()
       }
     },
-    
+
     updateQuantity(itemId: string, quantity: number) {
       const item = this.items.find(item => item.id === itemId)
       if (item) {
@@ -215,20 +215,20 @@ export const useCartStore = defineStore('cart', {
         }
       }
     },
-    
+
     applyDiscount(code: string) {
       // Simulate discount logic
       if (code === 'SAVE10') {
         this.discount = this.subtotal * 0.1
       }
     },
-    
+
     clearCart() {
       this.items = []
       this.total = 0
       this.discount = 0
     },
-    
+
     updateTotal() {
       this.total = this.subtotal
     }
@@ -249,13 +249,13 @@ graph TB
         D --> C
         E[Product Store] --> F[Category Store]
     end
-    
+
     subgraph "Cross-Store Communication"
         G[Store A] --> H[Store B Action]
         I[Store B] --> J[Store A Getter]
         K[Event Bus] --> L[Multiple Stores]
     end
-    
+
     style A fill:#e3f2fd
     style G fill:#f3e5f5
     style K fill:#e8f5e8
@@ -272,20 +272,20 @@ import { useCartStore } from './cart'
 export const useAuthStore = defineStore('auth', () => {
   const userStore = useUserStore()
   const cartStore = useCartStore()
-  
+
   const isAuthenticated = computed(() => userStore.isAuthenticated)
-  
+
   const login = async (credentials: LoginCredentials) => {
     await userStore.login(credentials)
     // Load user's cart after login
     await cartStore.loadUserCart(userStore.currentUser?.id)
   }
-  
+
   const logout = () => {
     userStore.logout()
     cartStore.clearCart()
   }
-  
+
   return {
     isAuthenticated,
     login,
@@ -306,20 +306,20 @@ graph TB
         B --> D[Action Interception]
         B --> E[Getter Enhancement]
     end
-    
+
     subgraph "Common Plugins"
         F[Persistence Plugin]
         G[DevTools Plugin]
         H[Logger Plugin]
         I[Validation Plugin]
     end
-    
+
     subgraph "Plugin Chain"
         J[Plugin 1] --> K[Plugin 2]
         K --> L[Plugin 3]
         L --> M[Store Instance]
     end
-    
+
     style A fill:#e3f2fd
     style F fill:#f3e5f5
     style J fill:#e8f5e8
@@ -338,7 +338,7 @@ export function createPersistedState(options: {
 }) {
   return ({ store }: PiniaPluginContext) => {
     const { key = store.$id, paths = [], storage = localStorage } = options
-    
+
     // Load state from storage
     const stored = storage.getItem(key)
     if (stored) {
@@ -356,16 +356,16 @@ export function createPersistedState(options: {
         store.$patch(parsed)
       }
     }
-    
+
     // Save state to storage on changes
     store.$subscribe((mutation, state) => {
-      const stateToSave = paths.length > 0 
+      const stateToSave = paths.length > 0
         ? paths.reduce((acc, path) => {
             setNestedValue(acc, path, getNestedValue(state, path))
             return acc
           }, {})
         : state
-      
+
       storage.setItem(key, JSON.stringify(stateToSave))
     })
   }
@@ -401,7 +401,7 @@ export function createLoggerPlugin() {
         state: state
       })
     })
-    
+
     // Log action calls
     const originalActions = { ...store }
     Object.keys(store).forEach(key => {
@@ -410,7 +410,7 @@ export function createLoggerPlugin() {
         store[key] = function(...args: any[]) {
           console.log(`[${store.$id}] Action called: ${key}`, args)
           const result = originalAction.apply(this, args)
-          
+
           // Handle async actions
           if (result instanceof Promise) {
             return result
@@ -423,7 +423,7 @@ export function createLoggerPlugin() {
                 throw err
               })
           }
-          
+
           console.log(`[${store.$id}] Action completed: ${key}`, result)
           return result
         }
@@ -445,20 +445,20 @@ graph TB
         A --> D[Action Testing]
         A --> E[Integration Testing]
     end
-    
+
     subgraph "Test Utilities"
         F[createPinia]
         G[setActivePinia]
         H[Mock Dependencies]
         I[Test Helpers]
     end
-    
+
     subgraph "Test Types"
         J[Unit Tests]
         K[Integration Tests]
         L[E2E Tests]
     end
-    
+
     style A fill:#e3f2fd
     style F fill:#f3e5f5
     style J fill:#e8f5e8
@@ -484,7 +484,7 @@ describe('User Store', () => {
   describe('State', () => {
     it('should have initial state', () => {
       const store = useUserStore()
-      
+
       expect(store.users).toEqual([])
       expect(store.currentUser).toBeNull()
       expect(store.loading).toBe(false)
@@ -495,18 +495,18 @@ describe('User Store', () => {
   describe('Getters', () => {
     it('should compute isAuthenticated correctly', () => {
       const store = useUserStore()
-      
+
       expect(store.isAuthenticated).toBe(false)
-      
+
       store.currentUser = { id: '1', name: 'John', email: 'john@example.com' }
       expect(store.isAuthenticated).toBe(true)
     })
 
     it('should compute userCount correctly', () => {
       const store = useUserStore()
-      
+
       expect(store.userCount).toBe(0)
-      
+
       store.users = [
         { id: '1', name: 'John', email: 'john@example.com' },
         { id: '2', name: 'Jane', email: 'jane@example.com' }
@@ -521,7 +521,7 @@ describe('User Store', () => {
         { id: '1', name: 'John', email: 'john@example.com' },
         { id: '2', name: 'Jane', email: 'jane@example.com' }
       ]
-      
+
       ;(fetch as any).mockResolvedValueOnce({
         ok: true,
         json: () => Promise.resolve(mockUsers)
@@ -549,7 +549,7 @@ describe('User Store', () => {
     it('should login successfully', async () => {
       const mockUser = { id: '1', name: 'John', email: 'john@example.com' }
       const credentials = { email: 'john@example.com', password: 'password' }
-      
+
       ;(fetch as any).mockResolvedValueOnce({
         ok: true,
         json: () => Promise.resolve(mockUser)
@@ -589,19 +589,19 @@ graph TB
         E[Action Batching] --> F[State Updates]
         G[Store Splitting] --> H[Modular Stores]
     end
-    
+
     subgraph "Memory Management"
         I[Store Cleanup] --> J[Unsubscribe]
         K[Weak References] --> L[Garbage Collection]
         M[State Pruning] --> N[Cleanup Actions]
     end
-    
+
     subgraph "Bundle Optimization"
         O[Tree Shaking] --> P[Unused Code]
         Q[Code Splitting] --> R[Lazy Loading]
         S[Store Lazy Loading] --> T[Dynamic Imports]
     end
-    
+
     style A fill:#e8f5e8
     style I fill:#f3e5f5
     style O fill:#e3f2fd
@@ -617,7 +617,7 @@ import { ref, computed, shallowRef } from 'vue'
 export const useOptimizedStore = defineStore('optimized', () => {
   // Use shallowRef for large objects that don't need deep reactivity
   const largeDataSet = shallowRef<LargeData[]>([])
-  
+
   // Use computed for expensive calculations with caching
   const expensiveCalculation = computed(() => {
     return largeDataSet.value.reduce((acc, item) => {
@@ -625,7 +625,7 @@ export const useOptimizedStore = defineStore('optimized', () => {
       return acc + item.value * Math.random()
     }, 0)
   })
-  
+
   // Batch state updates
   const batchUpdate = (updates: Partial<State>[]) => {
     // Use $patch for batch updates
@@ -635,12 +635,12 @@ export const useOptimizedStore = defineStore('optimized', () => {
       })
     })
   }
-  
+
   // Cleanup function
   const cleanup = () => {
     largeDataSet.value = []
   }
-  
+
   return {
     largeDataSet,
     expensiveCalculation,

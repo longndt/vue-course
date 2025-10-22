@@ -12,7 +12,7 @@ graph TB
         E[Pinia Store] --> F[State Management]
         G[Axios Instance] --> H[HTTP Client]
     end
-    
+
     subgraph "Data Flow"
         I[Component] --> J[Composable/Store]
         J --> K[API Call]
@@ -20,19 +20,19 @@ graph TB
         L --> M[State Update]
         M --> N[UI Re-render]
     end
-    
+
     subgraph "Error Handling"
         O[Network Errors] --> P[Retry Logic]
         Q[Validation Errors] --> R[User Feedback]
         S[Server Errors] --> T[Fallback UI]
     end
-    
+
     subgraph "Caching Strategy"
         U[Memory Cache] --> V[Fast Access]
         W[Persistent Cache] --> X[Offline Support]
         Y[Cache Invalidation] --> Z[Data Freshness]
     end
-    
+
     style A fill:#e3f2fd
     style I fill:#f3e5f5
     style O fill:#ffebee
@@ -50,21 +50,21 @@ graph TB
         A --> C[Mutation Cache]
         A --> D[Query Invalidation]
     end
-    
+
     subgraph "Query Hooks"
         E[useQuery] --> F[Data Fetching]
         G[useMutation] --> H[Data Modification]
         I[useInfiniteQuery] --> J[Infinite Scrolling]
         K[useQueries] --> L[Parallel Queries]
     end
-    
+
     subgraph "Query Features"
         M[Background Refetch] --> N[Data Freshness]
         O[Optimistic Updates] --> P[Better UX]
         Q[Error Boundaries] --> R[Error Handling]
         S[DevTools] --> T[Debugging]
     end
-    
+
     style A fill:#e3f2fd
     style E fill:#f3e5f5
     style M fill:#e8f5e8
@@ -79,7 +79,7 @@ import { ref, computed } from 'vue'
 
 export function useUsers() {
   const queryClient = useQueryClient()
-  
+
   // Fetch users query
   const {
     data: users,
@@ -101,7 +101,7 @@ export function useUsers() {
     retry: 3,
     retryDelay: (attemptIndex) => Math.min(1000 * 2 ** attemptIndex, 30000)
   })
-  
+
   // Create user mutation
   const createUserMutation = useMutation({
     mutationFn: async (userData: CreateUserData) => {
@@ -123,7 +123,7 @@ export function useUsers() {
       console.error('Create user failed:', error)
     }
   })
-  
+
   // Update user mutation
   const updateUserMutation = useMutation({
     mutationFn: async ({ id, data }: { id: string; data: UpdateUserData }) => {
@@ -140,17 +140,17 @@ export function useUsers() {
     onMutate: async ({ id, data }) => {
       // Cancel outgoing refetches
       await queryClient.cancelQueries({ queryKey: ['users'] })
-      
+
       // Snapshot previous value
       const previousUsers = queryClient.getQueryData(['users'])
-      
+
       // Optimistically update
-      queryClient.setQueryData(['users'], (old: any) => 
-        old?.map((user: any) => 
+      queryClient.setQueryData(['users'], (old: any) =>
+        old?.map((user: any) =>
           user.id === id ? { ...user, ...data } : user
         )
       )
-      
+
       return { previousUsers }
     },
     onError: (err, variables, context) => {
@@ -164,7 +164,7 @@ export function useUsers() {
       queryClient.invalidateQueries({ queryKey: ['users'] })
     }
   })
-  
+
   // Delete user mutation
   const deleteUserMutation = useMutation({
     mutationFn: async (id: string) => {
@@ -179,13 +179,13 @@ export function useUsers() {
       queryClient.invalidateQueries({ queryKey: ['users'] })
     }
   })
-  
+
   // Computed properties
   const userCount = computed(() => users.value?.length || 0)
-  const activeUsers = computed(() => 
+  const activeUsers = computed(() =>
     users.value?.filter((user: any) => user.isActive) || []
   )
-  
+
   return {
     // Query state
     users,
@@ -221,19 +221,19 @@ graph TB
         B --> E[Error Handling]
         B --> F[Loading States]
     end
-    
+
     subgraph "Specialized Composables"
         G[useUsers] --> H[User-specific Logic]
         I[useProducts] --> J[Product-specific Logic]
         K[useOrders] --> L[Order-specific Logic]
     end
-    
+
     subgraph "Shared Features"
         M[Authentication] --> N[Token Management]
         O[Caching] --> P[Request Deduplication]
         Q[Retry Logic] --> R[Automatic Retries]
     end
-    
+
     style A fill:#e3f2fd
     style G fill:#f3e5f5
     style M fill:#e8f5e8
@@ -294,7 +294,7 @@ export function useApi<T = any>(
         return
       } catch (err) {
         lastError = err instanceof Error ? err : new Error('Unknown error')
-        
+
         if (attempt < retries) {
           await new Promise(resolve => setTimeout(resolve, retryDelay * (attempt + 1)))
         }
@@ -329,7 +329,7 @@ export function useApi<T = any>(
 
 // Specialized composable using the generic one
 export function useUsers() {
-  const fetchUsers = () => 
+  const fetchUsers = () =>
     fetch('/api/users').then(res => {
       if (!res.ok) throw new Error('Failed to fetch users')
       return res.json()
@@ -378,19 +378,19 @@ graph TB
         E[Validation Errors] --> F[Input Validation]
         G[Business Logic Errors] --> H[Domain Rules]
     end
-    
+
     subgraph "Error Handling Levels"
         I[Global Error Handler] --> J[App-wide Errors]
         K[Component Error Handler] --> L[Component-specific Errors]
         M[API Error Handler] --> N[Request-specific Errors]
     end
-    
+
     subgraph "Error Recovery"
         O[Retry Logic] --> P[Automatic Retries]
         Q[Fallback UI] --> R[Error Boundaries]
         S[User Notification] --> T[Toast Messages]
     end
-    
+
     style A fill:#ffebee
     style I fill:#e3f2fd
     style O fill:#e8f5e8
@@ -431,19 +431,19 @@ export function handleApiError(error: unknown): string {
   if (error instanceof ValidationError) {
     return `Validation error: ${error.message}`
   }
-  
+
   if (error instanceof ApiError) {
     return `API error: ${error.message}`
   }
-  
+
   if (error instanceof NetworkError) {
     return 'Network error. Please check your connection.'
   }
-  
+
   if (error instanceof Error) {
     return error.message
   }
-  
+
   return 'An unexpected error occurred'
 }
 
@@ -454,7 +454,7 @@ export function setupGlobalErrorHandler() {
     // Send to error reporting service
     reportError(event.reason)
   })
-  
+
   window.addEventListener('error', (event) => {
     console.error('Global error:', event.error)
     // Send to error reporting service
@@ -498,10 +498,10 @@ const errorMessage = ref('')
 onErrorCaptured((error) => {
   hasError.value = true
   errorMessage.value = handleApiError(error)
-  
+
   // Log error for debugging
   console.error('Error caught by boundary:', error)
-  
+
   // Prevent error from propagating
   return false
 })
@@ -550,14 +550,14 @@ graph TB
         E[Action Loading] --> F[Button Spinner]
         G[Infinite Loading] --> H[Load More Button]
     end
-    
+
     subgraph "Skeleton Types"
         I[Text Skeleton] --> J[Animated Lines]
         K[Card Skeleton] --> L[Placeholder Cards]
         M[List Skeleton] --> N[Repeated Items]
         O[Form Skeleton] --> P[Input Placeholders]
     end
-    
+
     style A fill:#e3f2fd
     style I fill:#f3e5f5
 ```
@@ -569,14 +569,14 @@ graph TB
 <template>
   <div class="skeleton-loader">
     <div v-if="type === 'text'" class="skeleton-text">
-      <div 
-        v-for="i in lines" 
+      <div
+        v-for="i in lines"
         :key="i"
         class="skeleton-line"
         :style="{ width: getRandomWidth() }"
       />
     </div>
-    
+
     <div v-else-if="type === 'card'" class="skeleton-card">
       <div class="skeleton-avatar" />
       <div class="skeleton-content">
@@ -585,10 +585,10 @@ graph TB
         <div class="skeleton-line" style="width: 40%" />
       </div>
     </div>
-    
+
     <div v-else-if="type === 'list'" class="skeleton-list">
-      <div 
-        v-for="i in count" 
+      <div
+        v-for="i in count"
         :key="i"
         class="skeleton-item"
       >
@@ -699,7 +699,7 @@ const getRandomWidth = () => {
     <div v-if="loading" class="loading-container">
       <SkeletonLoader type="list" :count="5" />
     </div>
-    
+
     <!-- Error state -->
     <div v-else-if="error" class="error-container">
       <div class="error-message">
@@ -710,7 +710,7 @@ const getRandomWidth = () => {
         </button>
       </div>
     </div>
-    
+
     <!-- Success state -->
     <div v-else class="data-container">
       <div v-for="item in data" :key="item.id" class="data-item">
@@ -720,11 +720,11 @@ const getRandomWidth = () => {
           <p>{{ item.email }}</p>
         </div>
       </div>
-      
+
       <!-- Load more button -->
       <div v-if="hasMore" class="load-more">
-        <button 
-          @click="loadMore" 
+        <button
+          @click="loadMore"
           :disabled="loadingMore"
           class="load-more-button"
         >

@@ -2,20 +2,20 @@
 
 ## Build Your First Vue 3 Application
 
-### 1. Create New React Project
+### 1. Create New Vue 3 Project
 
 ```bash
 # Create new project with TypeScript template
-npm create vite@latest my-first-react-app -- --template react-ts
+npm create vue@latest my-first-vue-app
 
 # Navigate to project
-cd my-first-react-app
+cd my-first-vue-app
 
 # Install dependencies
 npm install
 
 # Install useful libraries for modern development
-npm install lucide-react  # For icons
+npm install @vueuse/core  # For Vue composables
 npm install clsx          # For conditional classes
 
 # Start development server
@@ -24,67 +24,61 @@ npm run dev
 
 ### 2. Create Your First Component
 
-Replace the content of `src/App.tsx`:
+Replace the content of `src/App.vue`:
 
-```typescript
-import { useState } from 'react';
-import { Heart, ThumbsUp, Star } from 'lucide-react';
-import './App.css';
+```vue
+<template>
+  <div class="app">
+    <header class="app-header">
+      <div class="logo">⭐</div>
+      <h1>Welcome to Vue 3 with TypeScript!</h1>
+      <p>Hello, {{ user.name }} - {{ user.role }}</p>
+    </header>
+
+    <main class="app-main">
+      <div class="card">
+        <h2>Your First Vue Component</h2>
+        <p>This component demonstrates:</p>
+        <ul>
+          <li>TypeScript interfaces</li>
+          <li>Reactive data with ref</li>
+          <li>Event handling</li>
+          <li>Template syntax</li>
+        </ul>
+
+        <button @click="handleLike" class="like-button">
+          👍 Like this ({{ likes }})
+        </button>
+      </div>
+
+      <div class="info-card">
+        <div class="heart">❤️</div>
+        <p>You're ready to build amazing Vue applications!</p>
+      </div>
+    </main>
+  </div>
+</template>
+
+<script setup lang="ts">
+import { ref } from 'vue'
 
 interface User {
-  id: number;
-  name: string;
-  role: string;
+  id: number
+  name: string
+  role: string
 }
 
-function App() {
-  const [likes, setLikes] = useState(0);
-  const [user] = useState<User>({
-    id: 1,
-    name: 'React Developer',
-    role: 'Student'
-  });
+const likes = ref(0)
+const user = ref<User>({
+  id: 1,
+  name: 'Vue Developer',
+  role: 'Student'
+})
 
-  const handleLike = () => {
-    setLikes(prev => prev + 1);
-  };
-
-  return (
-    <div className="app">
-      <header className="app-header">
-        <Star size={32} color="#ffd700" />
-        <h1>Welcome to React with TypeScript!</h1>
-        <p>Hello, {user.name} - {user.role}</p>
-      </header>
-
-      <main className="app-main">
-        <div className="card">
-          <h2>Your First React Component</h2>
-          <p>This component demonstrates:</p>
-          <ul>
-            <li>TypeScript interfaces</li>
-            <li>useState hook</li>
-            <li>Event handling</li>
-            <li>Icons from Lucide React</li>
-          </ul>
-
-          <button onClick={handleLike} className="like-button">
-            <ThumbsUp size={20} />
-            Like this ({likes})
-          </button>
-        </div>
-
-        <div className="info-card">
-          <Heart size={24} color="#e74c3c" />
-          <p>You're ready to build amazing React applications!</p>
-        </div>
-      </main>
-    </div>
-  );
+const handleLike = () => {
+  likes.value++
 }
-
-export default App;
-```
+</script>
 
 ### 3. Add Some Styles
 

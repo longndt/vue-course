@@ -12,14 +12,14 @@ graph TB
         A --> D[Route Matching]
         A --> E[History Management]
     end
-    
+
     subgraph "Component Integration"
         F[RouterView] --> G[Route Components]
         H[RouterLink] --> I[Navigation]
         J[useRouter] --> K[Programmatic Navigation]
         L[useRoute] --> M[Route Data Access]
     end
-    
+
     subgraph "Route Types"
         N[Static Routes]
         O[Dynamic Routes]
@@ -27,7 +27,7 @@ graph TB
         Q[Named Routes]
         R[Redirect Routes]
     end
-    
+
     subgraph "Navigation Guards"
         S[Global Guards]
         T[Route Guards]
@@ -35,7 +35,7 @@ graph TB
         V[Before Guards]
         W[After Guards]
     end
-    
+
     style A fill:#e3f2fd
     style F fill:#f3e5f5
     style N fill:#e8f5e8
@@ -54,14 +54,14 @@ graph LR
         C --> D[Mount Router]
         D --> E[App Integration]
     end
-    
+
     subgraph "Route Structure"
         F[Path] --> G[Component]
         H[Name] --> I[Props]
         J[Children] --> K[Nested Routes]
         L[Meta] --> M[Route Data]
     end
-    
+
     style A fill:#e8f5e8
     style F fill:#f3e5f5
 ```
@@ -176,7 +176,7 @@ sequenceDiagram
     participant Route as Route Guards
     participant Component as Component Guards
     participant Target as Target Component
-    
+
     User->>Router: Navigate to route
     Router->>Global: beforeEach
     Global->>Router: Allow/Deny
@@ -200,24 +200,24 @@ import { useAuthStore } from '@/stores/auth'
 // Global before guard
 router.beforeEach(async (to, from, next) => {
   const authStore = useAuthStore()
-  
+
   // Set page title
   if (to.meta.title) {
     document.title = `${to.meta.title} - My App`
   }
-  
+
   // Check authentication
   if (to.meta.requiresAuth && !authStore.isAuthenticated) {
     next({ name: 'Login', query: { redirect: to.fullPath } })
     return
   }
-  
+
   // Redirect authenticated users away from login
   if (to.name === 'Login' && authStore.isAuthenticated) {
     next({ name: 'Dashboard' })
     return
   }
-  
+
   // Check permissions
   if (to.meta.permissions) {
     const hasPermission = await authStore.checkPermissions(to.meta.permissions)
@@ -226,7 +226,7 @@ router.beforeEach(async (to, from, next) => {
       return
     }
   }
-  
+
   next()
 })
 
@@ -249,7 +249,7 @@ const dashboardRoute = {
   path: '/dashboard',
   beforeEnter: (to, from, next) => {
     const authStore = useAuthStore()
-    
+
     if (!authStore.isAuthenticated) {
       next({ name: 'Login' })
     } else if (!authStore.hasRole('user')) {
@@ -335,14 +335,14 @@ graph TB
         G[Wildcard Routes] --> H[/user/*]
         I[Regex Routes] --> J[/user/:id(\\d+)]
     end
-    
+
     subgraph "Route Matching"
         K[Exact Match] --> L[Static Routes]
         M[Param Match] --> N[Dynamic Routes]
         O[Wildcard Match] --> P[Catch-all Routes]
         Q[Regex Match] --> R[Pattern Routes]
     end
-    
+
     style A fill:#e8f5e8
     style K fill:#f3e5f5
 ```
@@ -358,7 +358,7 @@ graph TB
     <h1>{{ user.name }}</h1>
     <p>Email: {{ user.email }}</p>
     <p>Member since: {{ formatDate(user.createdAt) }}</p>
-    
+
     <!-- Nested routes -->
     <nav>
       <router-link :to="{ name: 'UserPosts', params: { id: user.id } }">
@@ -368,7 +368,7 @@ graph TB
         Comments
       </router-link>
     </nav>
-    
+
     <router-view />
   </div>
 </template>
@@ -394,7 +394,7 @@ const error = ref<string | null>(null)
 const loadUser = async (id: string) => {
   loading.value = true
   error.value = null
-  
+
   try {
     const response = await fetch(`/api/users/${id}`)
     if (!response.ok) {
@@ -437,14 +437,14 @@ graph TB
         G --> H[Login Route]
         G --> I[Register Route]
     end
-    
+
     subgraph "Layout Components"
         J[AppLayout.vue] --> K[Header]
         J --> L[Sidebar]
         J --> M[Main Content]
         M --> N[RouterView]
     end
-    
+
     style A fill:#e3f2fd
     style C fill:#f3e5f5
     style J fill:#e8f5e8
@@ -555,14 +555,14 @@ graph TB
         G[router.back] --> H[Go Back]
         I[router.forward] --> J[Go Forward]
     end
-    
+
     subgraph "Navigation Options"
         K[String Path] --> L['/user/123']
         M[Named Route] --> N[{ name: 'User', params: { id: 123 } }]
         O[Query Params] --> P[{ path: '/search', query: { q: 'vue' } }]
         Q[Hash Navigation] --> R[{ path: '/about', hash: '#contact' }]
     end
-    
+
     style A fill:#e8f5e8
     style K fill:#f3e5f5
 ```
@@ -574,26 +574,26 @@ graph TB
 <template>
   <div>
     <h2>Navigation Examples</h2>
-    
+
     <!-- String navigation -->
     <button @click="navigateToString">Go to Home</button>
-    
+
     <!-- Named route navigation -->
     <button @click="navigateToUser">Go to User Profile</button>
-    
+
     <!-- Navigation with query params -->
     <button @click="searchProducts">Search Products</button>
-    
+
     <!-- Navigation with state -->
     <button @click="navigateWithState">Navigate with State</button>
-    
+
     <!-- Replace navigation -->
     <button @click="replaceRoute">Replace Current Route</button>
-    
+
     <!-- History navigation -->
     <button @click="goBack">Go Back</button>
     <button @click="goForward">Go Forward</button>
-    
+
     <!-- Conditional navigation -->
     <button @click="conditionalNavigation">Conditional Navigation</button>
   </div>
@@ -664,7 +664,7 @@ const conditionalNavigation = async () => {
   if (authStore.isAuthenticated) {
     await router.push({ name: 'Dashboard' })
   } else {
-    await router.push({ 
+    await router.push({
       name: 'Login',
       query: { redirect: route.fullPath }
     })
@@ -757,7 +757,7 @@ watch(route, (to) => {
   if (to.meta.title) {
     document.title = `${to.meta.title} - My App`
   }
-  
+
   if (to.meta.description) {
     const metaDescription = document.querySelector('meta[name="description"]')
     if (metaDescription) {

@@ -1,4 +1,4 @@
-# Vue 3 Setup Demos
+# Vue 3 Setup Examples
 
 This folder contains three different approaches to setting up Vue 3 applications, each with its own advantages and use cases:
 
@@ -81,7 +81,7 @@ npm run serve
 - Projects that don't need custom build configuration
 - Teams new to Vue ecosystem
 
-## 3. Vite
+## 3. Vite + Vue 3 + TypeScript
 
 Modern build tool setup with Vue 3 and TypeScript - the fastest and most modern approach.
 
@@ -100,9 +100,9 @@ Modern build tool setup with Vue 3 and TypeScript - the fastest and most modern 
 
 ```bash
 # Create new Vite + Vue app
-npm create vite@latest my-app -- --template react
+npm create vite@latest my-app -- --template vue
 # or with TypeScript
-npm create vite@latest my-app -- --template react-ts
+npm create vite@latest my-app -- --template vue-ts
 cd my-app
 npm install
 npm run dev
@@ -125,7 +125,7 @@ npm run dev
 
 ### When to Use
 
-- Modern React development
+- Modern Vue 3 development
 - Large applications requiring fast builds
 - TypeScript projects
 - When build performance matters
@@ -165,7 +165,7 @@ npm run dev
 - No hot reloading
 - Manual dependency management
 
-### Create React App
+### Create Vue
 
 #### Pros:
 - Zero configuration setup
@@ -237,7 +237,7 @@ npm run dev
 ## Getting Started Guide
 
 ### For Absolute Beginners
-1. Start with **HTML Integration** to understand React basics
+1. Start with **HTML Integration** to understand Vue basics
 2. Move to **create-vue** for your first real project
 3. Graduate to **Vite** when you need better performance
 
@@ -249,10 +249,10 @@ npm run dev
 ## Learning Path
 
 ### Step 1: HTML Integration
-- Understand JSX syntax
+- Understand Vue template syntax
 - Learn component basics
-- Practice with state and props
-- Explore React developer tools
+- Practice with reactive data and methods
+- Explore Vue developer tools
 
 ### Step 2: create-vue
 - Learn project structure
@@ -262,7 +262,7 @@ npm run dev
 
 ### Step 3: Vite Setup
 - Experience modern development tools
-- Learn TypeScript with React
+- Learn TypeScript with Vue
 - Understand ES modules
 - Optimize for production
 
@@ -270,12 +270,12 @@ npm run dev
 
 After exploring these demos, you should understand:
 
-- Three different ways to set up React applications
+- Three different ways to set up Vue 3 applications
 - Trade-offs between development speed, learning curve, and production readiness
 - Modern development tooling and build processes
 - TypeScript integration options
 - When to choose each approach
-- Basic React concepts and project structure
+- Basic Vue 3 concepts and project structure
 - Development workflow differences
 
 ## Troubleshooting
@@ -284,10 +284,10 @@ After exploring these demos, you should understand:
 
 #### HTML Integration
 - **CORS errors**: Use a local server like `python -m http.server` or Live Server extension
-- **Babel not working**: Check script order and ensure Babel is loaded before your React code
+- **Vue not working**: Check script order and ensure Vue is loaded before your Vue code
 
 #### create-vue
-- **Port 3000 already in use**: Use `npm start` with different port or kill existing process
+- **Port 8080 already in use**: Use `npm run serve -- --port 3000` or kill existing process
 - **Build errors**: Clear `node_modules` and run `npm install` again
 - **Slow performance**: Consider switching to Vite for faster development
 
@@ -299,17 +299,17 @@ After exploring these demos, you should understand:
 ## Additional Resources
 
 ### Official Documentation
-- [React Documentation](https://react.dev) - Official React docs
+- [Vue 3 Documentation](https://vuejs.org) - Official Vue 3 docs
 - [create-vue Documentation](https://github.com/vuejs/create-vue) - create-vue official guide
 - [Vite Documentation](https://vitejs.dev) - Vite official docs
 - [TypeScript Handbook](https://www.typescriptlang.org/docs) - TypeScript guide
 
 ### Learning Resources
-- [React Tutorial](https://react.dev/learn) - Interactive React tutorial
+- [Vue 3 Tutorial](https://vuejs.org/tutorial/) - Interactive Vue 3 tutorial
 - [Modern JavaScript Guide](https://javascript.info) - ES6+ features
-- [React DevTools](https://react.dev/learn/react-developer-tools) - Browser extension for debugging
+- [Vue DevTools](https://devtools.vuejs.org/) - Browser extension for debugging
 
 ### Community
-- [React Community](https://react.dev/community) - Official community resources
+- [Vue Community](https://vuejs.org/community/) - Official community resources
 - [Vite Awesome](https://github.com/vitejs/awesome-vite) - Curated Vite resources
 - [Vue Project Setup Alternatives](https://vuejs.org/guide/quick-start.html) - Other Vue setup options
