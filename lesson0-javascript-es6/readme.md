@@ -321,7 +321,7 @@ If you're comfortable with all these concepts, you're ready to start Lesson 1! T
 
 **Next Steps:**
 
-- Proceed to [Lesson 1: Vue 3 Fundamentals & TypeScript Setup](../lesson1-extras/setup/)
+- Proceed to [Lesson 1: Vue 3 Fundamentals & TypeScript Setup](../lesson1-setup/)
 - Keep this reference handy as you learn Vue 3
 - Don't hesitate to revisit these concepts as needed
 
