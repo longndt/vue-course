@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Array Methods - Essential for Vue Templates</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #333;
+        }
+
+        .container {
+            background: white;
+            border-radius: 10px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .section {
+            margin: 30px 0;
+            padding: 20px;
+            border: 2px solid #e74c3c;
+            border-radius: 8px;
+            background: #f8f9fa;
+        }
+
+        .section h2 {
+            color: #e74c3c;
+            margin-top: 0;
+        }
+
+        .code-block {
+            background: #2c3e50;
+            color: #ecf0f1;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 10px 0;
+            overflow-x: auto;
+        }
+
+        .result {
+            background: #27ae60;
+            color: white;
+            padding: 10px;
+            border-radius: 5px;
+            margin: 10px 0;
+            font-weight: bold;
+        }
+
+        .exercise {
+            background: #3498db;
+            color: white;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 15px 0;
+        }
+
+        button {
+            background: #e74c3c;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+        }
+
+        button:hover {
+            background: #c0392b;
+        }
+
+        .vue-example {
+            background: #42b883;
+            color: white;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 10px 0;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>🔧 Array Methods - Essential for Vue Templates</h1>
+        <p style="text-align: center; color: #7f8c8d; font-size: 18px;">
+            Master array methods you'll use constantly in Vue 3 development
+        </p>
+
+        <!-- Map Method Section -->
+        <div class="section">
+            <h2>1. map() - Transform Arrays</h2>
+            <p>The most important method for rendering lists in Vue templates.</p>
+
+            <div class="code-block">
+                const students = [
+                { id: 1, name: "Alice", grade: 85 },
+                { id: 2, name: "Bob", grade: 92 },
+                { id: 3, name: "Charlie", grade: 78 }
+                ];
+
+                // Transform to names only
+                const studentNames = students.map(student => student.name);
+                // ['Alice', 'Bob', 'Charlie']
+
+                // Transform to display objects
+                const displayStudents = students.map(student => ({
+                id: student.id,
+                display: `${student.name}: ${student.gpa}`
+                }));
+
+                // Transform with index
+                const indexedStudents = students.map((student, index) => ({
+                ...student,
+                position: index + 1
+                }));
+            </div>
+
+            <div class="vue-example">
+                <strong>Vue Template Usage:</strong><br>
+                &lt;li v-for="student in students.map(s => s.name)" :key="student"&gt;<br>
+                &nbsp;&nbsp;{{ student }}<br>
+                &lt;/li&gt;
+            </div>
+
+            <button onclick="testMap()">Test map() Method</button>
+            <div id="map-result" class="result" style="display: none;"></div>
+        </div>
+
+        <!-- Filter Method Section -->
+        <div class="section">
+            <h2>2. filter() - Create Subsets</h2>
+            <p>Filter data based on conditions - essential for search and filtering in Vue.</p>
+
+            <div class="code-block">
+                const students = [
+                { id: 1, name: "Alice", grade: 85, major: "CS" },
+                { id: 2, name: "Bob", grade: 92, major: "Math" },
+                { id: 3, name: "Charlie", grade: 78, major: "CS" },
+                { id: 4, name: "Diana", grade: 88, major: "Physics" }
+                ];
+
+                // Filter by grade
+                const highPerformers = students.filter(student => student.grade >= 85);
+
+                // Filter by major
+                const csStudents = students.filter(student => student.major === "CS");
+
+                // Complex filtering
+                const topCsStudents = students.filter(student =>
+                student.major === "CS" && student.grade >= 80
+                );
+            </div>
+
+            <div class="vue-example">
+                <strong>Vue Template Usage:</strong><br>
+                &lt;li v-for="student in students.filter(s => s.grade >= 85)" :key="student.id"&gt;<br>
+                &nbsp;&nbsp;{{ student.name }}: {{ student.grade }}<br>
+                &lt;/li&gt;
+            </div>
+
+            <button onclick="testFilter()">Test filter() Method</button>
+            <div id="filter-result" class="result" style="display: none;"></div>
+        </div>
+
+        <!-- Find Method Section -->
+        <div class="section">
+            <h2>3. find() - Get Single Item</h2>
+            <p>Find the first item that matches a condition.</p>
+
+            <div class="code-block">
+                const students = [
+                { id: 1, name: "Alice", grade: 85 },
+                { id: 2, name: "Bob", grade: 92 },
+                { id: 3, name: "Charlie", grade: 78 }
+                ];
+
+                // Find by name
+                const alice = students.find(student => student.name === "Alice");
+
+                // Find by grade
+                const topStudent = students.find(student => student.grade >= 90);
+
+                // Find with default
+                const student = students.find(s => s.id === 999) || { name: "Not Found" };
+            </div>
+
+            <button onclick="testFind()">Test find() Method</button>
+            <div id="find-result" class="result" style="display: none;"></div>
+        </div>
+
+        <!-- Reduce Method Section -->
+        <div class="section">
+            <h2>4. reduce() - Calculate Single Value</h2>
+            <p>Aggregate data into a single value - great for calculations and statistics.</p>
+
+            <div class="code-block">
+                const students = [
+                { id: 1, name: "Alice", grade: 85 },
+                { id: 2, name: "Bob", grade: 92 },
+                { id: 3, name: "Charlie", grade: 78 }
+                ];
+
+                // Calculate average grade
+                const averageGrade = students.reduce((sum, student) => sum + student.grade, 0) / students.length;
+
+                // Count students by grade level
+                const gradeLevels = students.reduce((acc, student) => {
+                const level = student.grade >= 90 ? 'A' : student.grade >= 80 ? 'B' : 'C';
+                acc[level] = (acc[level] || 0) + 1;
+                return acc;
+                }, {});
+
+                // Group students by grade level
+                const groupedStudents = students.reduce((acc, student) => {
+                const level = student.grade >= 90 ? 'A' : student.grade >= 80 ? 'B' : 'C';
+                if (!acc[level]) acc[level] = [];
+                acc[level].push(student);
+                return acc;
+                }, {});
+            </div>
+
+            <button onclick="testReduce()">Test reduce() Method</button>
+            <div id="reduce-result" class="result" style="display: none;"></div>
+        </div>
+
+        <!-- Chaining Methods Section -->
+        <div class="section">
+            <h2>5. Method Chaining</h2>
+            <p>Combine multiple array methods for powerful data transformations.</p>
+
+            <div class="code-block">
+                const students = [
+                { id: 1, name: "Alice", grade: 85, major: "CS" },
+                { id: 2, name: "Bob", grade: 92, major: "Math" },
+                { id: 3, name: "Charlie", grade: 78, major: "CS" },
+                { id: 4, name: "Diana", grade: 88, major: "Physics" }
+                ];
+
+                // Complex transformation pipeline
+                const topCsStudents = students
+                .filter(student => student.major === "CS")
+                .filter(student => student.grade >= 80)
+                .map(student => ({
+                name: student.name,
+                grade: student.grade,
+                status: student.grade >= 90 ? "Excellent" : "Good"
+                }))
+                .sort((a, b) => b.grade - a.grade);
+            </div>
+
+            <button onclick="testChaining()">Test Method Chaining</button>
+            <div id="chaining-result" class="result" style="display: none;"></div>
+        </div>
+
+        <!-- Practice Exercise -->
+        <div class="exercise">
+            <h3>🎯 Practice Exercise: Student Management System</h3>
+            <p>Given the student data below, create functions to:</p>
+            <ul>
+                <li>Get all students with GPA >= 3.5</li>
+                <li>Calculate average GPA by major</li>
+                <li>Find the top student in each major</li>
+                <li>Create a summary report</li>
+            </ul>
+            <button onclick="runExercise()">Run Exercise</button>
+            <div id="exercise-result" class="result" style="display: none;"></div>
+        </div>
+    </div>
+
+    <script>
+        const students = [
+            { id: 1, name: "Alice", grade: 85, major: "CS" },
+            { id: 2, name: "Bob", grade: 92, major: "Math" },
+            { id: 3, name: "Charlie", grade: 78, major: "CS" },
+            { id: 4, name: "Diana", grade: 88, major: "Physics" },
+            { id: 5, name: "Eve", grade: 95, major: "Math" }
+        ];
+
+        function testMap() {
+            const studentNames = students.map(student => student.name);
+            const displayStudents = students.map(student => ({
+                id: student.id,
+                display: `${student.name}: ${student.grade}`
+            }));
+            const indexedStudents = students.map((student, index) => ({
+                ...student,
+                position: index + 1
+            }));
+
+            const result = `
+                <strong>Student Names:</strong> [${studentNames.join(', ')}]<br>
+                <strong>Display Objects:</strong><br>
+                ${displayStudents.map(s => `  ${s.display}`).join('<br>')}<br>
+                <strong>With Positions:</strong><br>
+                ${indexedStudents.map(s => `  ${s.position}. ${s.name}`).join('<br>')}
+            `;
+
+            document.getElementById('map-result').innerHTML = result;
+            document.getElementById('map-result').style.display = 'block';
+        }
+
+        function testFilter() {
+            const highPerformers = students.filter(student => student.grade >= 85);
+            const csStudents = students.filter(student => student.major === "CS");
+            const topCsStudents = students.filter(student =>
+                student.major === "CS" && student.grade >= 80
+            );
+
+            const result = `
+                <strong>High Performers (≥85):</strong><br>
+                ${highPerformers.map(s => `  ${s.name}: ${s.grade}`).join('<br>')}<br>
+                <strong>CS Students:</strong><br>
+                ${csStudents.map(s => `  ${s.name}: ${s.grade}`).join('<br>')}<br>
+                <strong>Top CS Students (≥80):</strong><br>
+                ${topCsStudents.map(s => `  ${s.name}: ${s.grade}`).join('<br>')}
+            `;
+
+            document.getElementById('filter-result').innerHTML = result;
+            document.getElementById('filter-result').style.display = 'block';
+        }
+
+        function testFind() {
+            const alice = students.find(student => student.name === "Alice");
+            const topStudent = students.find(student => student.grade >= 90);
+            const notFound = students.find(s => s.id === 999) || { name: "Not Found" };
+
+            const result = `
+                <strong>Alice:</strong> ${JSON.stringify(alice)}<br>
+                <strong>Top Student (≥90):</strong> ${JSON.stringify(topStudent)}<br>
+                <strong>Not Found (ID 999):</strong> ${JSON.stringify(notFound)}
+            `;
+
+            document.getElementById('find-result').innerHTML = result;
+            document.getElementById('find-result').style.display = 'block';
+        }
+
+        function testReduce() {
+            const averageGrade = students.reduce((sum, student) => sum + student.grade, 0) / students.length;
+
+            const gradeLevels = students.reduce((acc, student) => {
+                const level = student.grade >= 90 ? 'A' : student.grade >= 80 ? 'B' : 'C';
+                acc[level] = (acc[level] || 0) + 1;
+                return acc;
+            }, {});
+
+            const groupedStudents = students.reduce((acc, student) => {
+                const level = student.grade >= 90 ? 'A' : student.grade >= 80 ? 'B' : 'C';
+                if (!acc[level]) acc[level] = [];
+                acc[level].push(student);
+                return acc;
+            }, {});
+
+            const result = `
+                <strong>Average Grade:</strong> ${averageGrade.toFixed(2)}<br>
+                <strong>Grade Levels Count:</strong> ${JSON.stringify(gradeLevels)}<br>
+                <strong>Grouped Students:</strong><br>
+                ${Object.entries(groupedStudents).map(([level, students]) =>
+                `  ${level}: ${students.map(s => s.name).join(', ')}`
+            ).join('<br>')}
+            `;
+
+            document.getElementById('reduce-result').innerHTML = result;
+            document.getElementById('reduce-result').style.display = 'block';
+        }
+
+        function testChaining() {
+            const topCsStudents = students
+                .filter(student => student.major === "CS")
+                .filter(student => student.grade >= 80)
+                .map(student => ({
+                    name: student.name,
+                    grade: student.grade,
+                    status: student.grade >= 90 ? "Excellent" : "Good"
+                }))
+                .sort((a, b) => b.grade - a.grade);
+
+            const result = `
+                <strong>Top CS Students (≥80, sorted by grade):</strong><br>
+                ${topCsStudents.map(s => `  ${s.name}: ${s.grade} (${s.status})`).join('<br>')}
+            `;
+
+            document.getElementById('chaining-result').innerHTML = result;
+            document.getElementById('chaining-result').style.display = 'block';
+        }
+
+        function runExercise() {
+            // Convert grades to GPA (simplified)
+            const studentsWithGPA = students.map(student => ({
+                ...student,
+                gpa: (student.grade / 100) * 4
+            }));
+
+            // 1. Students with GPA >= 3.5
+            const highGPAStudents = studentsWithGPA.filter(student => student.gpa >= 3.5);
+
+            // 2. Average GPA by major
+            const averageGPAByMajor = studentsWithGPA.reduce((acc, student) => {
+                if (!acc[student.major]) {
+                    acc[student.major] = { total: 0, count: 0 };
+                }
+                acc[student.major].total += student.gpa;
+                acc[student.major].count += 1;
+                return acc;
+            }, {});
+
+            Object.keys(averageGPAByMajor).forEach(major => {
+                averageGPAByMajor[major] = averageGPAByMajor[major].total / averageGPAByMajor[major].count;
+            });
+
+            // 3. Top student in each major
+            const topStudentByMajor = studentsWithGPA.reduce((acc, student) => {
+                if (!acc[student.major] || student.gpa > acc[student.major].gpa) {
+                    acc[student.major] = student;
+                }
+                return acc;
+            }, {});
+
+            // 4. Summary report
+            const summary = {
+                totalStudents: studentsWithGPA.length,
+                highGPAStudents: highGPAStudents.length,
+                averageGPAByMajor,
+                topStudentByMajor
+            };
+
+            const result = `
+                <strong>High GPA Students (≥3.5):</strong><br>
+                ${highGPAStudents.map(s => `  ${s.name}: ${s.gpa.toFixed(2)}`).join('<br>')}<br><br>
+                <strong>Average GPA by Major:</strong><br>
+                ${Object.entries(averageGPAByMajor).map(([major, gpa]) =>
+                `  ${major}: ${gpa.toFixed(2)}`
+            ).join('<br>')}<br><br>
+                <strong>Top Student by Major:</strong><br>
+                ${Object.entries(topStudentByMajor).map(([major, student]) =>
+                `  ${major}: ${student.name} (${student.gpa.toFixed(2)})`
+            ).join('<br>')}<br><br>
+                <strong>Summary:</strong> ${summary.totalStudents} total students, ${summary.highGPAStudents} with high GPA
+            `;
+
+            document.getElementById('exercise-result').innerHTML = result;
+            document.getElementById('exercise-result').style.display = 'block';
+        }
+    </script>
+</body>
+
+</html>

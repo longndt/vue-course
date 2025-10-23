@@ -5,7 +5,7 @@
 **Difficulty**: Advanced
 **Status**: Required
 
-In this lesson, you'll learn how to build complete full-stack applications by integrating Vue 3 with backend services, implementing real-time features, and deploying to production. We'll cover professional deployment strategies and production-ready optimizations.
+In this lesson, you'll learn how to build complete full-stack applications by integrating Vue with backend services, implementing real-time features, and deploying to production. We'll cover professional deployment strategies and production-ready optimizations.
 
 ---
 
@@ -14,10 +14,10 @@ In this lesson, you'll learn how to build complete full-stack applications by in
 After completing this lesson, you will be able to:
 
 - ✅ Design full-stack application architectures
-- ✅ Integrate Vue 3 with Node.js/Express/MongoDB backends
+- ✅ Integrate Vue with Node.js/Express/MongoDB backends
 - ✅ Implement file upload and media management systems
 - ✅ Build real-time features with WebSockets and Server-Sent Events
-- ✅ Optimize Vue 3 applications for production performance
+- ✅ Optimize Vue applications for production performance
 - ✅ Deploy full-stack applications using modern CI/CD pipelines
 
 ---
@@ -66,7 +66,7 @@ cd .. && npm run dev
 ## What's Next
 
 ### Ready to Continue?
-- **Completed this lesson?** → You're ready for real-world Vue 3 development! 🎉
+- **Completed this lesson?** → You're ready for real-world Vue development! 🎉
 
 ### Need More Practice?
 - **Study theory** → [theory5.md](./theory/theory5.md) - Deep dive into full-stack patterns
@@ -83,16 +83,16 @@ cd .. && npm run dev
 ## Resources & References
 
 ### Official Documentation
-- [Vue 3 Deployment](https://vuejs.org/guide/best-practices/production-deployment.html) - Production deployment
+- [Vue Deployment](https://vuejs.org/guide/best-practices/production-deployment.html) - Production deployment
 - [Vite Build](https://vitejs.dev/guide/build.html) - Build configuration
 - [Node.js Deployment](https://nodejs.org/en/docs/guides/nodejs-docker-webapp/) - Node.js deployment
 
 ### Video Tutorials
-- [Vue 3 Full-Stack](https://www.youtube.com/watch?v=2KBHvaAWJOA) - Vue Mastery
+- [Vue Full-Stack](https://www.youtube.com/watch?v=2KBHvaAWJOA) - Vue Mastery
 - [Production Deployment](https://www.youtube.com/watch?v=JbIzmGQXjO4) - Vue School
 
 ### Practice Resources
-- [Vue 3 Production Examples](https://github.com/vuejs/vue-next/tree/master/packages/vue/examples) - Production examples
+- [Vue Production Examples](https://github.com/vuejs/vue-next/tree/master/packages/vue/examples) - Production examples
 - [Docker for Vue Apps](https://docs.docker.com/) - Containerization guide
 
 ---

@@ -1,4 +1,4 @@
-# JavaScript ES6+ Prerequisites for Vue 3
+# JavaScript ES6+ Prerequisites for Vue
 
 ## Theory 0 - Essential JavaScript Knowledge
 
@@ -8,19 +8,19 @@
 
 By the end of this theory session, you will be able to:
 
-- Master modern JavaScript ES6+ features essential for Vue 3
+- Master modern JavaScript ES6+ features essential for Vue
 - Understand arrow functions, destructuring, and template literals
 - Apply async/await patterns for API integration
 - Use modules and imports effectively
-- Implement modern JavaScript patterns in Vue 3 applications
+- Implement modern JavaScript patterns in Vue applications
 
 ---
 
-### Why JavaScript ES6+ is Critical for Vue 3? 🎯
+### Why JavaScript ES6+ is Critical for Vue? 🎯
 
 **Foundation for Modern Vue Development:**
 
-- Vue 3 is built on modern JavaScript features
+- Vue is built on modern JavaScript features
 - Composition API heavily relies on ES6+ patterns
 - TypeScript integration requires solid JS fundamentals
 - Modern tooling (Vite, ESLint) expects ES6+ syntax
@@ -28,7 +28,7 @@ By the end of this theory session, you will be able to:
 **Career and Academic Benefits:**
 
 - 90%+ of modern web development uses ES6+ features
-- Essential for understanding Vue 3 source code
+- Essential for understanding Vue source code
 - Required for professional development workflows
 - Foundation for learning TypeScript and advanced patterns
 
@@ -68,10 +68,10 @@ const createUser = (name, age) => ({ name, age });
 | Constructor | Can be used as constructor | Cannot be used as constructor |
 | Hoisting | Hoisted | Not hoisted |
 
-### **Vue 3 Usage Examples**
+### **Vue Usage Examples**
 
 ```javascript
-// In Vue 3 Composition API
+// In Vue Composition API
 import { ref, computed } from 'vue'
 
 export default {
@@ -134,10 +134,10 @@ const [first, ...rest] = colors
 const [first = 'default', second] = colors
 ```
 
-### **Vue 3 Usage Examples**
+### **Vue Usage Examples**
 
 ```javascript
-// Destructuring Vue 3 imports
+// Destructuring Vue imports
 import { ref, reactive, computed, watch } from 'vue'
 
 // Destructuring props
@@ -151,7 +151,7 @@ export default {
 
     // Destructuring reactive object
     const state = reactive({
-      name: 'Vue 3',
+      name: 'Vue',
       version: '3.0'
     })
     const { name, version } = state
@@ -204,7 +204,7 @@ const highlighted = highlight`Hello ${name}, you are ${age} years old!`
 // Result: "Hello <mark>John</mark>, you are <mark>30</mark> years old!"
 ```
 
-### **Vue 3 Usage Examples**
+### **Vue Usage Examples**
 
 ```javascript
 // Dynamic CSS classes
@@ -269,7 +269,7 @@ const [first, second, ...rest] = [1, 2, 3, 4, 5]
 const { name, age, ...otherProps } = user
 ```
 
-### **Vue 3 Usage Examples**
+### **Vue Usage Examples**
 
 ```javascript
 // Props spreading
@@ -340,10 +340,10 @@ import * as Math from './math.js'
 import { calculateArea as calcArea } from './math.js'
 ```
 
-### **Vue 3 Usage Examples**
+### **Vue Usage Examples**
 
 ```javascript
-// Vue 3 Composition API imports
+// Vue Composition API imports
 import { ref, reactive, computed, watch, onMounted } from 'vue'
 
 // Component imports
@@ -406,10 +406,10 @@ const loadUser = async () => {
 }
 ```
 
-### **Vue 3 Usage Examples**
+### **Vue Usage Examples**
 
 ```javascript
-// In Vue 3 Composition API
+// In Vue Composition API
 import { ref, onMounted } from 'vue'
 
 export default {
@@ -478,7 +478,7 @@ const hasAdults = users.some(user => user.age >= 18)
 const allAdults = users.every(user => user.age >= 18)
 ```
 
-### **Vue 3 Usage Examples**
+### **Vue Usage Examples**
 
 ```javascript
 // Computed properties with array methods
@@ -529,7 +529,7 @@ const frozen = Object.freeze({ name: 'John' })
 // frozen.name = 'Jane' // This won't work in strict mode
 ```
 
-### **Vue 3 Usage Examples**
+### **Vue Usage Examples**
 
 ```javascript
 // Form validation
@@ -591,7 +591,7 @@ class Student extends Person {
 }
 ```
 
-### **Vue 3 Usage Examples**
+### **Vue Usage Examples**
 
 ```javascript
 // Service classes
@@ -669,7 +669,7 @@ user.address &&= { ...user.address, updated: true }
 user.email ??= 'no-email@example.com'
 ```
 
-### **Vue 3 Usage Examples**
+### **Vue Usage Examples**
 
 ```javascript
 // Safe reactive updates
@@ -740,7 +740,7 @@ fetchData()
   .finally(() => console.log('Request completed'))
 ```
 
-### **Vue 3 Integration Patterns**
+### **Vue Integration Patterns**
 
 ```javascript
 // Composable pattern
@@ -900,11 +900,11 @@ Create an async function that fetches user data:
 - ✅ Modern JavaScript features (optional chaining, nullish coalescing)
 - ✅ Best practices and common patterns
 
-### **Ready for Vue 3!**
+### **Ready for Vue!**
 
 You now have the JavaScript foundation needed to:
 
-- Understand Vue 3's Composition API
+- Understand Vue's Composition API
 - Work with reactive data and computed properties
 - Handle async operations in Vue components
 - Use modern JavaScript patterns in Vue applications
@@ -912,7 +912,7 @@ You now have the JavaScript foundation needed to:
 
 ### **Next Lesson**
 
-Proceed to [Lesson 1: Vue 3 Fundamentals & TypeScript Setup](../lesson1-setup/) to start building Vue 3 applications!
+Proceed to [Lesson 1: Vue Fundamentals & TypeScript Setup](../lesson1-fundamentals-setup/) to start building Vue applications!
 
 ---
 
@@ -921,5 +921,5 @@ Proceed to [Lesson 1: Vue 3 Fundamentals & TypeScript Setup](../lesson1-setup/) 
 - [MDN JavaScript Guide](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide)
 - [ES6 Features](https://es6-features.org/)
 - [JavaScript.info](https://javascript.info/)
-- [Vue 3 Documentation](https://vuejs.org/)
+- [Vue Documentation](https://vuejs.org/)
 - [TypeScript Handbook](https://www.typescriptlang.org/docs/)

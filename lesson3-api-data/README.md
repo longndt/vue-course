@@ -5,7 +5,7 @@
 **Difficulty**: Intermediate
 **Status**: Required
 
-In this lesson, you'll learn how to integrate Vue 3 applications with backend APIs and manage data effectively. We'll cover REST API integration, data fetching patterns, error handling, and state management for complex data workflows.
+In this lesson, you'll learn how to integrate Vue applications with backend APIs and manage data effectively. We'll cover REST API integration, data fetching patterns, error handling, and state management for complex data workflows.
 
 ---
 
@@ -14,7 +14,7 @@ In this lesson, you'll learn how to integrate Vue 3 applications with backend AP
 After completing this lesson, you will be able to:
 
 - ✅ Understand REST API concepts and HTTP methods
-- ✅ Integrate Vue 3 with Node.js/Express backends and MongoDB
+- ✅ Integrate Vue with Node.js/Express backends and MongoDB
 - ✅ Implement proper data fetching patterns with composables
 - ✅ Handle loading states, errors, and edge cases professionally
 - ✅ Build CRUD operations with reactive state updates
@@ -24,7 +24,7 @@ After completing this lesson, you will be able to:
 
 ## 📋 Prerequisites
 
-- ✅ Vue 3 component architecture and reactive state
+- ✅ Vue component architecture and reactive state
 - ✅ Understanding of composables and component patterns
 - ✅ Basic knowledge of HTTP and web APIs
 - ✅ Familiarity with async/await and Promises
@@ -33,7 +33,7 @@ After completing this lesson, you will be able to:
 
 ## 🚀 Quick Start
 
-> 🎯 Goal: Master API integration and data management in Vue 3 applications
+> 🎯 Goal: Master API integration and data management in Vue applications
 
 ### Setup
 ```bash
@@ -82,16 +82,16 @@ cd .. && npm run dev
 ## Resources & References
 
 ### Official Documentation
-- [Vue 3 Data Fetching](https://vuejs.org/guide/essentials/component-basics.html) - Data fetching patterns
+- [Vue Data Fetching](https://vuejs.org/guide/essentials/component-basics.html) - Data fetching patterns
 - [Vue Query](https://tanstack.com/query/latest/docs/vue/overview) - Powerful data synchronization
 - [Axios Documentation](https://axios-http.com/docs/intro) - HTTP client library
 
 ### Video Tutorials
-- [Vue 3 API Integration](https://www.youtube.com/watch?v=2KBHvaAWJOA) - Vue Mastery
+- [Vue API Integration](https://www.youtube.com/watch?v=2KBHvaAWJOA) - Vue Mastery
 - [Vue Query Tutorial](https://www.youtube.com/watch?v=JbIzmGQXjO4) - Vue School
 
 ### Practice Resources
-- [Vue 3 API Examples](https://github.com/vuejs/vue-next/tree/master/packages/vue/examples) - Official examples
+- [Vue API Examples](https://github.com/vuejs/vue-next/tree/master/packages/vue/examples) - Official examples
 - [REST API Testing](https://httpie.io/) - API testing tool
 
 ---

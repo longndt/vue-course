@@ -5,7 +5,7 @@
 **Difficulty**: Intermediate
 **Status**: Required
 
-In this lesson, you'll master Vue 3 component patterns, reactive state management, and build reusable component libraries. We'll cover modern component composition patterns, composables, and form handling techniques used in professional Vue applications.
+In this lesson, you'll master Vue component patterns, reactive state management, and build reusable component libraries. We'll cover modern component composition patterns, composables, and form handling techniques used in professional Vue applications.
 
 ---
 
@@ -24,7 +24,7 @@ After completing this lesson, you will be able to:
 
 ## 📋 Prerequisites
 
-- ✅ Vue 3 fundamentals and TypeScript setup
+- ✅ Vue fundamentals and TypeScript setup
 - ✅ Understanding of component basics and props
 - ✅ Experience with reactive state (ref, reactive)
 - ✅ Familiarity with Vue template syntax
@@ -33,7 +33,7 @@ After completing this lesson, you will be able to:
 
 ## 🚀 Quick Start
 
-> 🎯 Goal: Master Vue 3 component patterns and reactive state management
+> 🎯 Goal: Master Vue component patterns and reactive state management
 
 ### Setup
 ```bash
@@ -59,7 +59,7 @@ npm run dev
 ## What's Next
 
 ### Ready to Continue?
-- **Completed this lesson?** → Proceed to [Lesson 3: API Integration & Data Management](../lesson3-data/)
+- **Completed this lesson?** → Proceed to [Lesson 3: API Integration & Data Management](../lesson3-api-data/)
 
 ### Need More Practice?
 - **Study theory** → [theory2.md](./theory/theory2.md) - Deep dive into component patterns
@@ -76,16 +76,16 @@ npm run dev
 ## Resources & References
 
 ### Official Documentation
-- [Vue 3 Components](https://vuejs.org/guide/essentials/component-basics.html) - Component fundamentals
-- [Vue 3 Composables](https://vuejs.org/guide/reusability/composables.html) - Reusable logic patterns
-- [Vue 3 Reactivity](https://vuejs.org/guide/extras/reactivity-in-depth.html) - Deep dive into reactivity
+- [Vue Components](https://vuejs.org/guide/essentials/component-basics.html) - Component fundamentals
+- [Vue Composables](https://vuejs.org/guide/reusability/composables.html) - Reusable logic patterns
+- [Vue Reactivity](https://vuejs.org/guide/extras/reactivity-in-depth.html) - Deep dive into reactivity
 
 ### Video Tutorials
-- [Vue 3 Components Deep Dive](https://www.youtube.com/watch?v=2KBHvaAWJOA) - Vue Mastery
-- [Vue 3 Composables](https://www.youtube.com/watch?v=JbIzmGQXjO4) - Vue School
+- [Vue Components Deep Dive](https://www.youtube.com/watch?v=2KBHvaAWJOA) - Vue Mastery
+- [Vue Composables](https://www.youtube.com/watch?v=JbIzmGQXjO4) - Vue School
 
 ### Practice Resources
-- [Vue 3 Component Patterns](https://vue-patterns.surge.sh/) - Component design patterns
-- [Vue 3 Examples](https://github.com/vuejs/vue-next/tree/master/packages/vue/examples) - Official examples
+- [Vue Component Patterns](https://vue-patterns.surge.sh/) - Component design patterns
+- [Vue Examples](https://github.com/vuejs/vue-next/tree/master/packages/vue/examples) - Official examples
 
 ---

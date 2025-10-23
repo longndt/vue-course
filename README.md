@@ -4,6 +4,7 @@
 
 This course teaches Vue 3 app development with industry-standard practices through hands-on examples.
 
+**Vue Version**: Vue 3.5+ (Latest stable release)
 **Audience**: IT students and developers looking to master Vue 3
 
 **Format**: Theory, hands-on practice, and project-based learning
@@ -34,13 +35,13 @@ This course teaches Vue 3 app development with industry-standard practices throu
 
 ### Lesson 0: Prerequisites & JavaScript ES6+ Refresher (Optional)
 - Modern JavaScript features essential for Vue 3
-- [Go to Prerequisites Review](./lesson0-prerequisites)
+- [Go to Prerequisites Review](./lesson0-javascript-es6)
 
-### Lesson 1: Vue 3 Fundamentals & TypeScript Setup
+### Lesson 1: Vue Fundamentals & TypeScript Setup
 - Setting up development environment with Vite
 - Component-based architecture and Vue templates
 - **Lab Project**: Create a component library with TypeScript
-- [Go to Lesson 1](./lesson1-setup)
+- [Go to Lesson 1](./lesson1-fundamentals-setup)
 
 ### Lesson 2: Component Architecture & Reactive State
 - Advanced component patterns and composition
@@ -53,7 +54,7 @@ This course teaches Vue 3 app development with industry-standard practices throu
 - Connecting Vue to Node.js/Express/MongoDB backends
 - RESTful API consumption and error handling
 - **Lab Project**: CRUD application with API integration
-- [Go to Lesson 3](./lesson3-data)
+- [Go to Lesson 3](./lesson3-api-data)
 
 ### Lesson 4: Routing, Authentication & Advanced Patterns
 - Vue Router and JWT authentication
@@ -112,14 +113,14 @@ cd vue-course
 **🎯 Follow this exact order for the best learning experience:**
 
 #### 1️⃣ **Start with Prerequisites** (If needed)
-👉 **[Lesson 0: Essential JavaScript ES6+ Knowledge](./lesson0-prerequisites/readme.md)**
+👉 **[Lesson 0: Essential JavaScript ES6+ Knowledge](./lesson0-javascript-es6/readme.md)**
 - Review modern JavaScript features
 - Master concepts that will be used in Vue 3
 
 #### 2️⃣ **Learn Lessons 1-5** (In sequence)
-- 👉 **[Lesson 1: Vue 3 Fundamentals & TypeScript Setup](./lesson1-setup/readme.md)**
+- 👉 **[Lesson 1: Vue Fundamentals & TypeScript Setup](./lesson1-fundamentals-setup/readme.md)**
 - 👉 **[Lesson 2: Component Architecture & Reactive State](./lesson2-components/readme.md)**
-- 👉 **[Lesson 3: API Integration & Data Management](./lesson3-data/readme.md)**
+- 👉 **[Lesson 3: API Integration & Data Management](./lesson3-api-data/readme.md)**
 - 👉 **[Lesson 4: Routing, Authentication & Advanced Patterns](./lesson4-routing-auth/readme.md)**
 - 👉 **[Lesson 5: Full-Stack Integration & Production Deployment](./lesson5-fullstack/readme.md)**
 
@@ -135,10 +136,10 @@ cd vue-course
 
 ```bash
 # Start with Lesson 0 (if you need to review fundamentals)
-cd lesson0-prerequisites
+cd lesson0-javascript-es6
 
 # Or start directly with Lesson 1
-cd lesson1-setup
+cd lesson1-fundamentals-setup
 npm install
 npm run dev
 ```

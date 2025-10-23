@@ -1,18 +1,18 @@
-# Vue 3 Course Roadmap 🗺️
+# Vue Course Roadmap 🗺️
 
 ## Complete Learning Path Overview
 
-This diagram shows the complete learning journey from Vue 3 fundamentals to full-stack application development.
+This diagram shows the complete learning journey from Vue fundamentals to full-stack application development.
 
 ```mermaid
 graph TD
-    A[🎯 Prerequisites<br/>JavaScript ES6+ Review] --> B[📚 Lesson 1<br/>Vue 3 Fundamentals<br/>& TypeScript Setup]
+    A[🎯 Prerequisites<br/>JavaScript ES6+ Review] --> B[📚 Lesson 1<br/>Vue Fundamentals<br/>& TypeScript Setup]
     B --> C[🏗️ Lesson 2<br/>Component Architecture<br/>& Reactive State]
     C --> D[🌐 Lesson 3<br/>API Integration<br/>& Data Management]
     D --> E[🔐 Lesson 4<br/>Routing, Authentication<br/>& Advanced Patterns]
     E --> F[🚀 Lesson 5<br/>Full-Stack Integration<br/>& Production Deployment]
 
-    B --> B1[📖 Theory: Vue 3 Concepts]
+    B --> B1[📖 Theory: Vue Concepts]
     B --> B2[🧪 Lab: Student Dashboard]
     B --> B3[📝 Quiz: Fundamentals]
 
@@ -52,7 +52,7 @@ graph TD
 
 ### Phase 1: Foundations (Lessons 0-1)
 - **Prerequisites**: JavaScript ES6+ review
-- **Vue 3 Basics**: Components, templates, reactivity
+- **Vue Basics**: Components, templates, reactivity
 - **TypeScript**: Type safety and modern development
 - **Tools**: Vite, VS Code, development environment
 
@@ -72,11 +72,11 @@ graph TD
 
 ```mermaid
 gantt
-    title Vue 3 Course Skills Development
+    title Vue Course Skills Development
     dateFormat  YYYY-MM-DD
     section Foundations
     JavaScript ES6+     :done, js, 2024-01-01, 1w
-    Vue 3 Basics        :done, vue, 2024-01-08, 2w
+    Vue Basics        :done, vue, 2024-01-08, 2w
     TypeScript          :done, ts, 2024-01-08, 2w
 
     section Core Skills
@@ -95,7 +95,7 @@ gantt
 ```mermaid
 graph LR
     A[HTML/CSS Basics] --> B[JavaScript ES6+]
-    B --> C[Vue 3 Fundamentals]
+    B --> C[Vue Fundamentals]
     C --> D[Component Architecture]
     D --> E[API Integration]
     E --> F[Full-Stack Development]
@@ -120,7 +120,7 @@ graph LR
 
 ### Knowledge Checkpoints
 - **Quiz 0**: JavaScript ES6+ fundamentals
-- **Quiz 1**: Vue 3 basics and TypeScript
+- **Quiz 1**: Vue basics and TypeScript
 - **Quiz 2**: Component architecture patterns
 - **Quiz 3**: API integration and data management
 - **Quiz 4**: Routing, authentication, and advanced patterns
@@ -134,7 +134,7 @@ graph LR
 - **Lab 5**: Complete full-stack application
 
 ### Final Project
-Build a complete, production-ready Vue 3 application that demonstrates:
+Build a complete, production-ready Vue application that demonstrates:
 - Modern component architecture
 - State management with Pinia
 - API integration with backend
@@ -159,7 +159,7 @@ Build a complete, production-ready Vue 3 application that demonstrates:
 ## Success Metrics
 
 ### Technical Skills
-- [ ] Can build Vue 3 applications from scratch
+- [ ] Can build Vue applications from scratch
 - [ ] Understands component composition patterns
 - [ ] Can integrate with REST APIs
 - [ ] Implements authentication and routing
@@ -181,4 +181,4 @@ Build a complete, production-ready Vue 3 application that demonstrates:
 
 ---
 
-**Next Steps**: Start with [Lesson 0: Prerequisites](../lesson0-prerequisites/readme.md) if you need to review JavaScript fundamentals, or jump directly to [Lesson 1: Vue 3 Fundamentals](../lesson1-setup/readme.md) if you're ready to begin!
+**Next Steps**: Start with [Lesson 0: Prerequisites](../lesson0-javascript-es6/readme.md) if you need to review JavaScript fundamentals, or jump directly to [Lesson 1: Vue Fundamentals](../lesson1-fundamentals-setup/readme.md) if you're ready to begin!

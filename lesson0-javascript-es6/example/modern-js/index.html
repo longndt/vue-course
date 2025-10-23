@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modern JavaScript Features - ES6+ Examples</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #333;
+        }
+
+        .container {
+            background: white;
+            border-radius: 10px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .section {
+            margin: 30px 0;
+            padding: 20px;
+            border: 2px solid #e74c3c;
+            border-radius: 8px;
+            background: #f8f9fa;
+        }
+
+        .section h2 {
+            color: #e74c3c;
+            margin-top: 0;
+        }
+
+        .code-block {
+            background: #2c3e50;
+            color: #ecf0f1;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 10px 0;
+            overflow-x: auto;
+        }
+
+        .result {
+            background: #27ae60;
+            color: white;
+            padding: 10px;
+            border-radius: 5px;
+            margin: 10px 0;
+            font-weight: bold;
+        }
+
+        .exercise {
+            background: #3498db;
+            color: white;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 15px 0;
+        }
+
+        button {
+            background: #e74c3c;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+        }
+
+        button:hover {
+            background: #c0392b;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>🚀 Modern JavaScript Features - ES6+ Examples</h1>
+        <p style="text-align: center; color: #7f8c8d; font-size: 18px;">
+            Essential JavaScript concepts for Vue 3 development
+        </p>
+
+        <!-- Arrow Functions Section -->
+        <div class="section">
+            <h2>1. Arrow Functions</h2>
+            <p>Arrow functions are crucial in Vue 3 for event handlers and composables.</p>
+
+            <div class="code-block">
+                // Traditional function
+                function traditionalGreet(name) {
+                return `Hello, ${name}!`;
+                }
+
+                // Arrow function (preferred in Vue 3)
+                const arrowGreet = (name) => {
+                return `Hello, ${name}!`;
+                };
+
+                // Concise arrow function
+                const conciseGreet = name => `Hello, ${name}!`;
+
+                // Arrow function with multiple parameters
+                const calculateArea = (width, height) => width * height;
+            </div>
+
+            <button onclick="testArrowFunctions()">Test Arrow Functions</button>
+            <div id="arrow-result" class="result" style="display: none;"></div>
+        </div>
+
+        <!-- Destructuring Section -->
+        <div class="section">
+            <h2>2. Destructuring</h2>
+            <p>Essential for working with Vue props and reactive state.</p>
+
+            <div class="code-block">
+                // Object destructuring
+                const student = {
+                name: "Alice",
+                age: 21,
+                major: "Computer Science",
+                gpa: 3.8
+                };
+
+                const { name, age, major } = student;
+                console.log(name); // 'Alice'
+
+                // Array destructuring
+                const scores = [85, 92, 78, 96];
+                const [first, second, ...rest] = scores;
+
+                // Function parameter destructuring (common in Vue composables)
+                const displayStudent = ({ name, age, gpa }) => {
+                return `${name} is ${age} years old with GPA ${gpa}`;
+                };
+            </div>
+
+            <button onclick="testDestructuring()">Test Destructuring</button>
+            <div id="destructuring-result" class="result" style="display: none;"></div>
+        </div>
+
+        <!-- Template Literals Section -->
+        <div class="section">
+            <h2>3. Template Literals</h2>
+            <p>For dynamic strings in Vue templates and composables.</p>
+
+            <div class="code-block">
+                const studentName = "Sarah";
+                const grade = "A";
+                const course = "Vue 3 Development";
+
+                // Old way
+                const oldMessage = "Student " + studentName + " received grade " + grade + " in " + course;
+
+                // Template literal (preferred)
+                const newMessage = `Student ${studentName} received grade ${grade} in ${course}`;
+
+                // Multi-line strings
+                const htmlTemplate = `
+                <div class="student-card">
+                    <h2>Welcome ${studentName}</h2>
+                    <p>Your grade: ${grade}</p>
+                    <p>Course: ${course}</p>
+                </div>
+                `;
+            </div>
+
+            <button onclick="testTemplateLiterals()">Test Template Literals</button>
+            <div id="template-result" class="result" style="display: none;"></div>
+        </div>
+
+        <!-- Spread Operator Section -->
+        <div class="section">
+            <h2>4. Spread Operator</h2>
+            <p>For copying and merging objects/arrays in Vue reactive state.</p>
+
+            <div class="code-block">
+                // Array spreading
+                const fruits = ["apple", "banana"];
+                const moreFruits = ["orange", "grape"];
+                const allFruits = [...fruits, ...moreFruits];
+
+                // Object spreading (very important for Vue reactive state)
+                const student = { name: "Alice", age: 21 };
+                const updatedStudent = { ...student, grade: "A", major: "CS" };
+
+                // Function arguments
+                const numbers = [1, 2, 3, 4, 5];
+                const max = Math.max(...numbers);
+            </div>
+
+            <button onclick="testSpreadOperator()">Test Spread Operator</button>
+            <div id="spread-result" class="result" style="display: none;"></div>
+        </div>
+
+        <!-- Practice Exercise -->
+        <div class="exercise">
+            <h3>🎯 Practice Exercise</h3>
+            <p>Create a function that takes an array of students and returns:</p>
+            <ul>
+                <li>Students with GPA > 3.5</li>
+                <li>Formatted as: "Name: GPA"</li>
+                <li>Sorted by GPA (highest first)</li>
+            </ul>
+            <button onclick="runExercise()">Run Exercise</button>
+            <div id="exercise-result" class="result" style="display: none;"></div>
+        </div>
+    </div>
+
+    <script>
+        // Arrow Functions Demo
+        function testArrowFunctions() {
+            const traditionalGreet = function (name) {
+                return `Hello, ${name}!`;
+            };
+
+            const arrowGreet = (name) => {
+                return `Hello, ${name}!`;
+            };
+
+            const conciseGreet = name => `Hello, ${name}!`;
+
+            const calculateArea = (width, height) => width * height;
+
+            const result = `
+                Traditional: ${traditionalGreet("Alice")}<br>
+                Arrow: ${arrowGreet("Bob")}<br>
+                Concise: ${conciseGreet("Charlie")}<br>
+                Area (5x3): ${calculateArea(5, 3)}
+            `;
+
+            document.getElementById('arrow-result').innerHTML = result;
+            document.getElementById('arrow-result').style.display = 'block';
+        }
+
+        // Destructuring Demo
+        function testDestructuring() {
+            const student = {
+                name: "Alice",
+                age: 21,
+                major: "Computer Science",
+                gpa: 3.8
+            };
+
+            const { name, age, major } = student;
+            const scores = [85, 92, 78, 96];
+            const [first, second, ...rest] = scores;
+
+            const displayStudent = ({ name, age, gpa }) => {
+                return `${name} is ${age} years old with GPA ${gpa}`;
+            };
+
+            const result = `
+                Destructured name: ${name}<br>
+                First score: ${first}, Second: ${second}<br>
+                Rest scores: [${rest.join(', ')}]<br>
+                Display: ${displayStudent(student)}
+            `;
+
+            document.getElementById('destructuring-result').innerHTML = result;
+            document.getElementById('destructuring-result').style.display = 'block';
+        }
+
+        // Template Literals Demo
+        function testTemplateLiterals() {
+            const studentName = "Sarah";
+            const grade = "A";
+            const course = "Vue 3 Development";
+
+            const oldMessage = "Student " + studentName + " received grade " + grade + " in " + course;
+            const newMessage = `Student ${studentName} received grade ${grade} in ${course}`;
+
+            const htmlTemplate = `
+                <div class="student-card">
+                    <h2>Welcome ${studentName}</h2>
+                    <p>Your grade: ${grade}</p>
+                    <p>Course: ${course}</p>
+                </div>
+            `;
+
+            const result = `
+                Old way: ${oldMessage}<br>
+                Template literal: ${newMessage}<br>
+                HTML template: <pre>${htmlTemplate}</pre>
+            `;
+
+            document.getElementById('template-result').innerHTML = result;
+            document.getElementById('template-result').style.display = 'block';
+        }
+
+        // Spread Operator Demo
+        function testSpreadOperator() {
+            const fruits = ["apple", "banana"];
+            const moreFruits = ["orange", "grape"];
+            const allFruits = [...fruits, ...moreFruits];
+
+            const student = { name: "Alice", age: 21 };
+            const updatedStudent = { ...student, grade: "A", major: "CS" };
+
+            const numbers = [1, 2, 3, 4, 5];
+            const max = Math.max(...numbers);
+
+            const result = `
+                All fruits: [${allFruits.join(', ')}]<br>
+                Original student: ${JSON.stringify(student)}<br>
+                Updated student: ${JSON.stringify(updatedStudent)}<br>
+                Max number: ${max}
+            `;
+
+            document.getElementById('spread-result').innerHTML = result;
+            document.getElementById('spread-result').style.display = 'block';
+        }
+
+        // Practice Exercise
+        function runExercise() {
+            const students = [
+                { name: "Alice", gpa: 3.8 },
+                { name: "Bob", gpa: 3.2 },
+                { name: "Charlie", gpa: 3.9 },
+                { name: "Diana", gpa: 3.6 },
+                { name: "Eve", gpa: 2.8 }
+            ];
+
+            // Your solution here
+            const highPerformers = students
+                .filter(student => student.gpa > 3.5)
+                .sort((a, b) => b.gpa - a.gpa)
+                .map(student => `${student.name}: ${student.gpa}`);
+
+            const result = `
+                High performers (GPA > 3.5):<br>
+                ${highPerformers.join('<br>')}
+            `;
+
+            document.getElementById('exercise-result').innerHTML = result;
+            document.getElementById('exercise-result').style.display = 'block';
+        }
+    </script>
+</body>
+
+</html>

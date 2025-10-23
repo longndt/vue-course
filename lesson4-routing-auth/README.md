@@ -81,14 +81,14 @@ npm run dev
 ### Official Documentation
 - [Vue Router](https://router.vuejs.org/) - Official routing library
 - [Pinia](https://pinia.vuejs.org/) - State management library
-- [Vue 3 Advanced Patterns](https://vuejs.org/guide/extras/composition-api-faq.html) - Advanced concepts
+- [Vue Advanced Patterns](https://vuejs.org/guide/extras/composition-api-faq.html) - Advanced concepts
 
 ### Video Tutorials
 - [Vue Router Tutorial](https://www.youtube.com/watch?v=2KBHvaAWJOA) - Vue Mastery
 - [Pinia State Management](https://www.youtube.com/watch?v=JbIzmGQXjO4) - Vue School
 
 ### Practice Resources
-- [Vue 3 Authentication](https://github.com/vuejs/vue-next/tree/master/packages/vue/examples) - Auth examples
+- [Vue Authentication](https://github.com/vuejs/vue-next/tree/master/packages/vue/examples) - Auth examples
 - [JWT.io](https://jwt.io/) - JWT token debugger
 
 ---
