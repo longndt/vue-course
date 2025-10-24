@@ -1,80 +1,187 @@
-# Vue Course
+# Vue Course - LongNDT
 
 ## Course Overview
 
-This course teaches Vue 3 app development with industry-standard practices through hands-on examples.
+This course teaches **Vue 3 with TypeScript** development using industry-standard practices through hands-on examples.
 
-**Vue Version**: Vue 3.5+ (Latest stable release)
-**Audience**: IT students and developers looking to master Vue 3
+**Format** Theory, hands-on practice, and project-based learning
 
-**Format**: Theory, hands-on practice, and project-based learning
+> **If you prefer to learn Vue with JavaScript only**
+>
+> ➡️ **[Switch to JavaScript](./vue-javascript/)**⬅️
 
 ## Prerequisites
 
-- HTML, CSS, and JavaScript fundamentals
+- HTML and CSS fundamentals
+- TypeScript basics (types, interfaces, generics)
 - Basic programming concepts (variables, functions, loops, objects)
 - Command line operations
-- Experience with at least one backend technology
-- Basic understanding of databases and APIs
+- **Optional but helpful** Basic understanding of HTTP and APIs (will be taught in Lesson 3)
+- **Optional but helpful** Familiarity with backend concepts (covered in Lessons 3-5)
 
-## What You'll Learn
+## What You Will Learn
 
-- Build modern Vue 3 applications with Composition API and script setup
-- Create reusable component architectures with Vue's component system
-- Manage application state with Pinia and reactive patterns
-- Implement client-side routing with Vue Router and authentication
-- Handle forms, validation, and user interactions with Vue's reactivity
-- Integrate Vue frontends with REST APIs
+- Build modern Vue 3 applications with **TypeScript** and Composition API
+- Understand Vue fundamentals and component-based architecture
+- Master TypeScript syntax for type-safe Vue components
+- Create strongly-typed, reusable component libraries with props and interfaces
+- Manage application state with multiple patterns
+- Implement client-side routing with authentication
+- Handle forms, validation, and user interactions with type safety
+- Integrate Vue frontend with REST APIs using typed interfaces
 - Implement JWT-based authentication
 - Build real-time features with WebSockets
-- Use modern development tools (Git, ESLint, TypeScript, Vite)
-- Write tests for Vue components with Vitest
+- Use modern development tools
+- Write tests for Vue components
 - Deploy applications to production
+- Implement accessibility best practices with ARIA attributes
+- Use TypeScript strict mode for enhanced type safety
+- Follow modern Vue 3 patterns and best practices
 
 ## Course Structure
 
-### Lesson 0: Prerequisites & JavaScript ES6+ Refresher (Optional)
-- Modern JavaScript features essential for Vue 3
-- [Go to Prerequisites Review](./lesson0-javascript-es6)
+### Lesson 0: TypeScript Prerequisites
+- TypeScript essentials for Vue development
+- Interfaces, generics, and utility types
+- **Lab Project** TypeScript practical exercises
 
-### Lesson 1: Vue Fundamentals & TypeScript Setup
+### Lesson 1: Vue Fundamentals & Project Setup
 - Setting up development environment with Vite
-- Component-based architecture and Vue templates
-- **Lab Project**: Create a component library with TypeScript
-- [Go to Lesson 1](./lesson1-fundamentals-setup)
+- Understanding Vue basics and TypeScript integration
+- Creating your first Vue components
+- Basic styling and project structure
+- **Lab Project** Build a simple welcome page with components
 
-### Lesson 2: Component Architecture & Reactive State
-- Advanced component patterns and composition
-- State management (ref, reactive, computed, Pinia)
-- Composables and form handling
-- **Lab Project**: Build a data management interface with CRUD operations
-- [Go to Lesson 2](./lesson2-components)
+### Lesson 2: Component Architecture & Vue Composition API
+- Component composition and props with TypeScript
+- State management with TypeScript
+- Custom composables with proper typing
+- Form handling with type safety
+- Building reusable component libraries
+- **Lab Project** Build a data management interface with CRUD operations
 
 ### Lesson 3: API Integration & Data Management
-- Connecting Vue to Node.js/Express/MongoDB backends
+- Connecting Vue to Node.js/Express backend & MongoDB database
 - RESTful API consumption and error handling
-- **Lab Project**: CRUD application with API integration
-- [Go to Lesson 3](./lesson3-api-data)
+- **Lab Project** CRUD application with API integration
 
-### Lesson 4: Routing, Authentication & Advanced Patterns
+### Lesson 4: Routing & Authentication
 - Vue Router and JWT authentication
 - Protected routes and advanced Vue patterns
-- **Lab Project**: Authentication system with protected routes
-- [Go to Lesson 4](./lesson4-routing-auth)
+- **Lab Project** Authentication system with protected routes
 
 ### Lesson 5: Full-Stack Integration & Production Deployment
 - Full-stack architecture with VENM stack (Vue/Express/Node/MongoDB)
 - File uploads, WebSockets, and deployment
-- **Lab Project**: Complete application deployment
-- [Go to Lesson 5](./lesson5-fullstack)
+- **Lab Project** Complete application deployment
 
-## Additional Resources
+---
 
-- [**Advanced State Management Guide**](./extras/state-management.md) - Pinia, Vuex, and reactive patterns
-- [**Testing Guide**](./extras/testing-guide.md) - Unit, integration, and e2e testing with Vitest
-- [**Modern Vue Stack 2025**](./extras/modern-stack.md) - Latest tools and technologies
-- [**Troubleshooting Guide**](./extras/troubleshooting-guide.md) - Common issues and solutions
-- [**Advanced Vue Patterns**](./extras/advanced-patterns.md) - Enterprise-level patterns
+## 📁 Lesson Structure
+
+Each lesson follows a standardized structure designed for effective learning:
+
+```
+lesson-topic/
+├──  reference/          # Quick reference codes
+├──  example/            # Working code examples
+├──  theory/             # Comprehensive documentation
+├──  lab/                # Hands-on exercises
+└──  quiz/               # Knowledge assessment
+```
+
+**How to run quizzes** Use **Live Server**extension in VS Code
+- Right-click quiz file → "Open with Live Server"
+- Or click "Go Live" button in bottom status bar
+- Quiz opens in browser with interactive features
+
+---
+
+## 🗺️ Visual Diagrams
+
+- **[Visual Learning Diagrams](./diagrams/readme.md)**- Complete guide to visual learning
+
+Quick links to key diagrams:
+- 📊 [Course Structure](./diagrams/course_structure_diagram.md) - Complete TypeScript course organization & navigation
+- 🗺️ [Course Roadmap](./diagrams/course_roadmap.md) - Complete TypeScript learning path visualization
+- 🔄 [Component Lifecycle](./diagrams/component_lifecycle.md) - How Vue components work with TypeScript
+- 📦 [State Management](./diagrams/pinia_state_management.md) - State patterns and flows with TypeScript
+- 🌐 [API Integration](./diagrams/api_integration_data_fetching.md) - Data fetching and caching with TypeScript
+- 🔐 [Authentication](./diagrams/authentication_flow.md) - TypeScript auth system architecture
+- 🏗️ [Full-Stack Architecture](./diagrams/vue3_architecture.md) - Complete TypeScript system design
+- 📁 [Vue Project Structure](./diagrams/vue_project_structure.md) - TypeScript project organization
+- 🛣️ [Routing Flow](./diagrams/vue_router_navigation.md) - Vue Router navigation with TypeScript
+- 🚀 [Deployment Flow](./diagrams/deployment_flow.md) - TypeScript deployment process
+
+---
+
+## 📚 How to Study This Course Effectively
+
+### **Step 1: Start with Reference Guide**
+
+**Goal** Get a quick overview of what you'll learn
+- Skim through main topics and code examples
+- Don't try to understand everything deeply yet
+- Focus on: "What concepts will I learn?"
+- Mental preparation for the lesson ahead
+
+### **Step 2: Explore Working Example**
+
+**Goal** See concepts in action before diving into theory
+- Run the example project first
+- Play with the UI, test different features
+- Open browser DevTools to inspect components
+- Look at the code structure (don't read line-by-line yet)
+- Ask yourself: "How does this work?"
+
+### **Step 3: Read Theory as Reference**
+
+**Goal** Understand concepts deeply when needed
+- **DON'T**read cover-to-cover like a novel
+- **DO**read sections related to what you're coding
+- Read concept → Go to example code → See it in action → Return to theory
+- Use Ctrl+F to search for specific topics
+- Bookmark important sections for later reference
+
+### **Step 4: Code Along with Reference**
+
+**Goal** Build muscle memory and understanding
+- Create a new project or use example as base
+- Type every line yourself (even if you don't understand yet)
+- Run code frequently to see results
+- Make small changes to experiment
+- Compare your code with example/ when stuck
+
+### **Step 5: Complete Lab Project**
+
+**Goal** Apply knowledge to real-world scenarios
+- Read requirements carefully
+- Plan before coding (sketch components, data flow)
+- Code incrementally (one feature at a time)
+- Test each feature before moving to next
+- **Get stuck?**→ Check reference/ → Review example code → Read relevant theory section
+- **Still stuck?**→ Review example code more carefully → Try different approach
+- Compare your solution with example/ after completion
+
+### **Step 6: Take the Quiz**
+
+**Goal** Verify you're ready for next lesson
+- Answer all questions honestly (no peeking!)
+- Score below 70%? → Review weak areas → Retake quiz
+- Score above 80%? → You're ready for next lesson!
+- Use quiz results to identify what to review
+
+### **Step 7: Review and Reflect**
+
+**Goal** Solidify learning before moving forward
+- Review your lab code vs. example code
+- What did you learn?
+- What was challenging?
+- What would you do differently?
+- Write notes for future reference
+- Create a personal cheat sheet
+
+---
 
 ## 🚀 Getting Started
 
@@ -82,13 +189,17 @@ This course teaches Vue 3 app development with industry-standard practices throu
 
 **📋 First, ensure you have all required software installed:**
 
-👉 **[Go to Environment Setup Guide](./extras/environment-setup.md)**
+**[Go to Environment Setup Guide](./extras/environment_setup.md)**for detailed setup instructions
 
 Make sure you have installed:
 - Node.js (version 18 or higher)
 - Visual Studio Code
 - Git
 - Required VS Code extensions
+
+**Having installation or setup issues?**
+
+**[Check Troubleshooting Guide](./extras/troubleshooting_guide.md)**for common problems and solutions
 
 ### Step 2: Install Markdown Reading Support Extension
 
@@ -98,7 +209,7 @@ Make sure you have installed:
 2. Go to Extensions (Ctrl+Shift+X)
 3. Search and install: **"Markdown Preview Enhanced"**
 4. After installation, you can:
-   - Press `Ctrl+Shift+V` to open markdown preview
+   - Press `Ctrl+K V` to open markdown preview
    - Or click the "Open Preview to the Side" icon when viewing .md files
 
 ### Step 3: Clone Repository
@@ -110,27 +221,33 @@ cd vue-course
 
 ### Step 4: Recommended Learning Path
 
-**🎯 Follow this exact order for the best learning experience:**
+**Follow this exact order for the best learning experience:**
 
-#### 1️⃣ **Start with Prerequisites** (If needed)
-👉 **[Lesson 0: Essential JavaScript ES6+ Knowledge](./lesson0-javascript-es6/readme.md)**
-- Review modern JavaScript features
-- Master concepts that will be used in Vue 3
+#### 1⃣ **Start with Prerequisites**(If needed)
+- **[Lesson 0: TypeScript Prerequisites](./lesson0-javascript-es6/readme.md)**
+- Review TypeScript fundamentals
+- Master types, interfaces, and generics used in Vue
 
-#### 2️⃣ **Learn Lessons 1-5** (In sequence)
-- 👉 **[Lesson 1: Vue Fundamentals & TypeScript Setup](./lesson1-fundamentals-setup/readme.md)**
-- 👉 **[Lesson 2: Component Architecture & Reactive State](./lesson2-components/readme.md)**
-- 👉 **[Lesson 3: API Integration & Data Management](./lesson3-api-data/readme.md)**
-- 👉 **[Lesson 4: Routing, Authentication & Advanced Patterns](./lesson4-routing-auth/readme.md)**
-- 👉 **[Lesson 5: Full-Stack Integration & Production Deployment](./lesson5-fullstack/readme.md)**
+#### 2⃣ **Learn Lessons 1-5**(In sequence)
+- **[Lesson 1: Vue Fundamentals & Project Setup](./lesson1-fundamentals-setup/readme.md)**
+- **[Lesson 2: Component Architecture & Vue Composition API](./lesson2-components/readme.md)**
+- **[Lesson 3: API Integration & Data Management](./lesson3-api-data/readme.md)**
+- **[Lesson 4: Routing & Authentication](./lesson4-routing-auth/readme.md)**
+- **[Lesson 5: Full-Stack Integration & Production Deployment](./lesson5-fullstack/readme.md)**
 
-#### 3️⃣ **Advanced Materials** (After completing core lessons)
-📚 **The `extras/` folder contains advanced documentation:**
-- **[State Management Guide](./extras/state-management.md)** - Advanced state management with Pinia
-- **[Testing Guide](./extras/testing-guide.md)** - Testing strategies with Vitest
-- **[Modern Vue Stack 2025](./extras/modern-stack.md)** - Latest technologies
-- **[Advanced Vue Patterns](./extras/advanced-patterns.md)** - Enterprise-level patterns
-- **[Troubleshooting Guide](./extras/troubleshooting-guide.md)** - Common issues and solutions
+#### 3⃣ **Continue with Advanced Materials**(Optional)
+- **[Advanced Materials & Resources](./extras/readme.md)**- Complete guide to advanced topics
+
+**Quick links to key advanced topics:**
+
+- 🏗️ **[Advanced Patterns](./extras/advanced_patterns.md)**- Enterprise-level Vue patterns and architectural decisions
+- ⚡ **[Performance Optimization](./extras/performance_optimization.md)**- Complete performance optimization guide
+- 🔄 **[State Management](./extras/state_management.md)**- Comprehensive state management solutions
+- 🔒 **[Security Best Practices](./extras/security_guide.md)**- Essential security practices for Vue applications
+- ♿ **[Accessibility Guidelines](./extras/accessibility_guide.md)**- Making Vue applications accessible to everyone
+- 🧪 **[Testing Strategies](./extras/testing_strategies.md)**- Comprehensive testing approaches for Vue applications
+- 🛠️ **[Environment Setup](./extras/environment_setup.md)**- Complete development environment setup
+- 🔧 **[Troubleshooting Guide](./extras/troubleshooting_guide.md)**- Common issues and solutions
 
 ### Step 5: Start Learning
 
@@ -140,32 +257,16 @@ cd lesson0-javascript-es6
 
 # Or start directly with Lesson 1
 cd lesson1-fundamentals-setup
-npm install
-npm run dev
 ```
 
-### 💡 Learning Tips
+---
 
-- **Read the readme.md** of each lesson carefully before starting
-- **Complete all labs** to solidify your understanding
-- **Use Markdown Preview Enhanced** for better documentation reading experience
-- **Refer to the extras section** when you want to dive deeper
-- **Follow the "example" folder** to see complete examples
+## 💡 Learning Tips
 
-## Development Tools
+- **Use *Markdown Preview Enhanced*** for better reading experience
+- **Read the *readme***  of each lesson carefully before starting
+- **Complete all labs**to solidify your understanding
+- **Follow the *example* folder** to see complete example
+- **Check the *Troubleshooting Guide*** for quick solutions
 
-### Required Software
-- [Node.js](https://nodejs.org/) (v18 or higher)
-- [Visual Studio Code](https://code.visualstudio.com/)
-- [Git](https://git-scm.com/)
-
-### Essential VS Code Extensions
-- **Vue - Official** - Official Vue.js extension with TypeScript support
-- **ESLint** - Code error checking
-- **Prettier** - Automatic code formatting
-- **TypeScript Vue Plugin (Volar)** - Enhanced TypeScript support for Vue
-- **Markdown Preview Enhanced** - Enhanced markdown reading (Highly recommended!)
-
-### Browser Extensions
-- [Vue DevTools](https://devtools.vuejs.org/) - Official Vue.js developer tools
-- [Vue DevTools Legacy](https://chrome.google.com/webstore/detail/vuejs-devtools) - For Vue 2/3 debugging
+---
