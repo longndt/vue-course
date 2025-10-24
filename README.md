@@ -2,18 +2,14 @@
 
 ## Course Overview
 
-This course teaches **Vue 3 with TypeScript** development using industry-standard practices through hands-on examples.
+This course teaches **Vue 3 with JavaScript** development using industry-standard practices through hands-on examples.
 
 **Format** Theory, hands-on practice, and project-based learning
-
-> **If you prefer to learn Vue with JavaScript only**
->
-> ➡️ **[Switch to JavaScript](./vue-javascript/)**⬅️
 
 ## Prerequisites
 
 - HTML and CSS fundamentals
-- TypeScript basics (types, interfaces, generics)
+- JavaScript ES6+ basics (variables, functions, loops, objects, classes)
 - Basic programming concepts (variables, functions, loops, objects)
 - Command line operations
 - **Optional but helpful** Basic understanding of HTTP and APIs (will be taught in Lesson 3)
@@ -21,42 +17,41 @@ This course teaches **Vue 3 with TypeScript** development using industry-standar
 
 ## What You Will Learn
 
-- Build modern Vue 3 applications with **TypeScript** and Composition API
+- Build modern Vue 3 applications with **JavaScript** and Composition API
 - Understand Vue fundamentals and component-based architecture
-- Master TypeScript syntax for type-safe Vue components
-- Create strongly-typed, reusable component libraries with props and interfaces
+- Master JavaScript syntax for Vue components
+- Create reusable component libraries with props and data
 - Manage application state with multiple patterns
 - Implement client-side routing with authentication
-- Handle forms, validation, and user interactions with type safety
-- Integrate Vue frontend with REST APIs using typed interfaces
+- Handle forms, validation, and user interactions
+- Integrate Vue frontend with REST APIs
 - Implement JWT-based authentication
 - Build real-time features with WebSockets
 - Use modern development tools
 - Write tests for Vue components
 - Deploy applications to production
 - Implement accessibility best practices with ARIA attributes
-- Use TypeScript strict mode for enhanced type safety
 - Follow modern Vue 3 patterns and best practices
 
 ## Course Structure
 
-### Lesson 0: TypeScript Prerequisites
-- TypeScript essentials for Vue development
-- Interfaces, generics, and utility types
-- **Lab Project** TypeScript practical exercises
+### Lesson 0: JavaScript ES6+ Prerequisites
+- JavaScript ES6+ essentials for Vue development
+- Modern JavaScript features, classes, and modules
+- **Lab Project** JavaScript practical exercises
 
 ### Lesson 1: Vue Fundamentals & Project Setup
 - Setting up development environment with Vite
-- Understanding Vue basics and TypeScript integration
+- Understanding Vue basics and JavaScript integration
 - Creating your first Vue components
 - Basic styling and project structure
 - **Lab Project** Build a simple welcome page with components
 
 ### Lesson 2: Component Architecture & Vue Composition API
-- Component composition and props with TypeScript
-- State management with TypeScript
-- Custom composables with proper typing
-- Form handling with type safety
+- Component composition and props with JavaScript
+- State management with JavaScript
+- Custom composables with proper structure
+- Form handling with validation
 - Building reusable component libraries
 - **Lab Project** Build a data management interface with CRUD operations
 
@@ -102,16 +97,16 @@ lesson-topic/
 - **[Visual Learning Diagrams](./diagrams/readme.md)**- Complete guide to visual learning
 
 Quick links to key diagrams:
-- 📊 [Course Structure](./diagrams/course_structure_diagram.md) - Complete TypeScript course organization & navigation
-- 🗺️ [Course Roadmap](./diagrams/course_roadmap.md) - Complete TypeScript learning path visualization
-- 🔄 [Component Lifecycle](./diagrams/component_lifecycle.md) - How Vue components work with TypeScript
-- 📦 [State Management](./diagrams/pinia_state_management.md) - State patterns and flows with TypeScript
-- 🌐 [API Integration](./diagrams/api_integration_data_fetching.md) - Data fetching and caching with TypeScript
-- 🔐 [Authentication](./diagrams/authentication_flow.md) - TypeScript auth system architecture
-- 🏗️ [Full-Stack Architecture](./diagrams/vue3_architecture.md) - Complete TypeScript system design
-- 📁 [Vue Project Structure](./diagrams/vue_project_structure.md) - TypeScript project organization
-- 🛣️ [Routing Flow](./diagrams/vue_router_navigation.md) - Vue Router navigation with TypeScript
-- 🚀 [Deployment Flow](./diagrams/deployment_flow.md) - TypeScript deployment process
+- 📊 [Course Structure](./diagrams/course_structure_diagram.md) - Complete JavaScript course organization & navigation
+- 🗺️ [Course Roadmap](./diagrams/course_roadmap.md) - Complete JavaScript learning path visualization
+- 🔄 [Component Lifecycle](./diagrams/component_lifecycle.md) - How Vue components work with JavaScript
+- 📦 [State Management](./diagrams/pinia_state_management.md) - State patterns and flows with JavaScript
+- 🌐 [API Integration](./diagrams/api_integration_data_fetching.md) - Data fetching and caching with JavaScript
+- 🔐 [Authentication](./diagrams/authentication_flow.md) - JavaScript auth system architecture
+- 🏗️ [Full-Stack Architecture](./diagrams/vue3_architecture.md) - Complete JavaScript system design
+- 📁 [Vue Project Structure](./diagrams/vue_project_structure.md) - JavaScript project organization
+- 🛣️ [Routing Flow](./diagrams/vue_router_navigation.md) - Vue Router navigation with JavaScript
+- 🚀 [Deployment Flow](./diagrams/deployment_flow.md) - JavaScript deployment process
 
 ---
 
@@ -224,9 +219,9 @@ cd vue-course
 **Follow this exact order for the best learning experience:**
 
 #### 1⃣ **Start with Prerequisites**(If needed)
-- **[Lesson 0: TypeScript Prerequisites](./lesson0-javascript-es6/readme.md)**
-- Review TypeScript fundamentals
-- Master types, interfaces, and generics used in Vue
+- **[Lesson 0: JavaScript ES6+ Prerequisites](./lesson0-javascript-es6/readme.md)**
+- Review JavaScript ES6+ fundamentals
+- Master modern JavaScript features used in Vue
 
 #### 2⃣ **Learn Lessons 1-5**(In sequence)
 - **[Lesson 1: Vue Fundamentals & Project Setup](./lesson1-fundamentals-setup/readme.md)**

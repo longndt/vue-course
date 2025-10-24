@@ -1,16 +1,12 @@
-import { ref, computed, type Ref } from 'vue';
-import type { SortConfig } from '../types/DataTable.types';
+import { ref, computed } from 'vue';
 
 /**
  * Composable to handle sorting functionality in DataTable
  */
-export function useDataTableSort<T extends Record<string, any>>(
-  data: Ref<T[]>,
-  sortable: boolean = true
-) {
-  const sortConfig = ref<SortConfig<T> | null>(null);
+export function useDataTableSort(data, sortable = true) {
+  const sortConfig = ref(null);
 
-  const requestSort = (key: keyof T) => {
+  const requestSort = (key) => {
     if (!sortable) return;
 
     if (!sortConfig.value || sortConfig.value.key !== key) {
@@ -26,14 +22,14 @@ export function useDataTableSort<T extends Record<string, any>>(
     if (!sortConfig.value) return data.value;
 
     return [...data.value].sort((a, b) => {
-      const aVal = a[sortConfig.value!.key];
-      const bVal = b[sortConfig.value!.key];
+      const aVal = a[sortConfig.value.key];
+      const bVal = b[sortConfig.value.key];
 
       if (aVal < bVal) {
-        return sortConfig.value!.direction === "asc" ? -1 : 1;
+        return sortConfig.value.direction === "asc" ? -1 : 1;
       }
       if (aVal > bVal) {
-        return sortConfig.value!.direction === "asc" ? 1 : -1;
+        return sortConfig.value.direction === "asc" ? 1 : -1;
       }
       return 0;
     });
@@ -45,16 +41,14 @@ export function useDataTableSort<T extends Record<string, any>>(
 /**
  * Composable to handle filtering functionality in DataTable
  */
-export function useDataTableFilter<T extends Record<string, any>>(
-  data: Ref<T[]>
-) {
-  const filterText = ref<string>("");
+export function useDataTableFilter(data) {
+  const filterText = ref("");
 
   const filteredData = computed(() => {
     if (!filterText.value) return data.value;
 
     const searchTerm = filterText.value.toLowerCase();
-    return data.value.filter((item: T) =>
+    return data.value.filter((item) =>
       Object.values(item).some((value) =>
         String(value).toLowerCase().includes(searchTerm)
       )
@@ -63,7 +57,7 @@ export function useDataTableFilter<T extends Record<string, any>>(
 
   return {
     filterText,
-    setFilterText: (text: string) => {
+    setFilterText: (text) => {
       filterText.value = text;
     },
     filteredData,

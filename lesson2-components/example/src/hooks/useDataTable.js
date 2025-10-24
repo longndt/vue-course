@@ -1,20 +1,12 @@
-import { ref, computed, type Ref } from 'vue';
-import type {
-  UseDataTableSortResult,
-  UseDataTableFilterResult,
-  SortConfig,
-} from "../types/DataTable.types";
+import { ref, computed } from 'vue';
 
 /**
  * Vue composable to handle sorting functionality in DataTable
  */
-export function useDataTableSort<T extends Record<string, any>>(
-  data: Ref<T[]>,
-  sortable: boolean = true
-): UseDataTableSortResult<T> {
-  const sortConfig = ref<SortConfig<T> | null>(null);
+export function useDataTableSort(data, sortable = true) {
+  const sortConfig = ref(null);
 
-  const requestSort = (key: keyof T) => {
+  const requestSort = (key) => {
     if (!sortable) return;
 
     const current = sortConfig.value;
@@ -31,7 +23,7 @@ export function useDataTableSort<T extends Record<string, any>>(
     if (!sortConfig.value) return data.value;
 
     return [...data.value].sort((a, b) => {
-      const config = sortConfig.value!;
+      const config = sortConfig.value;
       if (a[config.key] < b[config.key]) {
         return config.direction === "asc" ? -1 : 1;
       }
@@ -48,22 +40,20 @@ export function useDataTableSort<T extends Record<string, any>>(
 /**
  * Vue composable to handle filtering functionality in DataTable
  */
-export function useDataTableFilter<T extends Record<string, any>>(
-  data: Ref<T[]>
-): UseDataTableFilterResult<T> {
-  const filterText = ref<string>("");
+export function useDataTableFilter(data) {
+  const filterText = ref("");
 
   const filteredData = computed(() => {
     if (!filterText.value) return data.value;
 
-    return data.value.filter((item: T) =>
+    return data.value.filter((item) =>
       Object.values(item).some((value) =>
         String(value).toLowerCase().includes(filterText.value.toLowerCase())
       )
     );
   });
 
-  const setFilterText = (value: string) => {
+  const setFilterText = (value) => {
     filterText.value = value;
   };
 

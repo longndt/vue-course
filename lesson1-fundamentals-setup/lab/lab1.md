@@ -2,12 +2,12 @@
 
 ## Overview
 
-In this lab session, you'll create a Student Dashboard application using TypeScript and Vue 3. This project demonstrates building a professional management system with multiple views and data handling using Vue 3's Composition API and modern development practices.
+In this lab session, you'll create a Student Dashboard application using JavaScript and Vue 3. This project demonstrates building a professional management system with multiple views and data handling using Vue 3's Composition API and modern development practices.
 
 ## Exercises
 
 - Exercise 1: Project Setup
-- Exercise 2: TypeScript Components
+- Exercise 2: JavaScript Components
 - Exercise 3: Interactive Dashboard
 - Exercise 4: Advanced Features
 
@@ -22,15 +22,15 @@ In this lab session, you'll create a Student Dashboard application using TypeScr
 
 ## Exercise 1: Professional Project Setup
 
-### Step 1: Create TypeScript Vue 3 Project
+### Step 1: Create JavaScript Vue 3 Project
 
 ```bash
-# Create new project with TypeScript template
+# Create new project with JavaScript template
 npm create vue@latest student-dashboard
 
 # Choose options:
-# ✓ TypeScript
-# ✓ JSX Support
+# ❌ TypeScript
+# ❌ JSX Support
 # ✓ Vue Router
 # ✓ Pinia
 # ✓ Vitest
@@ -71,77 +71,96 @@ student-dashboard/
 
 ### Step 3: Configure Development Environment
 
-**📚 Learning Note:** TypeScript configuration can seem complex, but these settings enable better development experience with stricter type checking and path aliases.
+**📚 Learning Note:** JavaScript configuration is simpler and focuses on modern development practices.
 
-Update your `tsconfig.json` for better development experience:
+Update your `vite.config.js` for better development experience:
 
-```json
-{
-  "compilerOptions": {
-    "target": "ES2020",
-    "useDefineForClassFields": true,
-    "lib": ["ES2020", "DOM", "DOM.Iterable"],
-    "module": "ESNext",
-    "skipLibCheck": true,
-    "moduleResolution": "bundler",
-    "allowImportingTsExtensions": true,
-    "resolveJsonModule": true,
-    "isolatedModules": true,
-    "noEmit": true,
-    "jsx": "react-jsx",
-    "strict": true,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
-    "noFallthroughCasesInSwitch": true,
-    "baseUrl": "./src",
-    "paths": {
-      "@/*": ["*"]
+```javascript
+import { defineConfig } from 'vite'
+import vue from '@vitejs/plugin-vue'
+import { resolve } from 'path'
+
+export default defineConfig({
+  plugins: [vue()],
+  resolve: {
+    alias: {
+      '@': resolve(__dirname, 'src')
     }
   },
-  "include": ["src/**/*.ts", "src/**/*.tsx", "src/**/*.vue"],
-  "references": [{ "path": "./tsconfig.node.json" }]
-}
+  server: {
+    port: 3000,
+    open: true
+  },
+  build: {
+    outDir: 'dist',
+    sourcemap: true
+  }
+})
 ```
 
 ---
 
-## Exercise 2: Building TypeScript Components
+## Exercise 2: Building JavaScript Components
 
-### Step 1: Define Data Types
+### Step 1: Define Data Structure
 
-Create `src/types/Student.ts`:
+Create `src/data/students.js`:
 
-```typescript
-export interface Student {
-  id: number;
-  name: string;
-  email: string;
-  major: string;
-  year: number;
-  gpa: number;
-  isActive: boolean;
-  enrollmentDate: string;
-}
+```javascript
+// Sample student data
+export const students = [
+  {
+    id: 1,
+    name: 'John Doe',
+    email: 'john.doe@university.edu',
+    major: 'Computer Science',
+    year: 3,
+    gpa: 3.8,
+    isActive: true,
+    enrollmentDate: '2022-09-01'
+  },
+  {
+    id: 2,
+    name: 'Jane Smith',
+    email: 'jane.smith@university.edu',
+    major: 'Mathematics',
+    year: 2,
+    gpa: 3.9,
+    isActive: true,
+    enrollmentDate: '2023-09-01'
+  }
+];
 
-export interface Course {
-  id: number;
-  name: string;
-  code: string;
-  credits: number;
-  instructor: string;
-}
+// Sample course data
+export const courses = [
+  {
+    id: 1,
+    name: 'Introduction to Programming',
+    code: 'CS101',
+    credits: 3,
+    instructor: 'Dr. Johnson'
+  },
+  {
+    id: 2,
+    name: 'Data Structures',
+    code: 'CS201',
+    credits: 4,
+    instructor: 'Dr. Williams'
+  }
+];
 
-export interface DashboardStats {
-  totalStudents: number;
-  activeStudents: number;
-  averageGPA: number;
-  totalCourses: number;
-}
+// Dashboard statistics
+export const dashboardStats = {
+  totalStudents: 150,
+  activeStudents: 142,
+  averageGPA: 3.6,
+  totalCourses: 25
+};
 ```
 
 ### Step 2: Create Student Card Component
 
-**💡 Architecture Note:** Notice that we define component-specific interfaces (like `StudentCardProps`) inside the component file, while domain types (`Student`, `Course`) are in separate files. This separates UI concerns from business logic.
+**💡 Architecture Note:** Notice that we define component-specific props in the component file, while domain data (`students`, `courses`) are in separate files. This separates UI concerns from business logic.
 
 Create `src/components/StudentCard.vue`:
 

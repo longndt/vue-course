@@ -1,29 +1,14 @@
-import { ref, onMounted, onUnmounted, watch, type Ref } from "vue";
+import { ref, onMounted, onUnmounted, watch } from "vue";
 
-interface UseFetchOptions {
-  headers?: HeadersInit;
-  dependencies?: Ref<any>[];
-}
-
-interface UseFetchResult<T> {
-  data: Ref<T | null>;
-  error: Ref<Error | null>;
-  loading: Ref<boolean>;
-  refetch: () => void;
-}
-
-export function useFetch<T>(
-  url: string | Ref<string>,
-  options: UseFetchOptions = {}
-): UseFetchResult<T> {
-  const data = ref<T | null>(null);
-  const error = ref<Error | null>(null);
-  const loading = ref<boolean>(true);
-  const refetchTrigger = ref<number>(0);
+export function useFetch(url, options = {}) {
+  const data = ref(null);
+  const error = ref(null);
+  const loading = ref(true);
+  const refetchTrigger = ref(0);
 
   const { headers = {}, dependencies = [] } = options;
 
-  let abortController: AbortController | null = null;
+  let abortController = null;
 
   const fetchData = async () => {
     abortController?.abort();
@@ -48,7 +33,7 @@ export function useFetch<T>(
 
       const json = await response.json();
       data.value = json;
-    } catch (err: any) {
+    } catch (err) {
       if (err.name === "AbortError") {
         return;
       }
@@ -83,17 +68,8 @@ export function useFetch<T>(
   return { data, error, loading, refetch };
 }
 
-interface UseLocalStorageResult<T> {
-  storedValue: Ref<T>;
-  setValue: (value: T | ((val: T) => T)) => void;
-  removeValue: () => void;
-}
-
-export function useLocalStorage<T>(
-  key: string,
-  initialValue: T
-): UseLocalStorageResult<T> {
-  const getInitialValue = (): T => {
+export function useLocalStorage(key, initialValue) {
+  const getInitialValue = () => {
     try {
       const item = window.localStorage.getItem(key);
       return item ? JSON.parse(item) : initialValue;
@@ -103,9 +79,9 @@ export function useLocalStorage<T>(
     }
   };
 
-  const storedValue = ref<T>(getInitialValue());
+  const storedValue = ref(getInitialValue());
 
-  const setValue = (value: T | ((val: T) => T)) => {
+  const setValue = (value) => {
     try {
       const valueToStore =
         value instanceof Function ? value(storedValue.value) : value;
@@ -126,7 +102,7 @@ export function useLocalStorage<T>(
   };
 
   // Watch for changes to sync with localStorage
-  watch(storedValue, (newValue: T) => {
+  watch(storedValue, (newValue) => {
     try {
       window.localStorage.setItem(key, JSON.stringify(newValue));
     } catch (error) {
@@ -137,10 +113,10 @@ export function useLocalStorage<T>(
   return { storedValue, setValue, removeValue };
 }
 
-export function useDebounce<T>(value: Ref<T>, delay: number): Ref<T> {
-  const debouncedValue = ref<T>(value.value);
+export function useDebounce(value, delay) {
+  const debouncedValue = ref(value.value);
 
-  watch(value, (newValue: T) => {
+  watch(value, (newValue) => {
     const handler = setTimeout(() => {
       debouncedValue.value = newValue;
     }, delay);

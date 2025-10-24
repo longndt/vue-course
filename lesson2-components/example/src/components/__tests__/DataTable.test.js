@@ -1,26 +1,19 @@
 import { mount } from "@vue/test-utils";
 import { describe, it, expect } from "vitest";
 import DataTable from "../DataTable.vue";
-import type { DataTableColumn } from "../../types/DataTable.types";
-
-interface TestData {
-  id: number;
-  name: string;
-  email: string;
-}
 
 describe("DataTable", () => {
-  const mockData: TestData[] = [
+  const mockData = [
     { id: 1, name: "John Doe", email: "john@example.com" },
     { id: 2, name: "Jane Doe", email: "jane@example.com" },
   ];
 
-  const columns: DataTableColumn<TestData>[] = [
+  const columns = [
     { key: "name", header: "Name" },
     { key: "email", header: "Email" },
   ];
 
-  const createWrapper = (props: any = {}) => {
+  const createWrapper = (props = {}) => {
     return mount(DataTable, {
       props: {
         data: mockData,
@@ -74,12 +67,12 @@ describe("DataTable", () => {
   });
 
   it("renders custom cell content using render function", () => {
-    const customColumns: DataTableColumn<TestData>[] = [
+    const customColumns = [
       ...columns,
       {
         key: "id",
         header: "Actions",
-        render: (value: number) => `<button>Edit ${value}</button>`,
+        render: (value) => `<button>Edit ${value}</button>`,
       },
     ];
 
@@ -99,7 +92,7 @@ describe("DataTable", () => {
   });
 
   it("disables sorting for specific columns", async () => {
-    const columnsWithDisabledSort: DataTableColumn<TestData>[] = [
+    const columnsWithDisabledSort = [
       { key: "name", header: "Name", sortable: false },
       { key: "email", header: "Email" },
     ];

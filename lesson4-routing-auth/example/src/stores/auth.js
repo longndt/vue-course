@@ -2,34 +2,12 @@ import { defineStore } from 'pinia';
 import { ref, computed } from 'vue';
 import jwtDecode from 'jwt-decode';
 
-export interface User {
-  id: string;
-  username: string;
-  email: string;
-  role: string;
-  avatar?: string;
-}
-
-export interface LoginCredentials {
-  username: string;
-  password: string;
-}
-
-export interface JWTPayload {
-  sub: string;
-  username: string;
-  email: string;
-  role: string;
-  exp: number;
-  iat: number;
-}
-
 export const useAuthStore = defineStore('auth', () => {
   // State
-  const user = ref<User | null>(null);
-  const token = ref<string | null>(null);
+  const user = ref(null);
+  const token = ref(null);
   const isLoading = ref(false);
-  const error = ref<string | null>(null);
+  const error = ref(null);
 
   // Getters (computed)
   const isAuthenticated = computed(() => {
@@ -47,7 +25,7 @@ export const useAuthStore = defineStore('auth', () => {
   });
 
   // Actions
-  const login = async (credentials: LoginCredentials): Promise<boolean> => {
+  const login = async (credentials) => {
     try {
       isLoading.value = true;
       error.value = null;
@@ -93,7 +71,7 @@ export const useAuthStore = defineStore('auth', () => {
     if (storedToken && storedUser) {
       try {
         // Verify token is not expired
-        const decoded = jwtDecode<JWTPayload>(storedToken);
+        const decoded = jwtDecode(storedToken);
         const currentTime = Date.now() / 1000;
 
         if (decoded.exp > currentTime) {
@@ -110,7 +88,7 @@ export const useAuthStore = defineStore('auth', () => {
     }
   };
 
-  const updateProfile = async (profileData: Partial<User>): Promise<boolean> => {
+  const updateProfile = async (profileData) => {
     try {
       isLoading.value = true;
       error.value = null;
@@ -158,7 +136,7 @@ export const useAuthStore = defineStore('auth', () => {
 });
 
 // Mock API functions - replace with actual API calls
-const mockLogin = async (credentials: LoginCredentials) => {
+const mockLogin = async (credentials) => {
   // Simulate network delay
   await new Promise(resolve => setTimeout(resolve, 1000));
 
@@ -220,7 +198,7 @@ const mockLogin = async (credentials: LoginCredentials) => {
   }
 };
 
-const mockUpdateProfile = async (profileData: Partial<User>) => {
+const mockUpdateProfile = async (profileData) => {
   // Simulate network delay
   await new Promise(resolve => setTimeout(resolve, 500));
 

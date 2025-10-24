@@ -68,7 +68,7 @@ const router = createRouter({
 // Navigation guards
 router.beforeEach((to) => {
   // Update page title
-  document.title = to.meta.title as string || 'Vue Fullstack Demo'
+  document.title = to.meta.title || 'Vue Fullstack Demo'
 
   // Add auth check here if needed
   // if (to.meta.requiresAuth && !authStore.isAuthenticated) {

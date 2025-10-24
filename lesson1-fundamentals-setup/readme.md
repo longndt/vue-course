@@ -1,11 +1,11 @@
-# Lesson 1: Vue Fundamentals & TypeScript Setup
+# Lesson 1: Vue Fundamentals & JavaScript Setup
 
 ## Overview
 
 **Difficulty**: Beginner
 **Status**: Required
 
-This lesson introduces Vue fundamentals with a focus on modern development practices. We'll set up a professional development environment with Vite, understand Vue's core concepts, and build components with TypeScript from day one.
+This lesson introduces Vue fundamentals with a focus on modern development practices. We'll set up a professional development environment with Vite, understand Vue's core concepts, and build components with JavaScript from day one.
 
 ---
 
@@ -14,11 +14,11 @@ This lesson introduces Vue fundamentals with a focus on modern development pract
 After completing this lesson, you will be able to:
 
 - ✅ Understand Vue's component-based architecture and reactivity system
-- ✅ Set up a modern Vue development environment with Vite and TypeScript
+- ✅ Set up a modern Vue development environment with Vite and JavaScript
 - ✅ Create components using Composition API and script setup
 - ✅ Manage reactive state and handle events
 - ✅ Build reusable component patterns
-- ✅ Apply modern JavaScript/TypeScript features in Vue
+- ✅ Apply modern JavaScript features in Vue
 
 ---
 
@@ -40,7 +40,7 @@ After completing this lesson, you will be able to:
 | **API Design** | Options API only | Composition API + Options API | Better code organization and reusability |
 | **Performance** | ~2x slower | ~2x faster | Better user experience, especially on mobile |
 | **Bundle Size** | Larger bundle | 41% smaller | Faster loading times |
-| **TypeScript** | Limited support | First-class support | Better developer experience and fewer bugs |
+| **Modern JS** | Limited support | First-class support | Better developer experience and modern features |
 | **Tree Shaking** | Limited | Full support | Smaller production bundles |
 | **Multiple Root Nodes** | Not supported | Supported | More flexible component structure |
 | **Teleport** | Not available | Built-in | Better modal/portal management |
@@ -74,7 +74,7 @@ npm --version   # Should be 9+
 
 # 2. Create Vue project
 npm create vue@latest my-first-vue-app
-# Select: TypeScript ✅, Router ❌, Pinia ❌, Testing ❌, ESLint ✅, Prettier ✅
+# Select: TypeScript ❌, Router ❌, Pinia ❌, Testing ❌, ESLint ✅, Prettier ✅
 
 # 3. Start development
 cd my-first-vue-app
