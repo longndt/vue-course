@@ -10,11 +10,11 @@
 
 ## Full-Stack Architecture Overview 🏗️
 
-### Modern Full-Stack Stack
+### MEVN Stack Architecture
 
 ```
 ┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
-│   Vue 3 SPA     │    │   Node.js API   │    │   MongoDB       │
+│   Vue.js 3      │    │   Express.js    │    │   MongoDB       │
 │   (Frontend)    │◄──►│   (Backend)     │◄──►│   (Database)    │
 │                 │    │                 │    │                 │
 │ • Components    │    │ • REST APIs     │    │ • Collections   │
@@ -22,7 +22,16 @@
 │ • Routing       │    │ • File Upload   │    │ • Indexes       │
 │ • Real-time     │    │ • WebSockets    │    │ • Aggregation   │
 └─────────────────┘    └─────────────────┘    └─────────────────┘
+│                     │                     │
+│   Node.js Runtime   │   Node.js Runtime   │   Node.js Driver │
+└─────────────────────┴─────────────────────┴─────────────────┘
 ```
+
+**MEVN Stack Components:**
+- **M**ongoDB: NoSQL database for data storage
+- **E**xpress.js: Web framework for Node.js
+- **V**ue.js: Progressive JavaScript framework for frontend
+- **N**ode.js: JavaScript runtime for backend
 
 ### System Design Patterns
 

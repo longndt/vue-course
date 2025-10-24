@@ -66,7 +66,7 @@ This course teaches **Vue 3 with JavaScript** development using industry-standar
 - **Lab Project** Authentication system with protected routes
 
 ### Lesson 5: Full-Stack Integration & Production Deployment
-- Full-stack architecture with VENM stack (Vue/Express/Node/MongoDB)
+- Full-stack architecture with MEVN stack (MongoDB/Express/Vue/Node)
 - File uploads, WebSockets, and deployment
 - **Lab Project** Complete application deployment
 

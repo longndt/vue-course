@@ -1,794 +1,626 @@
-# Lab 5: Vue 3 Performance Optimization & Advanced Patterns
+# Lab 5: MEVN Stack Full-Stack Application Development
 
 ## Overview
 
-In this focused lab exercise, you'll implement advanced Vue 3 performance optimization techniques and patterns. This demonstrates essential optimization strategies used in modern Vue applications with Composition API.
+In this comprehensive lab exercise, you'll build a complete full-stack application using the MEVN stack (MongoDB, Express.js, Vue.js, Node.js). This demonstrates real-world full-stack development patterns and production deployment strategies.
 
-_For detailed learning objectives and performance concepts, see [../readme.md](../readme.md)_
-
-## Exercises
-
-- Code Splitting & Lazy Loading
-- Component Memoization
-- Virtual Lists & Performance Monitoring
+_For detailed learning objectives and full-stack concepts, see [../readme.md](../readme.md)_
 
 ## Exercises
 
-### Exercise 1: Code Splitting
+- MEVN Stack Project Setup
+- Backend API Development with Express.js
+- Frontend Integration with Vue.js
+- Database Integration with MongoDB
+- Real-time Features with WebSockets
+- Production Deployment
 
-1. Implement Vue 3 dynamic imports for route components:
+## Exercises
 
-```vue
-<!-- src/App.vue -->
-<template>
-  <Suspense>
-    <template #default>
-      <router-view />
-    </template>
-    <template #fallback>
-      <LoadingSpinner />
-    </template>
-  </Suspense>
-</template>
+### Exercise 1: MEVN Stack Project Setup
 
-<script setup>
-import { defineAsyncComponent } from 'vue'
-import LoadingSpinner from './components/LoadingSpinner.vue'
+1. Create MEVN stack project structure:
 
-// Router configuration with lazy loading
-// src/router/index.js
-import { createRouter, createWebHistory } from 'vue-router'
+```bash
+# Create project directory
+mkdir mevn-todo-app && cd mevn-todo-app
 
-const Home = defineAsyncComponent(() => import('../pages/Home.vue'))
-const About = defineAsyncComponent(() => import('../pages/About.vue'))
-const Dashboard = defineAsyncComponent(() => import('../pages/Dashboard.vue'))
+# Initialize frontend (Vue.js)
+npm create vue@latest frontend
+cd frontend
+npm install axios socket.io-client
 
-const routes = [
-  { path: '/', component: Home },
-  { path: '/about', component: About },
-  { path: '/dashboard', component: Dashboard }
-]
+# Initialize backend (Node.js + Express.js)
+cd ..
+mkdir backend && cd backend
+npm init -y
+npm install express mongoose cors dotenv socket.io multer
+npm install -D nodemon
 
-export const router = createRouter({
-  history: createWebHistory(),
-  routes
-})
-</script>
+# Install MongoDB (if not already installed)
+# macOS: brew install mongodb-community
+# Windows: Download from MongoDB website
+# Linux: sudo apt-get install mongodb
 ```
 
-2. Create a LoadingSpinner component:
+2. Set up project structure:
 
-```vue
-<!-- src/components/LoadingSpinner.vue -->
-<template>
-  <div class="loading-spinner">
-    <div class="spinner"></div>
-  </div>
-</template>
-
-<style scoped>
-.loading-spinner {
-  display: flex;
-
-// src/components/LoadingSpinner/LoadingSpinner.css
-.loading-spinner {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 200px;
-}
-
-.spinner {
-  width: 50px;
-  height: 50px;
-  border: 5px solid #f3f3f3;
-  border-top: 5px solid #3498db;
-  border-radius: 50%;
-  animation: spin 1s linear infinite;
-}
-
-@keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
-}
+```
+mevn-todo-app/
+├── frontend/          # Vue.js application
+│   ├── src/
+│   ├── public/
+│   └── package.json
+├── backend/           # Express.js API
+│   ├── models/
+│   ├── routes/
+│   ├── middleware/
+│   └── server.js
+└── README.md
 ```
 
-3. Create an ErrorBoundary for lazy-loaded components:
-
-```vue
-<!-- src/components/ErrorBoundary.vue -->
-<template>
-  <div v-if="hasError" class="error-boundary">
-    <h1>Something went wrong.</h1>
-    <button @click="retry">Retry</button>
-  </div>
-  <slot v-else />
-</template>
-
-<script setup>
-import { ref, onErrorCaptured } from 'vue'
-
-const hasError = ref(false)
-
-// Vue 3 error boundary using onErrorCaptured
-onErrorCaptured((error, errorInfo) => {
-  console.error("Error:", error)
-  console.error("Error Info:", errorInfo)
-  hasError.value = true
-  return false // Prevent error from propagating
-})
-
-const retry = () => {
-  hasError.value = false
-  window.location.reload()
-}
-}
-
-// Update main.js to include router
-function App() {
-  return (
-    <BrowserRouter>
-      <ErrorBoundary>
-        <Suspense fallback={<LoadingSpinner />}>
-          <Routes>{/* ... routes ... */}</Routes>
-        </Suspense>
-      </ErrorBoundary>
-    </BrowserRouter>
-  );
-}
-```
-
-### Exercise 2: Component Memoization
-
-1. Create a memoized list component:
-
-```vue
-<!-- src/components/MemoizedList.vue -->
-<template>
-  <div class="memoized-list">
-    <ListItem
-      v-for="item in sortedItems"
-      :key="item.id"
-      :item="item"
-      @select="handleSelect"
-    />
-  </div>
-</template>
-
-<script setup>
-import { ref, computed } from 'vue'
-import ListItem from './ListItem.vue'
-
-interface Props {
-  items: Array<{ id: number; title: string; description: string }>
-}
-
-const props = defineProps<Props>()
-
-const selectedId = ref(null)
-
-// Vue's computed properties are automatically memoized
-const sortedItems = computed(() => {
-  console.log("Sorting items...")
-  return [...props.items].sort((a, b) => a.title.localeCompare(b.title))
-})
-
-const handleSelect = (item) => {
-  selectedId.value = item.id
-}
-</script>
-```
-
-```vue
-<!-- src/components/ListItem.vue -->
-<template>
-  <div class="list-item" @click="$emit('select', item)">
-    <h3>{{ item.title }}</h3>
-    <p>{{ item.description }}</p>
-  </div>
-</template>
-
-<script setup>
-interface Props {
-  item: { id: number; title: string; description: string }
-}
-
-defineProps<Props>()
-defineEmits<{ select: [item: Props['item']] }>()
-
-// Vue components are automatically optimized - no need for memo
-// Use onUpdated for debugging renders if needed
-import { onUpdated } from 'vue'
-
-const props = defineProps<Props>()
-
-onUpdated(() => {
-  console.log(`Rendering ListItem: ${props.item.id}`)
-})
-</script>
-```
-
-2. Implement a performance-optimized form:
-
-```vue
-<!-- src/components/OptimizedForm.vue -->
-<template>
-  <form @submit.prevent="handleSubmit" class="optimized-form">
-    <FormInput
-      v-for="field in fields"
-      :key="field.name"
-      :label="field.label"
-      :name="field.name"
-      :value="formData[field.name]"
-      @update="handleInputChange"
-    />
-    <button type="submit" :disabled="isSubmitting">
-      {{ isSubmitting ? 'Submitting...' : 'Submit' }}
-    </button>
-  </form>
-</template>
-
-<script setup>
-import { ref, reactive } from 'vue'
-import FormInput from './FormInput.vue'
-
-const isSubmitting = ref(false)
-const formData = reactive({
-  name: '',
-  email: '',
-  message: ''
-})
-
-const fields = [
-  { name: 'name', label: 'Name' },
-  { name: 'email', label: 'Email' },
-  { name: 'message', label: 'Message' }
-]
-
-const handleInputChange = (name: string, value: string) => {
-  formData[name] = value
-}
-
-const handleSubmit = async () => {
-  isSubmitting.value = true
-  // Submit logic here
-  console.log('Submitting:', formData)
-  isSubmitting.value = false
-}
-</script>
-```
-
-```vue
-<!-- src/components/FormInput.vue -->
-<template>
-  <div class="form-group">
-    <label>{{ label }}</label>
-    <input
-      :value="value"
-      @input="$emit('update', name, ($event.target as HTMLInputElement).value)"
-    />
-  </div>
-</template>
-
-<script setup>
-interface Props {
-  label: string
-  name: string
-  value: string
-}
-
-defineProps<Props>()
-defineEmits<{ update: [name: string, value: string] }>()
-</script>
-      <Input
-        label="Email"
-        value={formData.email}
-        onChange={handleEmailChange}
-      />
-      <Input
-        label="Message"
-        value={formData.message}
-        onChange={handleMessageChange}
-      />
-      <button type="submit">Submit</button>
-    </form>
-  );
-}
-
-export default memo(OptimizedForm);
-```
-
-### Exercise 3: Virtual List Implementation
-
-Create a virtualized list component:
-
-```vue
-<!-- src/components/VirtualList.vue -->
-<template>
-  <div
-    ref="containerRef"
-    @scroll="handleScroll"
-    :style="{
-      height: windowHeight + 'px',
-      overflow: 'auto',
-    }"
-  >
-    <div :style="{ height: totalHeight + 'px' }">
-      <div
-        :style="{
-          transform: `translateY(${startIndex * itemHeight}px)`,
-        }"
-      >
-        <component
-          v-for="(item, index) in visibleData"
-          :key="startIndex + index"
-          :is="renderItem"
-          :item="item"
-          :index="startIndex + index"
-        />
-      </div>
-    </div>
-  </div>
-</template>
-
-<script setup>
-import { ref, computed } from 'vue'
-
-interface Props {
-  items: any[]
-  itemHeight: number
-  windowHeight: number
-  renderItem: any // Component to render each item
-}
-
-const props = defineProps<Props>()
-
-const scrollTop = ref(0)
-const containerRef = ref()
-
-const totalHeight = computed(() => props.items.length * props.itemHeight)
-const startIndex = computed(() => Math.floor(scrollTop.value / props.itemHeight))
-const visibleItems = computed(() => Math.ceil(props.windowHeight / props.itemHeight))
-const endIndex = computed(() => Math.min(startIndex.value + visibleItems.value + 1, props.items.length))
-const visibleData = computed(() => props.items.slice(startIndex.value, endIndex.value))
-
-const handleScroll = () => {
-  scrollTop.value = containerRef.value.scrollTop
-}
-</script>
-  );
-}
-
-// Usage example:
-function VirtualizedList() {
-  const items = Array.from({ length: 10000 }, (_, i) => ({
-    id: i,
-    title: `Item ${i}`,
-    description: `Description for item ${i}`,
-  }));
-
-  return (
-    <VirtualList
-      items={items}
-      itemHeight={50}
-      windowHeight={400}
-      renderItem={(item, index) => (
-        <div
-          key={item.id}
-          style={{
-            height: 50,
-            padding: 10,
-            borderBottom: "1px solid #eee",
-          }}
-        >
-          <h3>{item.title}</h3>
-          <p>{item.description}</p>
-        </div>
-      )}
-    />
-  );
-}
-```
-
-### Exercise 4: Performance Monitoring
-
-1. Create a performance monitoring component:
-
-```vue
-<!-- src/components/PerformanceMonitor.vue -->
-<template>
-  <div :data-performance-id="id">
-    <slot />
-  </div>
-</template>
-
-<script setup>
-import { onMounted, onUpdated, onUnmounted } from 'vue'
-
-interface Props {
-  id: string
-}
-
-const props = defineProps<Props>()
-
-let startTime: number
-
-onMounted(() => {
-  startTime = performance.now()
-  console.log(`Performance Monitor [${props.id}]: Component mounted`)
-})
-
-onUpdated(() => {
-  const endTime = performance.now()
-  const duration = endTime - startTime
-
-  console.log({
-    id: props.id,
-    phase: 'update',
-    actualDuration: duration,
-    startTime,
-    endTime,
-  })
-
-  startTime = performance.now()
-})
-
-onUnmounted(() => {
-  console.log(`Performance Monitor [${props.id}]: Component unmounted`)
-})
-</script>
-```
-
-```vue
-<!-- Usage in App.vue -->
-<template>
-  <PerformanceMonitor id="app">
-    <div class="app">
-      <!-- App content -->
-    </div>
-  </PerformanceMonitor>
-</template>
-
-<script setup>
-import PerformanceMonitor from './components/PerformanceMonitor.vue'
-</script>
-```
-
-2. Implement a custom performance hook:
-
-```typescript
-// src/composables/usePerformance.ts
-import { onMounted, onUnmounted } from 'vue'
-
-export function usePerformance(label: string) {
-  let startTime: number
-
-  onMounted(() => {
-    startTime = performance.now()
-  })
-
-  onUnmounted(() => {
-    const endTime = performance.now()
-    const duration = endTime - startTime
-    console.log(`${label} took ${duration}ms`)
-  })
-}
-```
-
-```vue
-<!-- Usage -->
-<!-- ExpensiveComponent.vue -->
-<template>
-  <div>
-    <!-- Component content -->
-  </div>
-</template>
-
-<script setup>
-import { usePerformance } from '@/composables/usePerformance'
-
-usePerformance("ExpensiveComponent")
-
-// Component logic here
-</script>
-```
-
-## Bonus Tasks
-
-### 1. Implement Intersection Observer
-
-Create a component that lazy loads images:
-
-```vue
-<!-- src/components/LazyImage.vue -->
-<template>
-  <div ref="imgRef" class="lazy-image">
-    <img v-if="isVisible" :src="src" :alt="alt" />
-    <div v-else class="placeholder">Loading...</div>
-  </div>
-</template>
-
-<script setup>
-import { ref, onMounted, onUnmounted } from 'vue'
-
-interface Props {
-  src: string
-  alt: string
-}
-
-const props = defineProps<Props>()
-
-const isVisible = ref(false)
-const imgRef = ref()
-let observer: IntersectionObserver | null = null
-
-onMounted(() => {
-  observer = new IntersectionObserver(
-    ([entry]) => {
-      if (entry.isIntersecting) {
-        isVisible.value = true
-        observer?.disconnect()
-      }
-    },
-    { threshold: 0.1 }
-  )
-
-  if (imgRef.value) {
-    observer.observe(imgRef.value)
-  }
-})
-
-onUnmounted(() => {
-  observer?.disconnect()
-})
-  }, []);
-
-  return (
-    <div ref={imgRef}>
-      {isVisible ? (
-        <img src={src} alt={alt} />
-      ) : (
-        <div class="image-placeholder" />
-      )}
-    </div>
-  );
-}
-```
-
-### 2. Add Web Worker
-
-Implement a web worker for heavy computations:
+3. Configure backend server (Express.js + MongoDB):
 
 ```javascript
-// src/workers/compute.worker.js
-self.addEventListener("message", (e) => {
-  const { data } = e;
+// backend/server.js
+const express = require('express')
+const mongoose = require('mongoose')
+const cors = require('cors')
+const dotenv = require('dotenv')
+const http = require('http')
+const socketIo = require('socket.io')
 
-  // Heavy computation
-  const result = heavyComputation(data);
+dotenv.config()
 
-  self.postMessage(result);
-});
-
-function heavyComputation(data) {
-  // Simulate heavy computation
-  let result = 0;
-  for (let i = 0; i < data.iterations; i++) {
-    result += Math.sqrt(i) * data.multiplier;
+const app = express()
+const server = http.createServer(app)
+const io = socketIo(server, {
+  cors: {
+    origin: "http://localhost:5173",
+    methods: ["GET", "POST"]
   }
-  return result;
+})
+
+// Middleware
+app.use(cors())
+app.use(express.json())
+
+// MongoDB connection
+mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/mevn-todo', {
+  useNewUrlParser: true,
+  useUnifiedTopology: true
+})
+
+// Routes
+app.use('/api/todos', require('./routes/todos'))
+app.use('/api/auth', require('./routes/auth'))
+
+// Socket.io for real-time updates
+io.on('connection', (socket) => {
+  console.log('User connected:', socket.id)
+
+  socket.on('disconnect', () => {
+    console.log('User disconnected:', socket.id)
+  })
+})
+
+const PORT = process.env.PORT || 3000
+server.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`)
+})
+```
+
+### Exercise 2: Backend API Development with Express.js
+
+1. Create MongoDB models:
+
+```javascript
+// backend/models/Todo.js
+const mongoose = require('mongoose')
+
+const todoSchema = new mongoose.Schema({
+  title: {
+    type: String,
+    required: true,
+    trim: true
+  },
+  description: {
+    type: String,
+    trim: true
+  },
+  completed: {
+    type: Boolean,
+    default: false
+  },
+  priority: {
+    type: String,
+    enum: ['low', 'medium', 'high'],
+    default: 'medium'
+  },
+  dueDate: {
+    type: Date
+  },
+  userId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
+    required: true
+  }
+}, {
+  timestamps: true
+})
+
+module.exports = mongoose.model('Todo', todoSchema)
+```
+
+2. Create API routes:
+
+```javascript
+// backend/routes/todos.js
+const express = require('express')
+const router = express.Router()
+const Todo = require('../models/Todo')
+
+// GET /api/todos - Get all todos for a user
+router.get('/', async (req, res) => {
+  try {
+    const todos = await Todo.find({ userId: req.user.id })
+    res.json(todos)
+  } catch (error) {
+    res.status(500).json({ message: error.message })
+  }
+})
+
+// POST /api/todos - Create a new todo
+router.post('/', async (req, res) => {
+  try {
+    const todo = new Todo({
+      ...req.body,
+      userId: req.user.id
+    })
+    await todo.save()
+    res.status(201).json(todo)
+  } catch (error) {
+    res.status(400).json({ message: error.message })
+  }
+})
+
+// PUT /api/todos/:id - Update a todo
+router.put('/:id', async (req, res) => {
+  try {
+    const todo = await Todo.findOneAndUpdate(
+      { _id: req.params.id, userId: req.user.id },
+      req.body,
+      { new: true }
+    )
+    if (!todo) {
+      return res.status(404).json({ message: 'Todo not found' })
+    }
+    res.json(todo)
+  } catch (error) {
+    res.status(400).json({ message: error.message })
+  }
+})
+
+// DELETE /api/todos/:id - Delete a todo
+router.delete('/:id', async (req, res) => {
+  try {
+    const todo = await Todo.findOneAndDelete({
+      _id: req.params.id,
+      userId: req.user.id
+    })
+    if (!todo) {
+      return res.status(404).json({ message: 'Todo not found' })
+    }
+    res.json({ message: 'Todo deleted successfully' })
+  } catch (error) {
+    res.status(500).json({ message: error.message })
+  }
+})
+
+module.exports = router
+```
+
+### Exercise 3: Frontend Integration with Vue.js
+
+1. Create Vue.js components:
+
+```vue
+<!-- frontend/src/components/TodoList.vue -->
+<template>
+  <div class="todo-list">
+    <div class="todo-header">
+      <h2>My Todos</h2>
+      <button @click="showAddForm = true" class="btn-primary">
+        Add Todo
+      </button>
+    </div>
+
+    <div class="todo-filters">
+      <select v-model="filter" @change="filterTodos">
+        <option value="all">All</option>
+        <option value="completed">Completed</option>
+        <option value="pending">Pending</option>
+      </select>
+    </div>
+
+    <div class="todos">
+      <div v-for="todo in filteredTodos" :key="todo._id" class="todo-item">
+        <input
+          type="checkbox"
+          v-model="todo.completed"
+          @change="updateTodo(todo)"
+        />
+        <div class="todo-content">
+          <h3 :class="{ completed: todo.completed }">{{ todo.title }}</h3>
+          <p v-if="todo.description">{{ todo.description }}</p>
+          <div class="todo-meta">
+            <span class="priority" :class="todo.priority">{{ todo.priority }}</span>
+            <span v-if="todo.dueDate" class="due-date">
+              Due: {{ formatDate(todo.dueDate) }}
+            </span>
+          </div>
+        </div>
+        <button @click="deleteTodo(todo._id)" class="btn-danger">
+          Delete
+        </button>
+      </div>
+    </div>
+
+    <TodoForm
+      v-if="showAddForm"
+      @close="showAddForm = false"
+      @add="addTodo"
+    />
+  </div>
+</template>
+
+<script>
+import { ref, computed, onMounted } from 'vue'
+import TodoForm from './TodoForm.vue'
+import { todoService } from '../services/todoService'
+
+export default {
+  name: 'TodoList',
+  components: {
+    TodoForm
+  },
+  setup() {
+    const todos = ref([])
+    const filter = ref('all')
+    const showAddForm = ref(false)
+
+    const filteredTodos = computed(() => {
+      if (filter.value === 'all') return todos.value
+      if (filter.value === 'completed') return todos.value.filter(t => t.completed)
+      if (filter.value === 'pending') return todos.value.filter(t => !t.completed)
+      return todos.value
+    })
+
+    const loadTodos = async () => {
+      try {
+        todos.value = await todoService.getTodos()
+      } catch (error) {
+        console.error('Error loading todos:', error)
+      }
+    }
+
+    const addTodo = async (todoData) => {
+      try {
+        const newTodo = await todoService.createTodo(todoData)
+        todos.value.push(newTodo)
+        showAddForm.value = false
+      } catch (error) {
+        console.error('Error adding todo:', error)
+      }
+    }
+
+    const updateTodo = async (todo) => {
+      try {
+        await todoService.updateTodo(todo._id, todo)
+      } catch (error) {
+        console.error('Error updating todo:', error)
+      }
+    }
+
+    const deleteTodo = async (id) => {
+      try {
+        await todoService.deleteTodo(id)
+        todos.value = todos.value.filter(t => t._id !== id)
+      } catch (error) {
+        console.error('Error deleting todo:', error)
+      }
+    }
+
+    const formatDate = (date) => {
+      return new Date(date).toLocaleDateString()
+    }
+
+onMounted(() => {
+      loadTodos()
+    })
+
+    return {
+      todos,
+      filter,
+      showAddForm,
+      filteredTodos,
+      addTodo,
+      updateTodo,
+      deleteTodo,
+      formatDate
+    }
+  }
+}
+</script>
+```
+
+2. Create API service:
+
+```javascript
+// frontend/src/services/todoService.js
+import axios from 'axios'
+
+const API_URL = 'http://localhost:3000/api'
+
+const api = axios.create({
+  baseURL: API_URL,
+  headers: {
+    'Content-Type': 'application/json'
+  }
+})
+
+// Add auth token to requests
+api.interceptors.request.use((config) => {
+  const token = localStorage.getItem('token')
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`
+  }
+  return config
+})
+
+export const todoService = {
+  async getTodos() {
+    const response = await api.get('/todos')
+    return response.data
+  },
+
+  async createTodo(todoData) {
+    const response = await api.post('/todos', todoData)
+    return response.data
+  },
+
+  async updateTodo(id, todoData) {
+    const response = await api.put(`/todos/${id}`, todoData)
+    return response.data
+  },
+
+  async deleteTodo(id) {
+    const response = await api.delete(`/todos/${id}`)
+    return response.data
+  }
 }
 ```
 
-```typescript
-// src/composables/useWebWorker.ts
-import { ref, onUnmounted, readonly } from 'vue'
+### Exercise 4: Real-time Features with WebSockets
 
-export function useWebWorker(workerPath: string) {
-  const result = ref(null)
-  const error = ref(null)
-  const isLoading = ref(false)
-  let worker: Worker | null = null
+1. Set up Socket.io in Vue.js:
 
-  const initWorker = () => {
-    worker = new Worker(workerPath)
+```javascript
+// frontend/src/composables/useSocket.js
+import { ref, onMounted, onUnmounted } from 'vue'
+import io from 'socket.io-client'
 
-    worker.onmessage = (e) => {
-      result.value = e.data
-      isLoading.value = false
-    }
+export function useSocket() {
+  const socket = ref(null)
+  const isConnected = ref(false)
 
-    worker.onerror = (e) => {
-      error.value = e.error
-      isLoading.value = false
+  const connect = () => {
+    socket.value = io('http://localhost:3000')
+
+    socket.value.on('connect', () => {
+      isConnected.value = true
+      console.log('Connected to server')
+    })
+
+    socket.value.on('disconnect', () => {
+      isConnected.value = false
+      console.log('Disconnected from server')
+    })
+  }
+
+  const disconnect = () => {
+    if (socket.value) {
+      socket.value.disconnect()
+      socket.value = null
+      isConnected.value = false
     }
   }
 
-  const sendMessage = (data: any) => {
-    if (!worker) {
-      initWorker()
+  const emit = (event, data) => {
+    if (socket.value) {
+      socket.value.emit(event, data)
     }
-
-    isLoading.value = true
-    error.value = null
-    worker?.postMessage(data)
   }
+
+  const on = (event, callback) => {
+    if (socket.value) {
+      socket.value.on(event, callback)
+    }
+  }
+
+  onMounted(() => {
+    connect()
+  })
 
   onUnmounted(() => {
-    worker?.terminate()
+    disconnect()
   })
 
   return {
-    result: readonly(result),
-    error: readonly(error),
-    isLoading: readonly(isLoading),
-    sendMessage,
+    socket,
+    isConnected,
+    connect,
+    disconnect,
+    emit,
+    on
   }
-  }, [workerPath]);
-
-  const compute = (data) => {
-    workerRef.value.postMessage(data);
-  };
-
-  return { result, error, compute };
 }
 ```
 
-## Submission Requirements
+2. Integrate real-time updates in TodoList:
 
-1. GitHub repository containing:
+```vue
+<!-- Add to TodoList.vue script section -->
+<script>
+import { useSocket } from '../composables/useSocket'
 
-   - Complete application code
-   - Performance optimization documentation
-   - Benchmark results
-   - Profile traces
+export default {
+  setup() {
+    const { on, emit } = useSocket()
 
-2. Your implementation should demonstrate:
-   - Code splitting
-   - Memoization
-   - Virtual list
-   - Performance monitoring
-   - Error handling
+    // Listen for real-time updates
+    on('todoAdded', (todo) => {
+      todos.value.push(todo)
+    })
 
-## Grading Criteria
+    on('todoUpdated', (updatedTodo) => {
+      const index = todos.value.findIndex(t => t._id === updatedTodo._id)
+      if (index !== -1) {
+        todos.value[index] = updatedTodo
+      }
+    })
 
-- Code Splitting Implementation (20%)
-- Memoization Usage (20%)
-- Virtual List Performance (20%)
-- Performance Monitoring (20%)
-- Code Quality (20%)
+    on('todoDeleted', (todoId) => {
+      todos.value = todos.value.filter(t => t._id !== todoId)
+    })
 
-## Advanced CSS & Performance Design
+    // Emit events when making changes
+    const addTodo = async (todoData) => {
+      try {
+        const newTodo = await todoService.createTodo(todoData)
+        emit('todoAdded', newTodo)
+        showAddForm.value = false
+      } catch (error) {
+        console.error('Error adding todo:', error)
+      }
+    }
 
-### High-Performance UI Design
-
-This lab showcases performance-optimized CSS design:
-
-1. **GPU-Accelerated Animations**: Using transform and opacity for smooth animations
-2. **Glass Morphism Cards**: Semi-transparent designs with backdrop filters
-3. **Optimized Gradients**: Efficient gradient implementations
-4. **Enhanced Navigation**: Professional navbar with blur effects
-5. **Smooth Interactions**: 60fps animations and transitions
-
-### Performance-Focused CSS
-
-```css
-/* GPU-accelerated card hover */
-.card:hover {
-  transform: translateY(-4px); /* Uses GPU */
-  box-shadow: 0 25px 50px -12px rgb(0 0 0 / 0.25);
+    // ... rest of the setup
+  }
 }
-
-/* Efficient glass morphism */
-nav {
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(248, 250, 252, 0.95) 100%);
-  backdrop-filter: blur(12px); /* Hardware accelerated */
-}
-
-/* Optimized transitions */
-* {
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-/* Performance-friendly gradients */
-body {
-  background: linear-gradient(135deg, #f9fafb 0%, #e2e8f0 100%);
-}
+</script>
 ```
 
-### Performance Considerations
+### Exercise 5: Production Deployment
 
-- Hardware acceleration for animations
-- Efficient CSS selectors
-- Minimal reflows and repaints
-- Optimized backdrop filters
-- Smooth 60fps interactions
+1. Create Docker configuration:
 
-### Visual Enhancements
+```dockerfile
+# backend/Dockerfile
+FROM node:18-alpine
 
-- Professional color schemes
-- Enhanced typography (16px base font)
-- Improved spacing and layout
-- Modern glass morphism effects
-- Desktop-optimized design
+WORKDIR /app
 
-## Additional Resources
+COPY package*.json ./
+RUN npm ci --only=production
 
-- [Vue Performance](https://vuejs.org/guide/best-practices/performance.html)
-- [Code Splitting Guide](https://vuejs.org/guide/best-practices/performance.html#lazy-loading-routes)
-- [Vue Devtools](https://devtools.vuejs.org/)
-- [Web Workers Guide](https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API/Using_web_workers)
+COPY . .
 
-## Final Project Structure
+EXPOSE 3000
 
-After completing all exercises in this lab, your performance-optimized project structure should look like:
-
-```
-lab5-performance-optimization/
-├── index.html
-├── package.json
-├── readme.md
-├── vite.config.js
-├── src/
-│   ├── App.vue                    # Main app with lazy loading
-│   ├── index.css                 # Optimized global styles
-│   ├── main.js                   # App entry point
-│   ├── components/
-│   │   ├── LoadingSpinner/
-│   │   │   ├── LoadingSpinner.vue  # Loading component
-│   │   │   └── LoadingSpinner.css  # Spinner styles
-│   │   ├── VirtualList/
-│   │   │   ├── VirtualList.vue     # Virtualized list component
-│   │   │   └── VirtualList.css     # List optimization styles
-│   │   ├── UserList/
-│   │   │   ├── UserList.vue        # Memoized user list
-│   │   │   ├── UserItem.vue        # Individual user item
-│   │   │   └── UserList.css        # User list styles
-│   │   └── PerformanceMonitor/
-│   │       ├── PerformanceMonitor.vue  # Performance profiling
-│   │       └── PerformanceMonitor.css  # Monitor styles
-│   ├── hooks/
-│   │   ├── useDebounce.js         # Debounce optimization hook
-│   │   ├── useVirtualList.js      # Virtual list logic
-│   │   ├── usePerformance.js      # Performance monitoring
-│   │   └── useWorker.js           # Web worker integration
-│   └── pages/
-│       ├── Home.vue               # Lazy-loaded home page
-│       ├── About.vue              # Lazy-loaded about page
-│       ├── Dashboard.vue          # Performance dashboard
-│       └── UserManagement.vue     # Large data management
+CMD ["node", "server.js"]
 ```
 
-### Key Optimizations Implemented
+```dockerfile
+# frontend/Dockerfile
+FROM node:18-alpine as build
 
-1. **Code Splitting & Lazy Loading**
-   - defineAsyncComponent() for route-based splitting
-   - Vue 3 Suspense boundaries with loading states
-   - Dynamic imports for components
-   - Bundle size optimization
+WORKDIR /app
+COPY package*.json ./
+RUN npm ci
+COPY . .
+RUN npm run build
 
-2. **Memoization Techniques**
-   - shallowRef for component memoization
-   - computed for expensive calculations
-   - markRaw for event handler optimization
-   - Shallow comparison strategies
+FROM nginx:alpine
+COPY --from=build /app/dist /usr/share/nginx/html
+COPY nginx.conf /etc/nginx/nginx.conf
+EXPOSE 80
+CMD ["nginx", "-g", "daemon off;"]
+```
 
-3. **Virtual Lists & Large Data**
-   - Virtualized scrolling for large datasets
-   - Efficient rendering of thousands of items
-   - Memory usage optimization
-   - Smooth scrolling performance
+2. Create docker-compose.yml:
 
-4. **Performance Monitoring**
-   - Vue DevTools Profiler integration
-   - Custom performance composables
-   - Bundle analysis tools
-   - Runtime performance tracking
+```yaml
+version: '3.8'
 
-5. **Advanced Patterns**
-   - Web Workers for heavy computations
-   - Debounced search inputs
-   - Efficient state updates
-   - Component lifecycle optimization
+services:
+  mongodb:
+    image: mongo:5.0
+    container_name: mevn-mongodb
+    restart: always
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: password
+    volumes:
+      - mongodb_data:/data/db
 
-This structure demonstrates production-ready Vue performance optimization techniques essential for scalable applications handling large datasets and complex user interactions.
+  backend:
+    build: ./backend
+    container_name: mevn-backend
+    restart: always
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+      - MONGODB_URI=mongodb://admin:password@mongodb:27017/mevn-todo?authSource=admin
+    depends_on:
+      - mongodb
+
+  frontend:
+    build: ./frontend
+    container_name: mevn-frontend
+    restart: always
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+
+volumes:
+  mongodb_data:
+```
+
+3. Deploy to production:
+
+```bash
+# Build and start all services
+docker-compose up -d
+
+# Check logs
+docker-compose logs -f
+
+# Scale services if needed
+docker-compose up -d --scale backend=3
+```
+
+## Summary
+
+In this lab, you've learned how to:
+
+1. **Set up MEVN stack** - MongoDB, Express.js, Vue.js, Node.js
+2. **Build RESTful APIs** with Express.js and MongoDB
+3. **Create reactive Vue.js frontend** with Composition API
+4. **Implement real-time features** using WebSockets
+5. **Deploy full-stack applications** using Docker
+
+This comprehensive MEVN stack application demonstrates modern full-stack development patterns and production deployment strategies.
+
+## Next Steps
+
+- Add user authentication and authorization
+- Implement file upload functionality
+- Add data validation and error handling
+- Set up CI/CD pipelines
+- Add monitoring and logging
+- Implement caching strategies

@@ -1,11 +1,11 @@
-# Vue 3 Full-Stack Integration & Production Deployment - Quick Reference
+# MEVN Stack Full-Stack Integration & Production Deployment - Quick Reference
 
-## 🎯 **Full-Stack Architecture**
+## 🎯 **MEVN Stack Architecture**
 
 ### **Project Structure**
 ```
-vue-fullstack-app/
-├── frontend/                 # Vue 3 frontend
+mevn-todo-app/
+├── frontend/                 # Vue.js frontend
 │   ├── src/
 │   │   ├── components/       # Reusable components
 │   │   ├── views/           # Page components
@@ -16,38 +16,39 @@ vue-fullstack-app/
 │   │   └── utils/           # Utility functions
 │   ├── public/              # Static assets
 │   ├── package.json
-│   └── vite.config.ts
-├── backend/                 # Node.js/Express backend
-│   ├── src/
-│   │   ├── controllers/     # Route controllers
-│   │   ├── models/          # Database models
-│   │   ├── routes/          # API routes
-│   │   ├── middleware/      # Custom middleware
-│   │   ├── services/        # Business logic
-│   │   └── utils/           # Utility functions
+│   └── vite.config.js
+├── backend/                 # Express.js backend
+│   ├── models/              # MongoDB models
+│   ├── routes/              # API routes
+│   ├── middleware/          # Custom middleware
+│   ├── controllers/         # Route controllers
 │   ├── package.json
 │   └── server.js
-├── shared/                  # Shared types and utilities
-│   ├── types/              # TypeScript interfaces
-│   └── utils/              # Common utilities
+├── mongodb/                 # Database data
 └── docker-compose.yml       # Docker configuration
 ```
 
+**MEVN Stack Components:**
+- **M**ongoDB: NoSQL database
+- **E**xpress.js: Web framework for Node.js
+- **V**ue.js: Frontend framework
+- **N**ode.js: JavaScript runtime
+
 ### **Backend API Setup**
-```typescript
-// backend/src/server.js
-import express from 'express'
-import cors from 'cors'
-import helmet from 'helmet'
-import morgan from 'morgan'
-import rateLimit from 'express-rate-limit'
-import { connectDB } from './config/database.js'
-import authRoutes from './routes/auth.js'
-import userRoutes from './routes/users.js'
-import { errorHandler } from './middleware/errorHandler.js'
+```javascript
+// backend/server.js
+const express = require('express')
+const mongoose = require('mongoose')
+const cors = require('cors')
+const helmet = require('helmet')
+const morgan = require('morgan')
+const rateLimit = require('express-rate-limit')
+const dotenv = require('dotenv')
+
+dotenv.config()
 
 const app = express()
-const PORT = process.env.PORT || 5000
+const PORT = process.env.PORT || 3000
 
 // Security middleware
 app.use(helmet())

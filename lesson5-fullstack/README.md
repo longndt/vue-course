@@ -14,7 +14,7 @@ In this lesson, you'll learn how to build complete full-stack applications by in
 After completing this lesson, you will be able to:
 
 - ✅ Design full-stack application architectures
-- ✅ Integrate Vue with Node.js/Express/MongoDB backends
+- ✅ Integrate Vue with MEVN stack (MongoDB, Express.js, Vue.js, Node.js)
 - ✅ Implement file upload and media management systems
 - ✅ Build real-time features with WebSockets and Server-Sent Events
 - ✅ Optimize Vue applications for production performance
@@ -42,12 +42,11 @@ npm create vue@latest fullstack-app
 cd fullstack-app
 npm install
 
-# 2. Install full-stack dependencies
+# 2. Install MEVN stack dependencies
 npm install vue-router@4 pinia socket.io-client
 npm install @vueuse/core multer cors
-npm install -D @types/multer
 
-# 3. Set up backend
+# 3. Set up MEVN backend
 mkdir server && cd server
 npm init -y
 npm install express mongoose cors multer socket.io
