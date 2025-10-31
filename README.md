@@ -184,7 +184,7 @@ Quick links to key diagrams:
 
 **📋 First, ensure you have all required software installed:**
 
-**[Go to Environment Setup Guide](./extras/environment_setup.md)**for detailed setup instructions
+**[Go to Environment Setup Guide](./extras/environment_setup.md)** for detailed setup instructions
 
 Make sure you have installed:
 - Node.js (version 18 or higher)
@@ -194,7 +194,7 @@ Make sure you have installed:
 
 **Having installation or setup issues?**
 
-**[Check Troubleshooting Guide](./extras/troubleshooting_guide.md)**for common problems and solutions
+**[Check Troubleshooting Guide](./extras/troubleshooting_guide.md)** for common problems and solutions
 
 ### Step 2: Install Markdown Reading Support Extension
 
@@ -231,18 +231,18 @@ cd vue-course
 - **[Lesson 5: Full-Stack Integration & Production Deployment](./lesson5-fullstack/readme.md)**
 
 #### 3⃣ **Continue with Advanced Materials**(Optional)
-- **[Advanced Materials & Resources](./extras/readme.md)**- Complete guide to advanced topics
+- **[Advanced Materials & Resources](./extras/readme.md)** - Complete guide to advanced topics
 
 **Quick links to key advanced topics:**
 
-- 🏗️ **[Advanced Patterns](./extras/advanced_patterns.md)**- Enterprise-level Vue patterns and architectural decisions
+- 🏗️ **[Advanced Patterns](./extras/advanced_patterns.md)** - Enterprise-level Vue patterns and architectural decisions
 - ⚡ **[Performance Optimization](./extras/performance_optimization.md)**- Complete performance optimization guide
-- 🔄 **[State Management](./extras/state_management.md)**- Comprehensive state management solutions
-- 🔒 **[Security Best Practices](./extras/security_guide.md)**- Essential security practices for Vue applications
+- 🔄 **[State Management](./extras/state_management.md)** - Comprehensive state management solutions
+- 🔒 **[Security Best Practices](./extras/security_guide.md)** - Essential security practices for Vue applications
 - ♿ **[Accessibility Guidelines](./extras/accessibility_guide.md)**- Making Vue applications accessible to everyone
-- 🧪 **[Testing Strategies](./extras/testing_strategies.md)**- Comprehensive testing approaches for Vue applications
-- 🛠️ **[Environment Setup](./extras/environment_setup.md)**- Complete development environment setup
-- 🔧 **[Troubleshooting Guide](./extras/troubleshooting_guide.md)**- Common issues and solutions
+- 🧪 **[Testing Strategies](./extras/testing_strategies.md)** - Comprehensive testing approaches for Vue applications
+- 🛠️ **[Environment Setup](./extras/environment_setup.md)** - Complete development environment setup
+- 🔧 **[Troubleshooting Guide](./extras/troubleshooting_guide.md)** - Common issues and solutions
 
 ### Step 5: Start Learning
 
