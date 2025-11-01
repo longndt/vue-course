@@ -19,11 +19,11 @@
   </div>
 </template>
 
-<script setup lang="ts">
+<script setup>
 import { ref } from 'vue'
-import logo from './assets/logo.svg'
+import logoImg from './assets/logo.svg'
 
-const logo = ref(logo)
+const logo = ref(logoImg)
 </script>
 
 <style>

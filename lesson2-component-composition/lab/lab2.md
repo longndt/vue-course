@@ -30,13 +30,12 @@ Create a Card component system using composition:
   </div>
 </template>
 
-<script setup lang="ts">
-interface Props {
-  class?: string
-}
-
-const props = withDefaults(defineProps<Props>(), {
-  class: ''
+<script setup>
+const props = defineProps({
+  class: {
+    type: String,
+    default: ''
+  }
 })
 </script>
 
@@ -148,18 +147,18 @@ Usage example:
 
 1. Create a useLoading composable:
 
-```typescript
-// src/composables/useLoading.ts
+```javascript
+// src/composables/useLoading.js
 import { ref } from 'vue'
 
 export function useLoading(initialValue = false) {
   const isLoading = ref(initialValue)
 
-  const setLoading = (value: boolean) => {
+  const setLoading = (value) => {
     isLoading.value = value
   }
 
-  const withLoading = async <T>(asyncFn: () => Promise<T>): Promise<T> => {
+  const withLoading = async (asyncFn) => {
     setLoading(true)
     try {
       const result = await asyncFn()
@@ -228,18 +227,13 @@ export function useLoading(initialValue = false) {
   </div>
 </template>
 
-<script setup lang="ts">
+<script setup>
 import { ref, onMounted } from 'vue'
 import { useLoading } from '@/composables/useLoading'
 import LoadingSpinner from '@/components/LoadingSpinner/LoadingSpinner.vue'
 
-interface Product {
-  id: number
-  name: string
-}
-
 const { isLoading, withLoading } = useLoading()
-const products = ref<Product[]>([])
+const products = ref([])
 
 const fetchProducts = async () => {
   // Simulate API call
@@ -260,28 +254,24 @@ onMounted(() => {
 
 1. Create a useForm composable:
 
-```typescript
-// src/composables/useForm.ts
+```javascript
+// src/composables/useForm.js
 import { ref, reactive } from 'vue'
 
-interface FormErrors {
-  [key: string]: string
-}
-
-export function useForm<T extends Record<string, any>>(initialValues: T) {
+export function useForm(initialValues) {
   const values = reactive({ ...initialValues })
-  const errors = ref<FormErrors>({})
+  const errors = ref({})
 
-  const handleChange = (field: keyof T, value: any) => {
+  const handleChange = (field, value) => {
     values[field] = value
     // Clear error when user starts typing
-    if (errors.value[field as string]) {
-      delete errors.value[field as string]
+    if (errors.value[field]) {
+      delete errors.value[field]
     }
   }
 
   const validate = () => {
-    const newErrors: FormErrors = {}
+    const newErrors = {}
     Object.entries(values).forEach(([key, value]) => {
       if (!value) {
         newErrors[key] = `${key} is required`
@@ -291,7 +281,7 @@ export function useForm<T extends Record<string, any>>(initialValues: T) {
     return Object.keys(newErrors).length === 0
   }
 
-  const handleSubmit = (callback: (values: T) => void) => (e: Event) => {
+  const handleSubmit = (callback) => (e) => {
     e.preventDefault()
     if (validate()) {
       callback(values)
@@ -360,7 +350,7 @@ export function useForm<T extends Record<string, any>>(initialValues: T) {
   </form>
 </template>
 
-<script setup lang="ts">
+<script setup>
 import { useForm } from '@/composables/useForm'
 
 const { values, errors, handleChange, handleSubmit, reset } = useForm({
@@ -369,7 +359,7 @@ const { values, errors, handleChange, handleSubmit, reset } = useForm({
   password: ''
 })
 
-const onSubmit = (formData: typeof values) => {
+const onSubmit = (formData) => {
   console.log('Form submitted:', formData)
   // Reset form after successful submission
   reset()
@@ -441,16 +431,11 @@ const onSubmit = (formData: typeof values) => {
 
 1. Create a Theme composable:
 
-```typescript
-// src/composables/useTheme.ts
+```javascript
+// src/composables/useTheme.js
 import { ref, provide, inject } from 'vue'
 
 const THEME_KEY = Symbol('theme')
-
-interface ThemeContext {
-  theme: Ref<string>
-  toggleTheme: () => void
-}
 
 export function provideTheme() {
   const theme = ref('light')
@@ -468,7 +453,7 @@ export function provideTheme() {
 }
 
 export function useTheme() {
-  const context = inject<ThemeContext>(THEME_KEY)
+  const context = inject(THEME_KEY)
   if (!context) {
     throw new Error('useTheme must be used within a component that provides theme')
   }
@@ -486,7 +471,7 @@ export function useTheme() {
   </button>
 </template>
 
-<script setup lang="ts">
+<script setup>
 import { useTheme } from '@/composables/useTheme'
 
 const { theme } = useTheme()
@@ -522,7 +507,7 @@ const { theme } = useTheme()
   </div>
 </template>
 
-<script setup lang="ts">
+<script setup>
 import { provideTheme } from '@/composables/useTheme'
 import ThemeToggle from '@/components/ThemeToggle.vue'
 import ThemedButton from '@/components/ThemedButton/ThemedButton.vue'
@@ -548,11 +533,11 @@ Create an ErrorBoundary component to handle component errors gracefully:
   <slot v-else />
 </template>
 
-<script setup lang="ts">
+<script setup>
 import { ref, onErrorCaptured } from 'vue'
 
 const hasError = ref(false)
-const error = ref<Error | null>(null)
+const error = ref(null)
 
 onErrorCaptured((err, instance, info) => {
   console.error('Error caught by boundary:', err, info)
@@ -608,18 +593,17 @@ Implement a modal component using Vue 3's Teleport:
   </Teleport>
 </template>
 
-<script setup lang="ts">
+<script setup>
 import { Teleport } from 'vue'
 
-interface Props {
-  isOpen: boolean
-}
+defineProps({
+  isOpen: {
+    type: Boolean,
+    required: true
+  }
+})
 
-defineProps<Props>()
-
-const emit = defineEmits<{
-  close: []
-}>()
+const emit = defineEmits(['close'])
 
 const onClose = () => {
   emit('close')
@@ -745,19 +729,15 @@ advanced-components/
 │   │   └── ProductList/
 │   │       └── ProductList.vue
 │   ├── composables/
-│   │   ├── useForm.ts
-│   │   ├── useLoading.ts
-│   │   ├── useTheme.ts
-│   │   └── useLocalStorage.ts
-│   ├── types/
-│   │   └── index.ts
+│   │   ├── useForm.js
+│   │   ├── useLoading.js
+│   │   ├── useTheme.js
+│   │   └── useLocalStorage.js
 │   ├── App.vue
 │   ├── style.css
-│   └── main.ts
+│   └── main.js
 ├── package.json
-├── tsconfig.json
-├── tsconfig.node.json
-├── vite.config.ts
+├── vite.config.js
 └── readme.md
 ```
 
@@ -775,7 +755,7 @@ advanced-components/
 
 #### **Professional Patterns:**
 - ✅ **Error Boundaries**: Graceful error handling and recovery
-- ✅ **Type Safety**: Comprehensive TypeScript interfaces
+- ✅ **Code Quality**: Clean JavaScript with proper structure
 - ✅ **Modern CSS**: Glass morphism effects, gradients, and animations
 
 #### **Interactive Features:**

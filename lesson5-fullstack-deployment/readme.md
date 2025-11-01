@@ -312,7 +312,6 @@ npm run dev
 ### Additional Resources
 - **Quiz yourself** → [quiz5.html](./quiz/quiz5.html) - Test your full-stack knowledge
 - **Quick reference** → [reference5.md](./reference/reference5.md) - Code snippets and patterns
-- **Complete solutions** → [lab5-solution.md](./lab/solution/lab5-solution.md) - Full solution code
 - **General questions?** → Review the reference guide
 - **Still confused?** → [Check Troubleshooting Guide](../../extras/troubleshooting-guide.md)
 

@@ -1,8 +1,8 @@
 # Vue Course Structure Diagram 📊
 
-## Complete TypeScript Course Organization & Navigation
+## Complete JavaScript Course Organization & Navigation
 
-This diagram shows the complete structure of the Vue 3 with TypeScript course, including all lessons, resources, and learning paths.
+This diagram shows the complete structure of the Vue 3 with JavaScript course, including all lessons, resources, and learning paths.
 
 ```mermaid
 graph TD
@@ -11,9 +11,9 @@ graph TD
     A --> D[Advanced Materials]
     A --> E[Visual Diagrams]
 
-    B --> B1[Lesson 0: TypeScript Prerequisites]
-    B1 --> B1a[TypeScript Essentials]
-    B1 --> B1b[Interfaces & Generics]
+    B --> B1[Lesson 0: JavaScript ES6+ Prerequisites]
+    B1 --> B1a[JavaScript ES6+ Essentials]
+    B1 --> B1b[Modern JavaScript Features]
     B1 --> B1c[Lab Project]
 
     C --> C1[Lesson 1: Vue Fundamentals]
@@ -24,8 +24,8 @@ graph TD
 
     C1 --> C1a[Vite Setup]
     C1 --> C1b[Vue Components]
-    C1 --> C1c[TypeScript Integration]
-    C1 --> C1d[Lab: Welcome Page]
+    C1 --> C1c[JavaScript Integration]
+    C1 --> C1d[Lab: Student Dashboard]
 
     C2 --> C2a[Composition API]
     C2 --> C2b[Props & Events]
@@ -77,9 +77,9 @@ graph TD
 
 ```mermaid
 flowchart LR
-    Start([Start Learning]) --> TS{Need TypeScript?}
-    TS -->|Yes| L0[Lesson 0: TypeScript]
-    TS -->|No| L1[Lesson 1: Vue Fundamentals]
+    Start([Start Learning]) --> JS{Need JavaScript ES6+?}
+    JS -->|Yes| L0[Lesson 0: JavaScript ES6+]
+    JS -->|No| L1[Lesson 1: Vue Fundamentals]
     L0 --> L1
     L1 --> L2[Lesson 2: Components]
     L2 --> L3[Lesson 3: API Integration]

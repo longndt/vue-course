@@ -22,7 +22,7 @@ By the end of this theory session, you will be able to:
 
 - Vue is built on modern JavaScript features
 - Composition API heavily relies on ES6+ patterns
-- TypeScript integration requires solid JS fundamentals
+- Solid JavaScript fundamentals are essential for Vue development
 - Modern tooling (Vite, ESLint) expects ES6+ syntax
 
 **Career and Academic Benefits:**
@@ -30,7 +30,7 @@ By the end of this theory session, you will be able to:
 - 90%+ of modern web development uses ES6+ features
 - Essential for understanding Vue source code
 - Required for professional development workflows
-- Foundation for learning TypeScript and advanced patterns
+- Foundation for learning advanced JavaScript patterns
 
 ---
 
@@ -908,7 +908,7 @@ You now have the JavaScript foundation needed to:
 - Work with reactive data and computed properties
 - Handle async operations in Vue components
 - Use modern JavaScript patterns in Vue applications
-- Integrate with TypeScript effectively
+- Write clean and maintainable JavaScript code
 
 ### **Next Lesson**
 
@@ -922,4 +922,3 @@ Proceed to [Lesson 1: Vue Fundamentals & Project Setup](../lesson1-fundamentals-
 - [ES6 Features](https://es6-features.org/)
 - [JavaScript.info](https://javascript.info/)
 - [Vue Documentation](https://vuejs.org/)
-- [TypeScript Handbook](https://www.typescriptlang.org/docs/)

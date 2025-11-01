@@ -2,7 +2,7 @@
 
 ## Overview
 
-In this focused lab exercise, you'll build essential API integration features by connecting a React frontend to a Node.js/Express/MongoDB backend. This demonstrates core full-stack patterns used in modern web development.
+In this focused lab exercise, you'll build essential API integration features by connecting a Vue frontend to a Node.js/Express/MongoDB backend. This demonstrates core full-stack patterns used in modern web development.
 
 _For detailed learning objectives and concepts, see [../readme.md](../readme.md)_
 

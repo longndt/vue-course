@@ -5,8 +5,8 @@ Implement authentication features with Vue Router and Pinia.
 
 ## Exercise 1: Basic Vue Router Setup
 
-```typescript
-// router/index.ts
+```javascript
+// router/index.js
 import { createRouter, createWebHistory } from 'vue-router'
 import Home from '@/pages/Home.vue'
 
@@ -23,8 +23,8 @@ export const router = createRouter({
 
 ## Exercise 2: Authentication Store
 
-```typescript
-// stores/auth.ts
+```javascript
+// stores/auth.js
 import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
 
@@ -48,8 +48,8 @@ export const useAuthStore = defineStore('auth', () => {
 
 ## Exercise 3: Protected Routes
 
-```typescript
-// Add to router/index.ts
+```javascript
+// Add to router/index.js
 router.beforeEach((to, from, next) => {
   const authStore = useAuthStore()
 
