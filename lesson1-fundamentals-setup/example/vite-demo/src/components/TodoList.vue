@@ -1,27 +1,17 @@
-<script setup lang="ts">
+<script setup>
 import { ref, computed } from 'vue'
 
-interface Todo {
-  id: number
-  text: string
-  completed: boolean
-}
+const props = defineProps({
+  todos: {
+    type: Array,
+    required: true
+  }
+})
 
-interface Props {
-  todos: Todo[]
-}
-
-interface Emits {
-  (e: 'add-todo', text: string): void
-  (e: 'toggle-todo', id: number): void
-  (e: 'remove-todo', id: number): void
-}
-
-const props = defineProps<Props>()
-const emit = defineEmits<Emits>()
+const emit = defineEmits(['add-todo', 'toggle-todo', 'remove-todo'])
 
 const newTodoText = ref('')
-const filter = ref<'all' | 'active' | 'completed'>('all')
+const filter = ref('all')
 
 const filteredTodos = computed(() => {
   switch (filter.value) {
@@ -42,17 +32,17 @@ const addTodo = () => {
   }
 }
 
-const handleKeyPress = (event: KeyboardEvent) => {
+const handleKeyPress = (event) => {
   if (event.key === 'Enter') {
     addTodo()
   }
 }
 
-const toggleTodo = (id: number) => {
+const toggleTodo = (id) => {
   emit('toggle-todo', id)
 }
 
-const removeTodo = (id: number) => {
+const removeTodo = (id) => {
   emit('remove-todo', id)
 }
 

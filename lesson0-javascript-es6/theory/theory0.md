@@ -912,7 +912,7 @@ You now have the JavaScript foundation needed to:
 
 ### **Next Lesson**
 
-Proceed to [Lesson 1: Vue Fundamentals & TypeScript Setup](../lesson1-fundamentals-setup/) to start building Vue applications!
+Proceed to [Lesson 1: Vue Fundamentals & Project Setup](../lesson1-fundamentals-setup/) to start building Vue applications!
 
 ---
 

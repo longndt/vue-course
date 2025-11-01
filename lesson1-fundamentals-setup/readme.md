@@ -1,4 +1,4 @@
-# Lesson 1: Vue Fundamentals & JavaScript Setup
+# Lesson 1: Vue Fundamentals & Project Setup
 
 ## Overview
 
@@ -92,7 +92,7 @@ npm run dev
 ## What's Next
 
 ### Ready to Continue?
-- **Completed this lesson?** → Proceed to [Lesson 2: Component Architecture & Reactive State](../lesson2-components/)
+- **Completed this lesson?** → Proceed to [Lesson 2: Component Architecture & Vue Composition API](../lesson2-component-composition/)
 
 ### Need More Practice?
 - **Study theory** → [theory1.md](./theory/theory1.md) - Deep dive into Vue concepts

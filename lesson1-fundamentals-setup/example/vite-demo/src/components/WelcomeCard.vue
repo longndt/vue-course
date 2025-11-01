@@ -1,11 +1,18 @@
-<script setup lang="ts">
-interface Props {
-  count: number
-  completedTodos: number
-  totalTodos: number
-}
-
-defineProps<Props>()
+<script setup>
+defineProps({
+  count: {
+    type: Number,
+    required: true
+  },
+  completedTodos: {
+    type: Number,
+    required: true
+  },
+  totalTodos: {
+    type: Number,
+    required: true
+  }
+})
 </script>
 
 <template>
@@ -35,7 +42,7 @@ defineProps<Props>()
     <div class="features-list">
       <h3>Key Features Demonstrated:</h3>
       <ul>
-        <li>✅ Composition API with TypeScript</li>
+        <li>✅ Composition API with JavaScript</li>
         <li>✅ Reactive state management</li>
         <li>✅ Component composition</li>
         <li>✅ Event handling</li>

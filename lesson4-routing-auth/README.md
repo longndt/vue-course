@@ -1,4 +1,4 @@
-# Lesson 4: Routing, Authentication & Advanced Patterns
+# Lesson 4: Routing & Authentication
 
 ## Overview
 
@@ -62,7 +62,7 @@ npm run dev
 ## What's Next
 
 ### Ready to Continue?
-- **Completed this lesson?** → Proceed to [Lesson 5: Full-Stack Integration & Production Deployment](../lesson5-fullstack/)
+- **Completed this lesson?** → Proceed to [Lesson 5: Full-Stack Integration & Production Deployment](../lesson5-fullstack-deployment/readme.md)
 
 ### Need More Practice?
 - **Study theory** → [theory4.md](./theory/theory4.md) - Deep dive into routing and auth

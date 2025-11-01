@@ -1,4 +1,4 @@
-# Vue 3 Routing, Authentication & Advanced Patterns
+# Vue 3 Routing & Authentication
 
 ## Theory 4: Vue Router & Authentication 🧭
 
@@ -1183,8 +1183,6 @@ const authStore = useAuthStore()
 - Ask your teacher!
 
 ---
-
-This completes the Vue Router and Authentication theory! 🎉
 
 **Tips:**
 - Start with public pages

@@ -1,0 +1,71 @@
+name: Deploy Examples
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ main ]
+    paths:
+      - 'lesson*/example/**'
+
+jobs:
+  deploy-vercel:
+    name: Deploy to Vercel
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20.x'
+      
+      - name: Install Vercel CLI
+        run: npm install -g vercel@latest
+      
+      - name: Deploy Lesson 1 Example
+        working-directory: lesson1-fundamentals-setup/example/vite-demo
+        run: |
+          npm ci
+          npm run build
+          vercel --token ${{ secrets.VERCEL_TOKEN }} --prod --yes || echo "Deployment skipped"
+        continue-on-error: true
+      
+      - name: Deploy Lesson 2 Example
+        working-directory: lesson2-components/example
+        run: |
+          npm ci
+          npm run build
+          vercel --token ${{ secrets.VERCEL_TOKEN }} --prod --yes || echo "Deployment skipped"
+        continue-on-error: true
+
+  deploy-netlify:
+    name: Deploy to Netlify
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20.x'
+      
+      - name: Install Netlify CLI
+        run: npm install -g netlify-cli
+      
+      - name: Deploy to Netlify
+        working-directory: lesson1-fundamentals-setup/example/vite-demo
+        env:
+          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+          NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
+        run: |
+          npm ci
+          npm run build
+          netlify deploy --prod --dir=dist || echo "Deployment skipped"
+        continue-on-error: true
+

@@ -2,7 +2,7 @@
 
 ## Course Overview
 
-This course teaches **Vue 3 with JavaScript** development using industry-standard practices through hands-on examples.
+This course teaches **Vue 3 with JavaScript** development using industry-standard practices through hands-on examples. All examples and code use JavaScript (not TypeScript) for easier learning.
 
 **Format** Theory, hands-on practice, and project-based learning
 
@@ -225,10 +225,10 @@ cd vue-course
 
 #### 2⃣ **Learn Lessons 1-5**(In sequence)
 - **[Lesson 1: Vue Fundamentals & Project Setup](./lesson1-fundamentals-setup/readme.md)**
-- **[Lesson 2: Component Architecture & Vue Composition API](./lesson2-components/readme.md)**
+- **[Lesson 2: Component Architecture & Vue Composition API](./lesson2-component-composition/readme.md)**
 - **[Lesson 3: API Integration & Data Management](./lesson3-api-data/readme.md)**
 - **[Lesson 4: Routing & Authentication](./lesson4-routing-auth/readme.md)**
-- **[Lesson 5: Full-Stack Integration & Production Deployment](./lesson5-fullstack/readme.md)**
+- **[Lesson 5: Full-Stack Integration & Production Deployment](./lesson5-fullstack-deployment/readme.md)**
 
 #### 3⃣ **Continue with Advanced Materials**(Optional)
 - **[Advanced Materials & Resources](./extras/readme.md)** - Complete guide to advanced topics
@@ -243,6 +243,7 @@ cd vue-course
 - 🧪 **[Testing Strategies](./extras/testing_strategies.md)** - Comprehensive testing approaches for Vue applications
 - 🛠️ **[Environment Setup](./extras/environment_setup.md)** - Complete development environment setup
 - 🔧 **[Troubleshooting Guide](./extras/troubleshooting_guide.md)** - Common issues and solutions
+- 🚀 **[CI/CD Setup Guide](./extras/cicd-setup-guide.md)** - Complete CI/CD automation and deployment
 
 ### Step 5: Start Learning
 

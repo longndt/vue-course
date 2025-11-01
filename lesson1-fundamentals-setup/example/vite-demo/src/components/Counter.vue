@@ -1,16 +1,14 @@
-<script setup lang="ts">
+<script setup>
 import { ref, watch } from 'vue'
 
-interface Props {
-  count: number
-}
+const props = defineProps({
+  count: {
+    type: Number,
+    required: true
+  }
+})
 
-interface Emits {
-  (e: 'update:count', value: number): void
-}
-
-const props = defineProps<Props>()
-const emit = defineEmits<Emits>()
+const emit = defineEmits(['update:count'])
 
 const localCount = ref(props.count)
 
@@ -40,8 +38,8 @@ const double = () => {
   localCount.value *= 2
 }
 
-const isEven = (value: number) => value % 2 === 0
-const isPrime = (value: number) => {
+const isEven = (value) => value % 2 === 0
+const isPrime = (value) => {
   if (value < 2) return false
   for (let i = 2; i <= Math.sqrt(value); i++) {
     if (value % i === 0) return false

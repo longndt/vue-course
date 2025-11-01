@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vue 3 Routing & Authentication Quiz</title>
+    <title>Vue 3 Component Architecture & Vue Composition API Quiz</title>
     <style>
         * {
             margin: 0;
@@ -189,8 +189,8 @@
 <body>
     <div class="quiz-container">
         <div class="quiz-header">
-            <h1>🎯 Vue 3 Routing & Authentication Quiz</h1>
-            <p>Test your knowledge of Vue Router and authentication patterns</p>
+            <h1>🎯 Vue 3 Component Architecture Quiz</h1>
+            <p>Test your knowledge of Vue 3 components and reactive state</p>
         </div>
 
         <div class="quiz-content">
@@ -201,144 +201,143 @@
             <div id="quizQuestions">
                 <!-- Question 1 -->
                 <div class="question" data-question="1">
-                    <h3>1. What is the correct way to create a Vue Router instance?</h3>
-                    <div class="code-block">// router/index.ts</div>
+                    <h3>1. What is the difference between ref() and reactive() in Vue 3?</h3>
                     <ul class="options">
-                        <li class="option" data-answer="a">const router = createRouter({ history: createWebHistory(), routes })</li>
-                        <li class="option" data-answer="b">const router = new VueRouter({ mode: 'history', routes })</li>
-                        <li class="option" data-answer="c">const router = createRouter({ mode: 'history', routes })</li>
-                        <li class="option" data-answer="d">const router = new Router({ history: createWebHistory(), routes })</li>
+                        <li class="option" data-answer="a">ref() is for primitives, reactive() is for objects</li>
+                        <li class="option" data-answer="b">ref() is for objects, reactive() is for primitives</li>
+                        <li class="option" data-answer="c">They are exactly the same</li>
+                        <li class="option" data-answer="d">ref() is deprecated, use reactive() instead</li>
                     </ul>
                 </div>
 
                 <!-- Question 2 -->
                 <div class="question" data-question="2">
-                    <h3>2. How do you navigate programmatically in Vue 3?</h3>
-                    <div class="code-block">// In Composition API</div>
+                    <h3>2. How do you create a custom composable that returns reactive data?</h3>
+                    <div class="code-block">// composables/useCounter.ts</div>
                     <ul class="options">
-                        <li class="option" data-answer="a">const router = useRouter(); router.push('/dashboard')</li>
-                        <li class="option" data-answer="b">this.$router.push('/dashboard')</li>
-                        <li class="option" data-answer="c">router.push('/dashboard')</li>
-                        <li class="option" data-answer="d">Both a and b are correct</li>
+                        <li class="option" data-answer="a">export function useCounter() { return { count: ref(0) } }</li>
+                        <li class="option" data-answer="b">export function useCounter() { const count = ref(0); return { count } }</li>
+                        <li class="option" data-answer="c">export function useCounter() { return reactive({ count: 0 }) }</li>
+                        <li class="option" data-answer="d">Both b and c are correct</li>
                     </ul>
                 </div>
 
                 <!-- Question 3 -->
                 <div class="question" data-question="3">
-                    <h3>3. What is the correct way to access route parameters in Vue 3?</h3>
-                    <div class="code-block">// Access :id parameter</div>
+                    <h3>3. What is the correct way to watch multiple reactive sources?</h3>
+                    <div class="code-block">// Watch count and name</div>
                     <ul class="options">
-                        <li class="option" data-answer="a">const route = useRoute(); const id = route.params.id</li>
-                        <li class="option" data-answer="b">const id = this.$route.params.id</li>
-                        <li class="option" data-answer="c">const id = route.params.id</li>
-                        <li class="option" data-answer="d">Both a and b are correct</li>
+                        <li class="option" data-answer="a">watch([count, name], ([newCount, newName]) => {})</li>
+                        <li class="option" data-answer="b">watch(count, name, (newCount, newName) => {})</li>
+                        <li class="option" data-answer="c">watch(() => [count.value, name.value], ([newCount, newName]) => {})</li>
+                        <li class="option" data-answer="d">Both a and c are correct</li>
                     </ul>
                 </div>
 
                 <!-- Question 4 -->
                 <div class="question" data-question="4">
-                    <h3>4. How do you create a navigation guard in Vue 3?</h3>
-                    <div class="code-block">// Route guard</div>
+                    <h3>4. How do you create a computed property that depends on multiple reactive values?</h3>
+                    <div class="code-block">// Calculate total price</div>
                     <ul class="options">
-                        <li class="option" data-answer="a">router.beforeEach((to, from, next) => { if (requiresAuth(to)) next('/login') else next() })</li>
-                        <li class="option" data-answer="b">router.beforeEach((to, from) => { if (requiresAuth(to)) return '/login' })</li>
-                        <li class="option" data-answer="c">router.guard((to, from, next) => { if (requiresAuth(to)) next('/login') })</li>
-                        <li class="option" data-answer="d">All of the above are correct</li>
+                        <li class="option" data-answer="a">const total = computed(() => price.value * quantity.value)</li>
+                        <li class="option" data-answer="b">const total = computed(() => price * quantity)</li>
+                        <li class="option" data-answer="c">const total = computed(price.value * quantity.value)</li>
+                        <li class="option" data-answer="d">const total = computed(() => { return price.value * quantity.value })</li>
                     </ul>
                 </div>
 
                 <!-- Question 5 -->
                 <div class="question" data-question="5">
-                    <h3>5. What is the correct way to implement authentication state in Pinia?</h3>
-                    <div class="code-block">// stores/auth.ts</div>
+                    <h3>5. What is the correct way to emit events with TypeScript in Vue 3?</h3>
+                    <div class="code-block">// Child component</div>
                     <ul class="options">
-                        <li class="option" data-answer="a">const user = ref(null); const isAuthenticated = computed(() => !!user.value)</li>
-                        <li class="option" data-answer="b">const state = reactive({ user: null, isAuthenticated: false })</li>
-                        <li class="option" data-answer="c">const user = ref(null); const token = ref(localStorage.getItem('token'))</li>
-                        <li class="option" data-answer="d">All of the above are correct</li>
+                        <li class="option" data-answer="a">const emit = defineEmits&lt;{update: [value: string]}&gt;()</li>
+                        <li class="option" data-answer="b">const emit = defineEmits(['update'])</li>
+                        <li class="option" data-answer="c">const emit = defineEmits&lt;{update: (value: string) => void}&gt;()</li>
+                        <li class="option" data-answer="d">Both a and b are correct</li>
                     </ul>
                 </div>
 
                 <!-- Question 6 -->
                 <div class="question" data-question="6">
-                    <h3>6. How do you protect routes that require authentication?</h3>
-                    <div class="code-block">// Route protection</div>
+                    <h3>6. How do you create a Pinia store with Composition API style?</h3>
+                    <div class="code-block">// stores/counter.ts</div>
                     <ul class="options">
-                        <li class="option" data-answer="a">router.beforeEach((to, from, next) => { if (to.meta.requiresAuth && !isAuthenticated) next('/login') else next() })</li>
-                        <li class="option" data-answer="b">const ProtectedRoute = { template: '&lt;router-view v-if="isAuthenticated" /&gt;' }</li>
-                        <li class="option" data-answer="c">const ProtectedRoute = { template: '&lt;div v-if="isAuthenticated"&gt;&lt;router-view /&gt;&lt;/div&gt;' }</li>
-                        <li class="option" data-answer="d">All of the above are correct</li>
+                        <li class="option" data-answer="a">export const useCounterStore = defineStore('counter', () => { const count = ref(0); return { count } })</li>
+                        <li class="option" data-answer="b">export const useCounterStore = defineStore('counter', { state: () => ({ count: 0 }) })</li>
+                        <li class="option" data-answer="c">export const useCounterStore = createStore({ count: ref(0) })</li>
+                        <li class="option" data-answer="d">Both a and b are correct</li>
                     </ul>
                 </div>
 
                 <!-- Question 7 -->
                 <div class="question" data-question="7">
-                    <h3>7. What is the correct way to handle login in Vue 3?</h3>
-                    <div class="code-block">// Login function</div>
+                    <h3>7. What is the correct way to handle form validation in Vue 3?</h3>
+                    <div class="code-block">// Form validation</div>
                     <ul class="options">
-                        <li class="option" data-answer="a">const login = async (credentials) => { const response = await api.post('/login', credentials); user.value = response.data.user; token.value = response.data.token }</li>
-                        <li class="option" data-answer="b">const login = async (credentials) => { const response = await api.post('/login', credentials); localStorage.setItem('token', response.data.token) }</li>
-                        <li class="option" data-answer="c">const login = async (credentials) => { const response = await api.post('/login', credentials); user.value = response.data.user; token.value = response.data.token; localStorage.setItem('token', response.data.token) }</li>
+                        <li class="option" data-answer="a">const isValid = computed(() => form.name && form.email)</li>
+                        <li class="option" data-answer="b">const isValid = computed(() => form.name.trim() && form.email.trim())</li>
+                        <li class="option" data-answer="c">const isValid = computed(() => form.name.value && form.email.value)</li>
                         <li class="option" data-answer="d">All of the above are correct</li>
                     </ul>
                 </div>
 
                 <!-- Question 8 -->
                 <div class="question" data-question="8">
-                    <h3>8. How do you implement role-based access control in Vue 3?</h3>
-                    <div class="code-block">// Role-based access</div>
+                    <h3>8. How do you create a component that accepts both props and slots?</h3>
+                    <div class="code-block">// BaseCard component</div>
                     <ul class="options">
-                        <li class="option" data-answer="a">const hasRole = (role) => user.value?.role === role</li>
-                        <li class="option" data-answer="b">const hasRole = (role) => user.value && user.value.role === role</li>
-                        <li class="option" data-answer="c">const hasRole = (role) => user.value?.role === role || user.value?.roles?.includes(role)</li>
+                        <li class="option" data-answer="a">&lt;div class="card"&gt;&lt;slot /&gt;&lt;/div&gt;</li>
+                        <li class="option" data-answer="b">&lt;div class="card"&gt;&lt;slot name="header" /&gt;&lt;slot /&gt;&lt;slot name="footer" /&gt;&lt;/div&gt;</li>
+                        <li class="option" data-answer="c">&lt;div class="card"&gt;&lt;slot v-if="$slots.header" name="header" /&gt;&lt;slot /&gt;&lt;/div&gt;</li>
                         <li class="option" data-answer="d">All of the above are correct</li>
                     </ul>
                 </div>
 
                 <!-- Question 9 -->
                 <div class="question" data-question="9">
-                    <h3>9. What is the correct way to handle logout in Vue 3?</h3>
-                    <div class="code-block">// Logout function</div>
+                    <h3>9. What is the correct way to handle async operations in a composable?</h3>
+                    <div class="code-block">// composables/useApi.ts</div>
                     <ul class="options">
-                        <li class="option" data-answer="a">const logout = () => { user.value = null; token.value = null; localStorage.removeItem('token') }</li>
-                        <li class="option" data-answer="b">const logout = async () => { await api.post('/logout'); user.value = null; token.value = null; localStorage.removeItem('token') }</li>
-                        <li class="option" data-answer="c">const logout = () => { user.value = null; token.value = null; localStorage.removeItem('token'); router.push('/login') }</li>
-                        <li class="option" data-answer="d">All of the above are correct</li>
+                        <li class="option" data-answer="a">const data = ref(null); const loading = ref(false); const fetch = async () => { loading.value = true; data.value = await api.get(); loading.value = false }</li>
+                        <li class="option" data-answer="b">const { data, loading, error } = useAsyncData(() => api.get())</li>
+                        <li class="option" data-answer="c">const data = await api.get()</li>
+                        <li class="option" data-answer="d">Both a and b are correct</li>
                     </ul>
                 </div>
 
                 <!-- Question 10 -->
                 <div class="question" data-question="10">
-                    <h3>10. How do you create nested routes in Vue 3?</h3>
-                    <div class="code-block">// Nested routes</div>
+                    <h3>10. How do you create a component that provides data to its children?</h3>
+                    <div class="code-block">// Parent component</div>
                     <ul class="options">
-                        <li class="option" data-answer="a">{ path: '/dashboard', component: Dashboard, children: [{ path: 'profile', component: Profile }] }</li>
-                        <li class="option" data-answer="b">{ path: '/dashboard', component: Dashboard, routes: [{ path: 'profile', component: Profile }] }</li>
-                        <li class="option" data-answer="c">{ path: '/dashboard', component: Dashboard, nested: [{ path: 'profile', component: Profile }] }</li>
+                        <li class="option" data-answer="a">provide('theme', 'dark')</li>
+                        <li class="option" data-answer="b">provide('theme', ref('dark'))</li>
+                        <li class="option" data-answer="c">provide('theme', reactive({ mode: 'dark' }))</li>
                         <li class="option" data-answer="d">All of the above are correct</li>
                     </ul>
                 </div>
 
                 <!-- Question 11 -->
                 <div class="question" data-question="11">
-                    <h3>11. What is the correct way to handle route transitions in Vue 3?</h3>
-                    <div class="code-block">// Route transitions</div>
+                    <h3>11. What is the correct way to handle component lifecycle in Vue 3 Composition API?</h3>
+                    <div class="code-block">// Lifecycle hooks</div>
                     <ul class="options">
-                        <li class="option" data-answer="a">&lt;router-view v-slot="{ Component }"&gt;&lt;transition name="fade"&gt;&lt;component :is="Component" /&gt;&lt;/transition&gt;&lt;/router-view&gt;</li>
-                        <li class="option" data-answer="b">&lt;transition name="fade"&gt;&lt;router-view /&gt;&lt;/transition&gt;</li>
-                        <li class="option" data-answer="c">&lt;router-view&gt;&lt;transition name="fade"&gt;&lt;component :is="Component" /&gt;&lt;/transition&gt;&lt;/router-view&gt;</li>
+                        <li class="option" data-answer="a">onMounted(() => { console.log('mounted') })</li>
+                        <li class="option" data-answer="b">mounted() { console.log('mounted') }</li>
+                        <li class="option" data-answer="c">useMounted(() => { console.log('mounted') })</li>
                         <li class="option" data-answer="d">Both a and b are correct</li>
                     </ul>
                 </div>
 
                 <!-- Question 12 -->
                 <div class="question" data-question="12">
-                    <h3>12. How do you implement breadcrumbs in Vue 3?</h3>
-                    <div class="code-block">// Breadcrumb component</div>
+                    <h3>12. How do you create a component that handles both local and global state?</h3>
+                    <div class="code-block">// Component with mixed state</div>
                     <ul class="options">
-                        <li class="option" data-answer="a">const breadcrumbs = computed(() => route.matched.filter(record => record.meta.breadcrumb))</li>
-                        <li class="option" data-answer="b">const breadcrumbs = computed(() => route.matched.map(record => ({ name: record.meta.breadcrumb, path: record.path })))</li>
-                        <li class="option" data-answer="c">const breadcrumbs = computed(() => route.matched.filter(record => record.meta.breadcrumb).map(record => ({ name: record.meta.breadcrumb, path: record.path })))</li>
+                        <li class="option" data-answer="a">const localState = ref(0); const globalStore = useStore()</li>
+                        <li class="option" data-answer="b">const { localState } = useLocalState(); const { globalState } = useGlobalState()</li>
+                        <li class="option" data-answer="c">const state = reactive({ local: 0, global: store.state })</li>
                         <li class="option" data-answer="d">All of the above are correct</li>
                     </ul>
                 </div>
@@ -360,62 +359,62 @@
             {
                 question: 1,
                 correct: 'a',
-                explanation: 'Vue 3 Router uses createRouter with createWebHistory for HTML5 history mode. The old Vue 2 syntax is not used in Vue 3.'
+                explanation: 'ref() is used for primitive values (strings, numbers, booleans), while reactive() is used for objects and arrays.'
             },
             {
                 question: 2,
-                correct: 'd',
-                explanation: 'Both useRouter() in Composition API and this.$router in Options API are correct ways to navigate programmatically.'
+                correct: 'b',
+                explanation: 'Custom composables should return reactive references. The function should create the refs and return them in an object.'
             },
             {
                 question: 3,
                 correct: 'd',
-                explanation: 'Both useRoute() in Composition API and this.$route in Options API are correct ways to access route parameters.'
+                explanation: 'You can watch an array of sources directly or use a getter function that returns an array. Both approaches work.'
             },
             {
                 question: 4,
                 correct: 'a',
-                explanation: 'Navigation guards use beforeEach with to, from, and next parameters. The next() function must be called to continue navigation.'
+                explanation: 'Computed properties take a function that returns a value. For refs, you need to access .value inside the function.'
             },
             {
                 question: 5,
                 correct: 'd',
-                explanation: 'Authentication state can be implemented with refs, reactive objects, or a combination. The choice depends on the specific requirements.'
+                explanation: 'Both TypeScript interface syntax and JavaScript array syntax are valid for defineEmits in Vue 3.'
             },
             {
                 question: 6,
                 correct: 'd',
-                explanation: 'Route protection can be implemented with navigation guards, protected route components, or conditional rendering. All approaches are valid.'
+                explanation: 'Pinia supports both Composition API style (function) and Options API style (object) store definitions.'
             },
             {
                 question: 7,
-                correct: 'c',
-                explanation: 'Login should update both the store state and localStorage. This ensures the user stays logged in across browser sessions.'
+                correct: 'b',
+                explanation: 'Form validation should check for trimmed values to avoid empty strings. The exact syntax depends on how form is defined.'
             },
             {
                 question: 8,
                 correct: 'd',
-                explanation: 'Role-based access can check single roles, multiple roles, or handle both single and multiple role scenarios. All approaches are valid.'
+                explanation: 'Vue 3 supports default slots, named slots, and conditional slots. All approaches are valid for different use cases.'
             },
             {
                 question: 9,
                 correct: 'd',
-                explanation: 'Logout should clear state, remove tokens, and optionally redirect. The exact implementation depends on requirements.'
+                explanation: 'Both manual state management and utility functions like useAsyncData are valid approaches for handling async operations.'
             },
             {
                 question: 10,
-                correct: 'a',
-                explanation: 'Nested routes use the children property, not routes or nested. This is the correct Vue Router syntax.'
+                correct: 'd',
+                explanation: 'provide() can accept any value type. The choice depends on whether you need reactivity and what type of data you\'re providing.'
             },
             {
                 question: 11,
-                correct: 'd',
-                explanation: 'Both approaches work for route transitions. The first is more explicit, the second is simpler for basic transitions.'
+                correct: 'a',
+                explanation: 'onMounted() is the Composition API lifecycle hook. mounted() is from Options API, and useMounted() doesn\'t exist.'
             },
             {
                 question: 12,
-                correct: 'c',
-                explanation: 'Breadcrumbs should filter routes with breadcrumb meta, then map to breadcrumb objects. This provides the most complete implementation.'
+                correct: 'a',
+                explanation: 'Components commonly mix local state (refs) with global state (stores). This is a standard pattern in Vue 3 applications.'
             }
         ];
 
@@ -506,11 +505,11 @@
             scoreEl.className = 'score ' + (score >= 80 ? 'excellent' : score >= 60 ? 'good' : 'needs-improvement');
 
             if (score >= 80) {
-                messageEl.textContent = 'Excellent! You have mastered Vue 3 routing and authentication!';
+                messageEl.textContent = 'Excellent! You have mastered Vue 3 component architecture!';
             } else if (score >= 60) {
                 messageEl.textContent = 'Good job! Review the explanations and practice more.';
             } else {
-                messageEl.textContent = 'You need more practice with routing and authentication. Study the reference materials and try again.';
+                messageEl.textContent = 'You need more practice with Vue 3 components. Study the reference materials and try again.';
             }
 
             explanationEl.innerHTML = explanations.join('<br><br>');

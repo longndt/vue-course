@@ -6,10 +6,10 @@ This diagram shows the complete learning journey from Vue fundamentals to full-s
 
 ```mermaid
 graph TD
-    A[🎯 Prerequisites<br/>JavaScript ES6+ Review] --> B[📚 Lesson 1<br/>Vue Fundamentals<br/>& TypeScript Setup]
-    B --> C[🏗️ Lesson 2<br/>Component Architecture<br/>& Reactive State]
+    A[🎯 Prerequisites<br/>JavaScript ES6+ Review] --> B[📚 Lesson 1<br/>Vue Fundamentals<br/>& Project Setup]
+    B --> C[🏗️ Lesson 2<br/>Component Architecture<br/>& Vue Composition API]
     C --> D[🌐 Lesson 3<br/>API Integration<br/>& Data Management]
-    D --> E[🔐 Lesson 4<br/>Routing, Authentication<br/>& Advanced Patterns]
+    D --> E[🔐 Lesson 4<br/>Routing<br/>& Authentication]
     E --> F[🚀 Lesson 5<br/>Full-Stack Integration<br/>& Production Deployment]
 
     B --> B1[📖 Theory: Vue Concepts]
@@ -123,7 +123,7 @@ graph LR
 - **Quiz 1**: Vue basics and TypeScript
 - **Quiz 2**: Component architecture patterns
 - **Quiz 3**: API integration and data management
-- **Quiz 4**: Routing, authentication, and advanced patterns
+- **Quiz 4**: Routing and authentication
 - **Quiz 5**: Full-stack development and deployment
 
 ### Practical Milestones
@@ -181,4 +181,4 @@ Build a complete, production-ready Vue application that demonstrates:
 
 ---
 
-**Next Steps**: Start with [Lesson 0: Prerequisites](../lesson0-javascript-es6/readme.md) if you need to review JavaScript fundamentals, or jump directly to [Lesson 1: Vue Fundamentals](../lesson1-fundamentals-setup/readme.md) if you're ready to begin!
+**Next Steps**: Start with [Lesson 0: Prerequisites](../lesson0-javascript-es6/readme.md) if you need to review JavaScript fundamentals, or jump directly to [Lesson 1: Vue Fundamentals & Project Setup](../lesson1-fundamentals-setup/readme.md) if you're ready to begin!

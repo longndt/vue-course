@@ -1,4 +1,4 @@
-# Vue 3 Routing, Authentication & Advanced Patterns - Quick Reference
+# Vue 3 Routing & Authentication - Quick Reference
 
 ## 🎯 **Vue Router Setup**
 

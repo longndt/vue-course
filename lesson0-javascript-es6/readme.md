@@ -357,7 +357,7 @@ const fetchData = async () => {
 ## What's Next
 
 ### Ready to Continue?
-- **Completed this lesson?** → Proceed to [Lesson 1: Vue Fundamentals & TypeScript Setup](../lesson1-fundamentals-setup/)
+- **Completed this lesson?** → Proceed to [Lesson 1: Vue Fundamentals & Project Setup](../lesson1-fundamentals-setup/)
 
 ### Need More Practice?
 - **Study theory** → [theory0.md](./theory/theory0.md) - Deep dive into JavaScript ES6+ concepts

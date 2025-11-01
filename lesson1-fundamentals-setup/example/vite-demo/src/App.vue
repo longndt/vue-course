@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script setup>
 import { ref, computed, onMounted } from 'vue'
 import vueLogo from './assets/vue.svg'
 import WelcomeCard from './components/WelcomeCard.vue'
@@ -10,7 +10,7 @@ const count = ref(0)
 const todos = ref([
   { id: 1, text: 'Learn Vue 3 Composition API', completed: false },
   { id: 2, text: 'Build amazing applications', completed: false },
-  { id: 3, text: 'Master TypeScript with Vue', completed: true }
+  { id: 3, text: 'Master JavaScript with Vue', completed: true }
 ])
 
 // Computed properties
@@ -21,7 +21,7 @@ const completedTodos = computed(() =>
 const totalTodos = computed(() => todos.value.length)
 
 // Methods
-const addTodo = (text: string) => {
+const addTodo = (text) => {
   const newTodo = {
     id: Date.now(),
     text,
@@ -30,14 +30,14 @@ const addTodo = (text: string) => {
   todos.value.push(newTodo)
 }
 
-const toggleTodo = (id: number) => {
+const toggleTodo = (id) => {
   const todo = todos.value.find(t => t.id === id)
   if (todo) {
     todo.completed = !todo.completed
   }
 }
 
-const removeTodo = (id: number) => {
+const removeTodo = (id) => {
   const index = todos.value.findIndex(t => t.id === id)
   if (index > -1) {
     todos.value.splice(index, 1)
@@ -61,7 +61,7 @@ onMounted(() => {
           <img :src="vueLogo" class="logo vue" alt="Vue logo" />
         </a>
       </div>
-      <h1 class="app-title">Vue 3 + TypeScript + Vite</h1>
+      <h1 class="app-title">Vue 3 + JavaScript + Vite</h1>
       <p class="app-subtitle">Modern frontend development stack</p>
     </header>
 

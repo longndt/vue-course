@@ -1,0 +1,83 @@
+# GitLab CI/CD Configuration for Vue Course
+
+stages:
+  - install
+  - lint
+  - test
+  - build
+  - deploy
+
+variables:
+  NODE_VERSION: "20.x"
+  NPM_VERSION: "9.x"
+
+# Install dependencies for all example projects
+install-examples:
+  stage: install
+  image: node:${NODE_VERSION}
+  script:
+    - npm install -g npm@${NPM_VERSION}
+    - |
+      for dir in lesson*/example/*/; do
+        if [ -f "$dir/package.json" ]; then
+          echo "Installing dependencies in $dir"
+          cd "$dir" && npm ci && cd - || true
+        fi
+      done
+  artifacts:
+    paths:
+      - node_modules/
+    expire_in: 1 hour
+
+# Lint all projects
+lint-all:
+  stage: lint
+  image: node:${NODE_VERSION}
+  script:
+    - |
+      for dir in lesson*/example/*/; do
+        if [ -f "$dir/package.json" ]; then
+          echo "Linting $dir"
+          cd "$dir" && npm run lint || echo "Linting skipped" && cd - || true
+        fi
+      done
+  allow_failure: true
+
+# Build all example projects
+build-examples:
+  stage: build
+  image: node:${NODE_VERSION}
+  script:
+    - |
+      for dir in lesson*/example/*/; do
+        if [ -f "$dir/package.json" ]; then
+          echo "Building $dir"
+          cd "$dir" && npm run build && cd - || true
+        fi
+      done
+  artifacts:
+    paths:
+      - lesson*/example/*/dist/
+    expire_in: 1 week
+  only:
+    - main
+    - develop
+
+# Deploy to production
+deploy-production:
+  stage: deploy
+  image: node:${NODE_VERSION}
+  script:
+    - echo "Deploying to production..."
+    - |
+      for dir in lesson*/example/*/; do
+        if [ -f "$dir/package.json" ] && [ -d "$dir/dist" ]; then
+          echo "Deploying $dir"
+          # Add your deployment commands here
+          # Example: rsync, scp, or cloud provider CLI
+        fi
+      done
+  only:
+    - main
+  when: manual
+

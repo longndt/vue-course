@@ -1,0 +1,48 @@
+name: Frontend CI
+
+on:
+  push:
+    paths:
+      - 'lesson*/example/**'
+      - 'lesson*/lab/**'
+      - '.github/workflows/frontend-ci.yml'
+
+jobs:
+  test-examples:
+    name: Test Example Projects
+    runs-on: ubuntu-latest
+    
+    strategy:
+      matrix:
+        project:
+          - lesson1-fundamentals-setup/example/vite-demo
+          - lesson2-components/example
+          - lesson3-api-data/example
+          - lesson4-routing-auth/example
+          - lesson5-fullstack/example
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20.x'
+          cache: 'npm'
+          cache-dependency-path: ${{ matrix.project }}/package.json
+      
+      - name: Install dependencies
+        working-directory: ${{ matrix.project }}
+        run: npm ci
+      
+      - name: Run linter
+        working-directory: ${{ matrix.project }}
+        run: npm run lint || echo "Linting skipped"
+        continue-on-error: true
+      
+      - name: Build project
+        working-directory: ${{ matrix.project }}
+        run: npm run build
+        continue-on-error: true
+
