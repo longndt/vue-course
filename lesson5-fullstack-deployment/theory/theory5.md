@@ -37,7 +37,7 @@
 
 **1. Monolithic vs Microservices**
 
-```typescript
+```javascript
 // Monolithic approach (recommended for learning)
 // All backend logic in one Node.js application
 const express = require('express')
@@ -57,7 +57,7 @@ app.use('/api/upload', uploadRoutes)
 
 **2. API Gateway Patterns**
 
-```typescript
+```javascript
 // API Gateway with rate limiting and authentication
 import rateLimit from 'express-rate-limit'
 import helmet from 'helmet'
@@ -78,7 +78,7 @@ app.use('/api', authenticateToken) // Authentication middleware
 
 ### 1. RESTful API Design
 
-```typescript
+```javascript
 // server/routes/users.ts
 import express from 'express'
 import { UserController } from '../controllers/UserController'
@@ -108,16 +108,12 @@ export default router
 
 ### 2. Authentication & Authorization
 
-```typescript
+```javascript
 // server/middleware/auth.ts
 import jwt from 'jsonwebtoken'
 import { Request, Response, NextFunction } from 'express'
 
-interface AuthRequest extends Request {
-  user?: any
-}
-
-export const authenticateToken = (req: AuthRequest, res: Response, next: NextFunction) => {
+export const authenticateToken = (req, res, next) => {
   const authHeader = req.headers['authorization']
   const token = authHeader && authHeader.split(' ')[1]
 
@@ -146,7 +142,7 @@ export const requireRole = (role: string) => {
 
 ### 3. File Upload System
 
-```typescript
+```javascript
 // server/middleware/upload.ts
 import multer from 'multer'
 import path from 'path'
@@ -193,7 +189,7 @@ export const upload = multer({
 
 ### 1. WebSocket Integration
 
-```typescript
+```javascript
 // server/websocket.ts
 import { Server as SocketIOServer } from 'socket.io'
 import { Server as HTTPServer } from 'http'
@@ -273,25 +269,17 @@ export const setupWebSocket = (server: HTTPServer) => {
 ### 2. Vue 3 WebSocket Integration
 
 ```vue
-<!-- composables/useWebSocket.ts -->
-<script setup lang="ts">
+<!-- composables/useWebSocket.js -->
+<script setup>
 import { ref, onMounted, onUnmounted } from 'vue'
-import { io, Socket } from 'socket.io-client'
+import { io } from 'socket.io-client'
 import { useAuthStore } from '@/stores/auth'
 
-interface Message {
-  id: string
-  senderId: string
-  recipientId: string
-  message: string
-  timestamp: Date
-}
-
 export function useWebSocket() {
-  const socket = ref<Socket | null>(null)
+  const socket = ref(null)
   const isConnected = ref(false)
-  const messages = ref<Message[]>([])
-  const typingUsers = ref<Set<string>>(new Set())
+  const messages = ref([])
+  const typingUsers = ref(new Set())
 
   const authStore = useAuthStore()
 
@@ -314,11 +302,11 @@ export function useWebSocket() {
       console.log('Disconnected from WebSocket')
     })
 
-    socket.value.on('new_message', (message: Message) => {
+    socket.value.on('new_message', (message) => {
       messages.value.push(message)
     })
 
-    socket.value.on('user_typing', (data: { userId: string; isTyping: boolean }) => {
+    socket.value.on('user_typing', (data) => {
       if (data.isTyping) {
         typingUsers.value.add(data.userId)
       } else {
@@ -335,19 +323,19 @@ export function useWebSocket() {
     }
   }
 
-  const sendMessage = (recipientId: string, message: string) => {
+  const sendMessage = (recipientId, message) => {
     if (socket.value && isConnected.value) {
       socket.value.emit('send_message', { recipientId, message })
     }
   }
 
-  const startTyping = (recipientId: string) => {
+  const startTyping = (recipientId) => {
     if (socket.value && isConnected.value) {
       socket.value.emit('typing_start', { recipientId })
     }
   }
 
-  const stopTyping = (recipientId: string) => {
+  const stopTyping = (recipientId) => {
     if (socket.value && isConnected.value) {
       socket.value.emit('typing_stop', { recipientId })
     }
@@ -394,7 +382,7 @@ export function useWebSocket() {
   </div>
 </template>
 
-<script setup lang="ts">
+<script setup>
 import { defineAsyncComponent } from 'vue'
 
 // Lazy load components
@@ -402,7 +390,7 @@ const LoadingSpinner = defineAsyncComponent(() => import('@/components/LoadingSp
 </script>
 ```
 
-```typescript
+```javascript
 // router/index.ts
 const routes: RouteRecordRaw[] = [
   {
@@ -433,15 +421,19 @@ const routes: RouteRecordRaw[] = [
   </div>
 </template>
 
-<script setup lang="ts">
+<script setup>
 import { computed, watch } from 'vue'
 
-interface Props {
-  data: ExpensiveData[]
-  filter: string
-}
-
-const props = defineProps<Props>()
+const props = defineProps({
+  data: {
+    type: Array,
+    required: true
+  },
+  filter: {
+    type: String,
+    default: ''
+  }
+})
 
 // Computed properties are automatically memoized
 const processedData = computed(() => {
@@ -455,7 +447,7 @@ const processedData = computed(() => {
 })
 
 // Memoize expensive calculations
-const expensiveCalculation = (item: ExpensiveData) => {
+const expensiveCalculation = (item) => {
   // Simulate expensive operation
   return item.value * 2 + Math.random()
 }
@@ -486,18 +478,25 @@ watch(processedData, (newData) => {
   </div>
 </template>
 
-<script setup lang="ts">
+<script setup>
 import { ref, computed, onMounted, onUnmounted } from 'vue'
 
-interface Props {
-  items: any[]
-  itemHeight: number
-  containerHeight: number
-}
+const props = defineProps({
+  items: {
+    type: Array,
+    required: true
+  },
+  itemHeight: {
+    type: Number,
+    required: true
+  },
+  containerHeight: {
+    type: Number,
+    required: true
+  }
+})
 
-const props = defineProps<Props>()
-
-const container = ref<HTMLElement>()
+const container = ref(null)
 const scrollTop = ref(0)
 
 const totalHeight = computed(() => props.items.length * props.itemHeight)
@@ -516,8 +515,8 @@ const visibleItems = computed(() => {
   }))
 })
 
-const handleScroll = (event: Event) => {
-  const target = event.target as HTMLElement
+const handleScroll = (event) => {
+  const target = event.target
   scrollTop.value = target.scrollTop
 }
 
@@ -560,7 +559,7 @@ onUnmounted(() => {
 
 ### 1. Vite Configuration
 
-```typescript
+```javascript
 // vite.config.ts
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
@@ -608,16 +607,10 @@ export default defineConfig({
 
 ### 2. Environment Configuration
 
-```typescript
-// config/env.ts
-interface EnvConfig {
-  VITE_API_URL: string
-  VITE_WS_URL: string
-  VITE_APP_NAME: string
-  VITE_APP_VERSION: string
-}
+```javascript
+// config/env.js
 
-export const env: EnvConfig = {
+export const env = {
   VITE_API_URL: import.meta.env.VITE_API_URL || 'http://localhost:5000',
   VITE_WS_URL: import.meta.env.VITE_WS_URL || 'ws://localhost:5000',
   VITE_APP_NAME: import.meta.env.VITE_APP_NAME || 'Vue App',
@@ -705,7 +698,7 @@ http {
 
 ### 3. Performance Monitoring
 
-```typescript
+```javascript
 // utils/performance.ts
 import { onMounted, onUnmounted } from 'vue'
 

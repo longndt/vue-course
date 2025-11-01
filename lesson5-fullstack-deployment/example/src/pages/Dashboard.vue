@@ -72,15 +72,8 @@
   </div>
 </template>
 
-<script setup lang="ts">
+<script setup>
 import { ref, reactive, onMounted } from 'vue'
-
-interface Activity {
-  id: number
-  icon: string
-  message: string
-  timestamp: Date
-}
 
 // Reactive state
 const isLoading = ref(false)
@@ -91,7 +84,7 @@ const stats = reactive({
   performance: 94
 })
 
-const activities = ref<Activity[]>([
+const activities = ref([
   {
     id: 1,
     icon: '👤',
@@ -134,7 +127,7 @@ const refreshData = async () => {
   isLoading.value = false
 }
 
-const formatTime = (date: Date): string => {
+const formatTime = (date) => {
   const now = new Date()
   const diffMs = now.getTime() - date.getTime()
   const diffMins = Math.floor(diffMs / 60000)

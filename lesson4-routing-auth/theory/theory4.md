@@ -45,7 +45,7 @@ npm install vue-router@4
 
 ### 2. Basic Setup
 
-```typescript
+```javascript
 // router/index.ts
 import { createRouter, createWebHistory } from 'vue-router'
 import type { RouteRecordRaw } from 'vue-router'
@@ -110,7 +110,7 @@ export const router = createRouter({
   </div>
 </template>
 
-<script setup lang="ts">
+<script setup>
 import { RouterView, RouterLink } from 'vue-router'
 </script>
 
@@ -167,11 +167,11 @@ import { RouterView, RouterLink } from 'vue-router'
 
 ### 1. Navigation Guards
 
-```typescript
-// router/index.ts
+```javascript
+// router/index.js
 import { useAuthStore } from '@/stores/auth'
 
-const routes: RouteRecordRaw[] = [
+const routes = [
   // Public routes
   {
     path: '/',
@@ -220,7 +220,7 @@ router.beforeEach(async (to, from, next) => {
   }
 
   // Check role requirements
-  if (to.meta.requiresRole && !authStore.hasRole(to.meta.requiresRole as string)) {
+  if (to.meta.requiresRole && !authStore.hasRole(to.meta.requiresRole)) {
     next({ name: 'Profile' })
     return
   }
@@ -231,34 +231,21 @@ router.beforeEach(async (to, from, next) => {
 
 ### 2. Authentication Store (Pinia)
 
-```typescript
-// stores/auth.ts
+```javascript
+// stores/auth.js
 import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
 
-interface User {
-  id: string
-  name: string
-  email: string
-  role: string
-  avatar?: string
-}
-
-interface LoginCredentials {
-  email: string
-  password: string
-}
-
 export const useAuthStore = defineStore('auth', () => {
-  const user = ref<User | null>(null)
-  const token = ref<string | null>(localStorage.getItem('token'))
+  const user = ref(null)
+  const token = ref(localStorage.getItem('token'))
   const loading = ref(false)
-  const error = ref<string | null>(null)
+  const error = ref(null)
 
   const isAuthenticated = computed(() => !!token.value && !!user.value)
   const userRole = computed(() => user.value?.role || '')
 
-  const login = async (credentials: LoginCredentials) => {
+  const login = async (credentials) => {
     loading.value = true
     error.value = null
 
@@ -294,11 +281,11 @@ export const useAuthStore = defineStore('auth', () => {
     localStorage.removeItem('token')
   }
 
-  const hasRole = (role: string) => {
+  const hasRole = (role) => {
     return user.value?.role === role
   }
 
-  const hasAnyRole = (roles: string[]) => {
+  const hasAnyRole = (roles) => {
     return roles.includes(user.value?.role || '')
   }
 
@@ -399,7 +386,7 @@ export const useAuthStore = defineStore('auth', () => {
   </div>
 </template>
 
-<script setup lang="ts">
+<script setup>
 import { ref, reactive } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import { useAuthStore } from '@/stores/auth'
@@ -414,7 +401,7 @@ const form = reactive({
   remember: false
 })
 
-const errors = reactive<Record<string, string>>({})
+const errors = reactive({})
 const loading = ref(false)
 const error = ref('')
 
@@ -448,7 +435,7 @@ const handleLogin = async () => {
   })
 
   if (result.success) {
-    const redirect = route.query.redirect as string || '/profile'
+    const redirect = route.query.redirect || '/profile'
     router.push(redirect)
   } else {
     error.value = result.error || 'Login failed'
@@ -609,7 +596,7 @@ const handleLogin = async () => {
 
 ### 1. Route Parameters
 
-```typescript
+```javascript
 // router/index.ts
 const routes: RouteRecordRaw[] = [
   {
@@ -679,34 +666,22 @@ const routes: RouteRecordRaw[] = [
   </div>
 </template>
 
-<script setup lang="ts">
+<script setup>
 import { ref, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
 
-interface User {
-  id: string
-  name: string
-  email: string
-  role: string
-  avatar?: string
-  bio?: string
-  activities: Array<{
-    id: string
-    description: string
-    date: string
-  }>
-}
+const props = defineProps({
+  id: {
+    type: String,
+    required: true
+  }
+})
 
-interface Props {
-  id: string
-}
-
-const props = defineProps<Props>()
 const route = useRoute()
 
-const user = ref<User | null>(null)
+const user = ref(null)
 const loading = ref(true)
-const error = ref<string | null>(null)
+const error = ref(null)
 
 const fetchUser = async () => {
   loading.value = true
@@ -729,7 +704,7 @@ const fetchUser = async () => {
   }
 }
 
-const formatDate = (dateString: string) => {
+const formatDate = (dateString) => {
   return new Date(dateString).toLocaleDateString()
 }
 
@@ -856,7 +831,7 @@ onMounted(() => {
 
 ### 1. Nested Routes
 
-```typescript
+```javascript
 // router/index.ts
 const routes: RouteRecordRaw[] = [
   {
@@ -886,18 +861,10 @@ const routes: RouteRecordRaw[] = [
 
 ### 2. Route Meta Fields
 
-```typescript
-// router/index.ts
-interface RouteMeta {
-  requiresAuth?: boolean
-  guestOnly?: boolean
-  requiresRole?: string
-  title?: string
-  description?: string
-  breadcrumb?: string
-}
+```javascript
+// router/index.js
 
-const routes: RouteRecordRaw[] = [
+const routes = [
   {
     path: '/admin',
     name: 'Admin',
@@ -939,7 +906,7 @@ const routes: RouteRecordRaw[] = [
   </nav>
 </template>
 
-<script setup lang="ts">
+<script setup>
 import { computed } from 'vue'
 import { useRoute } from 'vue-router'
 
@@ -949,7 +916,7 @@ const breadcrumbs = computed(() => {
   const matched = route.matched.filter(record => record.meta.breadcrumb)
 
   return matched.map(record => ({
-    name: record.meta.breadcrumb as string,
+    name: record.meta.breadcrumb,
     path: record.path
   }))
 })

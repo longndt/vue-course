@@ -1,4 +1,4 @@
-# Vue 3 Fundamentals & TypeScript Setup
+# Vue 3 Fundamentals & JavaScript Setup
 
 ## Theory 1 - Building Modern Vue 3 Applications
 
@@ -9,10 +9,10 @@
 By the end of this theory session, you will be able to:
 
 - Understand Vue 3's role in modern full-stack development
-- Set up a professional TypeScript-based Vue 3 development environment
-- Create well-structured, type-safe Vue 3 components with Composition API
+- Set up a professional JavaScript-based Vue 3 development environment
+- Create well-structured Vue 3 components with Composition API
 - Apply Vue 3 concepts to build modern web applications
-- Integrate modern JavaScript features with Vue 3 and TypeScript
+- Integrate modern JavaScript features with Vue 3
 
 ---
 
@@ -55,33 +55,31 @@ By the end of this theory session, you will be able to:
 
 ---
 
-### TypeScript: Why It Matters for Your Projects
+### Modern JavaScript for Vue Development
 
-**Think of TypeScript as:**
+**Think of Modern JavaScript as:**
 
-- JavaScript with better error checking and development tools
-- Your safety net for large applications and complex projects
+- Clean, readable code with ES6+ features
+- Better error handling and development tools
 - A way to write more maintainable, professional code
 
-**Benefits for Academic and Professional Development:**
+**Benefits for Development:**
 
-```typescript
-// Without TypeScript - Runtime errors
+```javascript
+// Modern JavaScript - Clean and readable
 function createStudent(name, age, email) {
-  // What if age is a string? What if email is missing?
+  // Validate inputs for better error handling
+  if (!name || !email) {
+    throw new Error('Name and email are required');
+  }
+  if (typeof age !== 'number') {
+    throw new Error('Age must be a number');
+  }
   return { name, age, email };
 }
 
-// With TypeScript - Compile-time safety
-interface Student {
-  name: string;
-  age: number;
-  email: string;
-}
-
-function createStudent(name: string, age: number, email: string): Student {
-  return { name, age, email };
-}
+// Using with Vue
+const student = createStudent('John', 20, 'john@example.com');
 ```
 
 ---
@@ -116,7 +114,7 @@ function createStudent(name: string, age: number, email: string): Student {
 
 ```
 1. Vue - Official (Volar)
-2. TypeScript Vue Plugin (Volar)
+2. Vue - Official (Volar)
 3. ESLint
 4. Prettier - Code formatter
 5. Auto Rename Tag
@@ -138,11 +136,11 @@ function createStudent(name: string, age: number, email: string): Student {
 **Recommended: Vite (Faster, Modern)**
 
 ```bash
-# Create new TypeScript Vue 3 project
+# Create new JavaScript Vue 3 project
 npm create vue@latest my-student-app
 
 # Choose options:
-# ✓ TypeScript
+# ❌ TypeScript (we use JavaScript)
 # ✓ JSX Support
 # ✓ Vue Router
 # ✓ Pinia
@@ -161,12 +159,12 @@ npm run dev
 **Alternative: Vue CLI (More Traditional)**
 
 ```bash
-# Create new TypeScript Vue 3 project
+# Create new JavaScript Vue 3 project
 npm install -g @vue/cli
 vue create my-student-app
 
 # Choose:
-# - TypeScript
+# ❌ TypeScript (we use JavaScript)
 # - Router
 # - Vuex
 # - Linter / Formatter
@@ -178,7 +176,7 @@ vue create my-student-app
 - 🔥 Hot Module Replacement (instant updates)
 - 📦 Optimized builds
 - 🎯 Perfect for modern web development
-- 🚀 Built-in TypeScript support
+- 🚀 Built-in JavaScript support
 
 ---
 
@@ -192,7 +190,7 @@ src/
 ├── services/      # API/external services
 ├── stores/        # Pinia stores
 ├── utils/         # Helper functions
-├── types/         # TypeScript type definitions
+├── utils/         # Utility functions
 └── assets/        # Static assets
 ```
 
@@ -201,7 +199,7 @@ src/
 ### Vue 3 Key Features
 
 **Composition API:**
-- Better TypeScript support
+- Better JavaScript support
 - More flexible code organization
 - Easier testing and reusability
 - Better performance
@@ -228,29 +226,25 @@ src/
 ### Modern JavaScript with Vue 3
 
 ```vue
-<!-- Single File Component with TypeScript -->
-<script setup lang="ts">
-interface User {
-  id: number;
-  name: string;
-  age: number;
-  email: string;
-}
+<!-- Single File Component with JavaScript -->
+<script setup>
+import { computed } from 'vue'
 
-interface Props {
-  users: User[];
-}
-
-const props = defineProps<Props>();
+const props = defineProps({
+  users: {
+    type: Array,
+    required: true
+  }
+})
 
 // Using modern JavaScript features
 const activeUsers = computed(() =>
   props.users.filter(user => user.age >= 18)
-);
+)
 
-const handleUserClick = (user: User) => {
-  console.log('User clicked:', user.name);
-};
+const handleUserClick = (user) => {
+  console.log('User clicked:', user.name)
+}
 </script>
 
 <template>
@@ -293,7 +287,7 @@ const handleUserClick = (user: User) => {
 
 **Basic Setup:**
 ```vue
-<script setup lang="ts">
+<script setup>
 import { ref, computed, watch, onMounted } from 'vue'
 
 // Reactive data
@@ -322,21 +316,21 @@ const increment = () => {
 
 **Props and Emits:**
 ```vue
-<script setup lang="ts">
-interface Props {
-  title: string
-  count?: number
-}
+<script setup>
+const props = defineProps({
+  title: {
+    type: String,
+    required: true
+  },
+  count: {
+    type: Number,
+    default: 0
+  }
+})
 
-interface Emits {
-  update: [value: string]
-  delete: [id: number]
-}
+const emit = defineEmits(['update', 'delete'])
 
-const props = defineProps<Props>()
-const emit = defineEmits<Emits>()
-
-const handleUpdate = (value: string) => {
+const handleUpdate = (value) => {
   emit('update', value)
 }
 </script>
@@ -348,7 +342,7 @@ const handleUpdate = (value: string) => {
 
 - **Single File Components (SFC)**
 - **Composition API with script setup**
-- **Props & Emits with TypeScript**
+- **Props & Emits with JavaScript**
 - **Reactive State Management**
 - **Computed Properties**
 - **Watchers**
@@ -360,7 +354,7 @@ const handleUpdate = (value: string) => {
 ### Best Practices
 
 1. **Use Composition API with script setup**
-2. **Define TypeScript interfaces for props**
+2. **Define props with proper validation**
 3. **Use reactive() for objects, ref() for primitives**
 4. **Extract reusable logic into composables**
 5. **Follow Vue 3 naming conventions**
@@ -375,7 +369,7 @@ const handleUpdate = (value: string) => {
 - **Not using script setup syntax**
 - **Mixing Options API and Composition API**
 - **Forgetting .value with refs in script**
-- **Not defining proper TypeScript interfaces**
+- **Not defining proper prop validation**
 - **Poor component organization**
 - **Ignoring ESLint warnings**
 - **Inconsistent code formatting**
@@ -389,25 +383,15 @@ Create a Profile Card Component:
 
 ```vue
 <!-- ProfileCard.vue -->
-<script setup lang="ts">
-interface User {
-  id: number
-  name: string
-  role: string
-  bio: string
-  avatar: string
-}
+<script setup>
+const props = defineProps({
+  user: {
+    type: Object,
+    required: true
+  }
+})
 
-interface Props {
-  user: User
-}
-
-const props = defineProps<Props>()
-
-const emit = defineEmits<{
-  edit: [user: User]
-  delete: [id: number]
-}>()
+const emit = defineEmits(['edit', 'delete'])
 
 const handleEdit = () => {
   emit('edit', props.user)
@@ -484,7 +468,7 @@ const handleDelete = () => {
 **Usage:**
 ```vue
 <!-- App.vue -->
-<script setup lang="ts">
+<script setup>
 import ProfileCard from './components/ProfileCard.vue'
 
 const user = {
@@ -495,11 +479,11 @@ const user = {
   avatar: '/john-avatar.jpg'
 }
 
-const handleEdit = (user: any) => {
+const handleEdit = (user) => {
   console.log('Edit user:', user)
 }
 
-const handleDelete = (id: number) => {
+const handleDelete = (id) => {
   console.log('Delete user:', id)
 }
 </script>

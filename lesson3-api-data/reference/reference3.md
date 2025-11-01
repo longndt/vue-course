@@ -3,37 +3,19 @@
 ## 🎯 **API Integration Patterns**
 
 ### **Basic API Service**
-```typescript
-// services/api.ts
-interface ApiResponse<T> {
-  data: T
-  message: string
-  success: boolean
-}
-
-interface ApiError {
-  message: string
-  status: number
-  code?: string
-}
-
+```javascript
+// services/api.js
 class ApiService {
-  private baseURL: string
-  private defaultHeaders: Record<string, string>
-
-  constructor(baseURL: string) {
+  constructor(baseURL) {
     this.baseURL = baseURL
     this.defaultHeaders = {
       'Content-Type': 'application/json'
     }
   }
 
-  private async request<T>(
-    endpoint: string,
-    options: RequestInit = {}
-  ): Promise<ApiResponse<T>> {
+  async request(endpoint, options = {}) {
     const url = `${this.baseURL}${endpoint}`
-    const config: RequestInit = {
+    const config = {
       ...options,
       headers: {
         ...this.defaultHeaders,
@@ -45,10 +27,10 @@ class ApiService {
       const response = await fetch(url, config)
 
       if (!response.ok) {
-        throw new ApiError(
-          `HTTP ${response.status}: ${response.statusText}`,
-          response.status
-        )
+        throw {
+          message: `HTTP ${response.status}: ${response.statusText}`,
+          status: response.status
+        }
       }
 
       const data = await response.json()
@@ -58,37 +40,37 @@ class ApiService {
         success: true
       }
     } catch (error) {
-      throw new ApiError(
-        error instanceof Error ? error.message : 'Unknown error',
-        0
-      )
+      throw {
+        message: error instanceof Error ? error.message : 'Unknown error',
+        status: error.status || 0
+      }
     }
   }
 
   // GET request
-  async get<T>(endpoint: string): Promise<ApiResponse<T>> {
-    return this.request<T>(endpoint, { method: 'GET' })
+  async get(endpoint) {
+    return this.request(endpoint, { method: 'GET' })
   }
 
   // POST request
-  async post<T>(endpoint: string, data: any): Promise<ApiResponse<T>> {
-    return this.request<T>(endpoint, {
+  async post(endpoint, data) {
+    return this.request(endpoint, {
       method: 'POST',
       body: JSON.stringify(data)
     })
   }
 
   // PUT request
-  async put<T>(endpoint: string, data: any): Promise<ApiResponse<T>> {
-    return this.request<T>(endpoint, {
+  async put(endpoint, data) {
+    return this.request(endpoint, {
       method: 'PUT',
       body: JSON.stringify(data)
     })
   }
 
   // DELETE request
-  async delete<T>(endpoint: string): Promise<ApiResponse<T>> {
-    return this.request<T>(endpoint, { method: 'DELETE' })
+  async delete(endpoint) {
+    return this.request(endpoint, { method: 'DELETE' })
   }
 }
 
@@ -97,18 +79,12 @@ export const api = new ApiService('https://api.example.com')
 ```
 
 ### **Data Fetching Composable**
-```typescript
-// composables/useFetch.ts
-import { ref, computed } from 'vue'
+```javascript
+// composables/useFetch.js
+import { ref, computed, unref } from 'vue'
 
-interface FetchState<T> {
-  data: T | null
-  loading: boolean
-  error: string | null
-}
-
-export function useFetch<T>(url: string | Ref<string>) {
-  const state = ref<FetchState<T>>({
+export function useFetch(url) {
+  const state = ref({
     data: null,
     loading: false,
     error: null
@@ -146,10 +122,11 @@ export function useFetch<T>(url: string | Ref<string>) {
 }
 
 // Usage
-<script setup lang="ts">
+<script setup>
 import { useFetch } from '@/composables/useFetch'
+import { onMounted } from 'vue'
 
-const { data: users, loading, error, refetch } = useFetch<User[]>('/api/users')
+const { data: users, loading, error, refetch } = useFetch('/api/users')
 
 onMounted(() => {
   refetch()
@@ -158,37 +135,18 @@ onMounted(() => {
 ```
 
 ### **CRUD Operations with Pinia**
-```typescript
-// stores/users.ts
+```javascript
+// stores/users.js
 import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
 import { api } from '@/services/api'
 
-interface User {
-  id: number
-  name: string
-  email: string
-  role: string
-  createdAt: string
-  updatedAt: string
-}
-
-interface CreateUserData {
-  name: string
-  email: string
-  role: string
-}
-
-interface UpdateUserData extends Partial<CreateUserData> {
-  id: number
-}
-
 export const useUsersStore = defineStore('users', () => {
   // State
-  const users = ref<User[]>([])
+  const users = ref([])
   const loading = ref(false)
-  const error = ref<string | null>(null)
-  const selectedUser = ref<User | null>(null)
+  const error = ref(null)
+  const selectedUser = ref(null)
 
   // Getters
   const activeUsers = computed(() =>
@@ -197,7 +155,7 @@ export const useUsersStore = defineStore('users', () => {
 
   const userCount = computed(() => users.value.length)
 
-  const getUserById = computed(() => (id: number) =>
+  const getUserById = computed(() => (id) =>
     users.value.find(user => user.id === id)
   )
 
@@ -207,7 +165,7 @@ export const useUsersStore = defineStore('users', () => {
     error.value = null
 
     try {
-      const response = await api.get<User[]>('/users')
+      const response = await api.get('/users')
       users.value = response.data
     } catch (err) {
       error.value = err instanceof Error ? err.message : 'Failed to fetch users'
@@ -216,12 +174,12 @@ export const useUsersStore = defineStore('users', () => {
     }
   }
 
-  const createUser = async (userData: CreateUserData) => {
+  const createUser = async (userData) => {
     loading.value = true
     error.value = null
 
     try {
-      const response = await api.post<User>('/users', userData)
+      const response = await api.post('/users', userData)
       users.value.push(response.data)
       return response.data
     } catch (err) {
@@ -232,12 +190,12 @@ export const useUsersStore = defineStore('users', () => {
     }
   }
 
-  const updateUser = async (userData: UpdateUserData) => {
+  const updateUser = async (userData) => {
     loading.value = true
     error.value = null
 
     try {
-      const response = await api.put<User>(`/users/${userData.id}`, userData)
+      const response = await api.put(`/users/${userData.id}`, userData)
       const index = users.value.findIndex(user => user.id === userData.id)
       if (index !== -1) {
         users.value[index] = response.data
@@ -251,7 +209,7 @@ export const useUsersStore = defineStore('users', () => {
     }
   }
 
-  const deleteUser = async (id: number) => {
+  const deleteUser = async (id) => {
     loading.value = true
     error.value = null
 
@@ -266,7 +224,7 @@ export const useUsersStore = defineStore('users', () => {
     }
   }
 
-  const selectUser = (user: User | null) => {
+  const selectUser = (user) => {
     selectedUser.value = user
   }
 
@@ -345,39 +303,36 @@ export const useUsersStore = defineStore('users', () => {
   </div>
 </template>
 
-<script setup lang="ts">
-import { reactive, ref, computed, watch } from 'vue'
+<script setup>
+import { reactive, computed, watch } from 'vue'
 import { useUsersStore } from '@/stores/users'
+import { storeToRefs } from 'pinia'
 
-interface UserForm {
-  name: string
-  email: string
-  role: string
-}
+const props = defineProps({
+  initialData: {
+    type: Object,
+    default: () => ({})
+  },
+  userId: {
+    type: Number,
+    default: null
+  }
+})
 
-interface Props {
-  initialData?: Partial<UserForm>
-  userId?: number
-}
-
-const props = defineProps<Props>()
-const emit = defineEmits<{
-  success: [user: User]
-  error: [message: string]
-}>()
+const emit = defineEmits(['success', 'error'])
 
 const usersStore = useUsersStore()
 const { loading, error } = storeToRefs(usersStore)
 
 // Form state
-const form = reactive<UserForm>({
+const form = reactive({
   name: '',
   email: '',
   role: '',
   ...props.initialData
 })
 
-const errors = reactive<Partial<UserForm>>({})
+const errors = reactive({})
 
 // Validation
 const isValid = computed(() => {
@@ -399,7 +354,7 @@ const resetForm = () => {
     ...props.initialData
   })
   Object.keys(errors).forEach(key => {
-    delete errors[key as keyof UserForm]
+    delete errors[key]
   })
 }
 
@@ -409,7 +364,7 @@ const handleSubmit = async () => {
   if (!isValid.value) return
 
   try {
-    let user: User
+    let user
 
     if (props.userId) {
       // Update existing user
@@ -518,9 +473,10 @@ watch(() => props.initialData, (newData) => {
   </div>
 </template>
 
-<script setup lang="ts">
+<script setup>
 import { ref, computed, onMounted } from 'vue'
 import { useUsersStore } from '@/stores/users'
+import { storeToRefs } from 'pinia'
 import UserForm from './UserForm.vue'
 
 const usersStore = useUsersStore()
@@ -530,7 +486,7 @@ const { users, loading, error } = storeToRefs(usersStore)
 const searchTerm = ref('')
 const roleFilter = ref('')
 const showCreateForm = ref(false)
-const editingUser = ref<User | null>(null)
+const editingUser = ref(null)
 
 // Computed
 const filteredUsers = computed(() => {
@@ -556,11 +512,11 @@ const fetchUsers = () => {
   usersStore.fetchUsers()
 }
 
-const editUser = (user: User) => {
+const editUser = (user) => {
   editingUser.value = user
 }
 
-const deleteUser = async (id: number) => {
+const deleteUser = async (id) => {
   if (confirm('Are you sure you want to delete this user?')) {
     try {
       await usersStore.deleteUser(id)
@@ -570,13 +526,13 @@ const deleteUser = async (id: number) => {
   }
 }
 
-const handleFormSuccess = (user: User) => {
+const handleFormSuccess = (user) => {
   showCreateForm.value = false
   editingUser.value = null
   // Optionally show success message
 }
 
-const handleFormError = (message: string) => {
+const handleFormError = (message) => {
   console.error('Form error:', message)
   // Optionally show error message
 }
@@ -586,7 +542,7 @@ const closeForm = () => {
   editingUser.value = null
 }
 
-const formatDate = (dateString: string) => {
+const formatDate = (dateString) => {
   return new Date(dateString).toLocaleDateString()
 }
 
@@ -630,21 +586,25 @@ onMounted(() => {
   </div>
 </template>
 
-<script setup lang="ts">
-import { ref, computed } from 'vue'
+<script setup>
+import { computed } from 'vue'
 
-interface Props {
-  data: any
-  loading: boolean
-  error: string | null
-}
+const props = defineProps({
+  data: {
+    type: [Array, Object, null],
+    default: null
+  },
+  loading: {
+    type: Boolean,
+    default: false
+  },
+  error: {
+    type: String,
+    default: null
+  }
+})
 
-const props = defineProps<Props>()
-
-const emit = defineEmits<{
-  retry: []
-  refresh: []
-}>()
+const emit = defineEmits(['retry', 'refresh'])
 
 const isEmpty = computed(() => {
   if (Array.isArray(props.data)) {
@@ -664,20 +624,16 @@ const refresh = () => {
 ```
 
 ### **Caching & Optimization**
-```typescript
-// composables/useCache.ts
+```javascript
+// composables/useCache.js
 import { ref, computed } from 'vue'
 
-interface CacheEntry<T> {
-  data: T
-  timestamp: number
-  ttl: number
-}
-
 class Cache {
-  private cache = new Map<string, CacheEntry<any>>()
+  constructor() {
+    this.cache = new Map()
+  }
 
-  set<T>(key: string, data: T, ttl = 5 * 60 * 1000) { // 5 minutes default
+  set(key, data, ttl = 5 * 60 * 1000) { // 5 minutes default
     this.cache.set(key, {
       data,
       timestamp: Date.now(),
@@ -685,7 +641,7 @@ class Cache {
     })
   }
 
-  get<T>(key: string): T | null {
+  get(key) {
     const entry = this.cache.get(key)
     if (!entry) return null
 
@@ -702,25 +658,25 @@ class Cache {
     this.cache.clear()
   }
 
-  delete(key: string) {
+  delete(key) {
     this.cache.delete(key)
   }
 }
 
 const cache = new Cache()
 
-export function useCachedFetch<T>(
-  key: string,
-  fetcher: () => Promise<T>,
-  ttl?: number
+export function useCachedFetch(
+  key,
+  fetcher,
+  ttl
 ) {
-  const data = ref<T | null>(null)
+  const data = ref(null)
   const loading = ref(false)
-  const error = ref<string | null>(null)
+  const error = ref(null)
 
   const execute = async () => {
     // Check cache first
-    const cached = cache.get<T>(key)
+    const cached = cache.get(key)
     if (cached) {
       data.value = cached
       return
@@ -763,7 +719,7 @@ export function useCachedFetch<T>(
 5. **Implement caching** for better performance
 6. **Validate data** before API calls
 7. **Handle empty states** gracefully
-8. **Use TypeScript** for API response types
+8. **Use runtime validation** for API responses (e.g., Zod or manual checks)
 9. **Implement retry logic** for failed requests
 10. **Debounce search inputs** to avoid excessive API calls
 

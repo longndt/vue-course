@@ -39,24 +39,14 @@
   </div>
 </template>
 
-<script setup lang="ts">
+<script setup>
 import { ref } from 'vue';
 import TaskList from './components/TaskList.vue';
 import TaskForm from './components/TaskForm.vue';
 import './App.css';
 
-interface Task {
-  _id: string;
-  title: string;
-  description: string;
-  completed: boolean;
-  priority: 'low' | 'medium' | 'high';
-  createdAt: string;
-  updatedAt: string;
-}
-
 const showForm = ref(false);
-const editingTask = ref<Task | null>(null);
+const editingTask = ref(null);
 
 const toggleForm = () => {
   showForm.value = !showForm.value;
@@ -75,7 +65,7 @@ const handleTaskUpdated = () => {
   editingTask.value = null;
 };
 
-const handleEditTask = (task: Task) => {
+const handleEditTask = (task) => {
   editingTask.value = task;
   showForm.value = true;
 };

@@ -115,24 +115,8 @@
   </div>
 </template>
 
-<script setup lang="ts">
+<script setup>
 import { ref, reactive, computed, onMounted, onUnmounted } from 'vue'
-
-interface TimePeriod {
-  value: string
-  label: string
-}
-
-interface ChartBar {
-  height: number
-  label: string
-}
-
-interface TrafficSource {
-  name: string
-  percentage: number
-  visits: number
-}
 
 // Reactive state
 const selectedPeriod = ref('week')
@@ -140,7 +124,7 @@ const realtimeUsers = ref(23)
 const realtimePageViews = ref(156)
 const realtimeActivePages = ref(8)
 
-const timePeriods: TimePeriod[] = [
+const timePeriods = [
   { value: 'day', label: 'Today' },
   { value: 'week', label: 'This Week' },
   { value: 'month', label: 'This Month' },
@@ -158,7 +142,7 @@ const metrics = reactive({
   conversionChange: 0.7
 })
 
-const chartData = ref<ChartBar[]>([
+const chartData = ref([
   { height: 80, label: 'Mon' },
   { height: 65, label: 'Tue' },
   { height: 90, label: 'Wed' },
@@ -177,12 +161,12 @@ const trafficSources = ref<TrafficSource[]>([
 ])
 
 // Computed
-const formatNumber = (num: number): string => {
+const formatNumber = (num) => {
   return new Intl.NumberFormat().format(num)
 }
 
 // Real-time updates simulation
-let realtimeInterval: NodeJS.Timeout
+let realtimeInterval = null
 
 const startRealtimeUpdates = () => {
   realtimeInterval = setInterval(() => {

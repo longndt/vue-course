@@ -62,7 +62,7 @@ app.get("/api/students", async (req, res) => {
   </div>
 </template>
 
-<script setup lang="ts">
+<script setup>
 import { ref, onMounted } from 'vue'
 
 const students = ref([])
@@ -106,21 +106,14 @@ router.post("/", async (req, res) => {
 
 **Vue Frontend Implementation:**
 
-```typescript
-// composables/useStudents.ts - Vue composable calling your Node.js API
+```javascript
+// composables/useStudents.js - Vue composable calling your Node.js API
 import { ref } from 'vue'
 
-interface Student {
-  _id: string;
-  name: string;
-  email: string;
-  major: string;
-}
-
 export function useStudents() {
-  const students = ref<Student[]>([])
+  const students = ref([])
   const loading = ref(false)
-  const error = ref<string | null>(null)
+  const error = ref(null)
 
   const fetchStudents = async () => {
     loading.value = true
@@ -137,7 +130,7 @@ export function useStudents() {
     }
   }
 
-  const addStudent = async (studentData: Omit<Student, '_id'>) => {
+  const addStudent = async (studentData) => {
     try {
       const response = await fetch("http://localhost:5000/api/students", {
         method: "POST",
@@ -163,18 +156,15 @@ export function useStudents() {
 
 ### Basic Setup
 
-```typescript
+```javascript
 // composables/useApi.ts
 import { ref, computed } from 'vue'
 
 interface ApiState<T> {
   data: T | null
   loading: boolean
-  error: string | null
-}
-
-export function useApi<T>(url: string) {
-  const state = ref<ApiState<T>>({
+export function useApi(url) {
+  const state = ref({
     data: null,
     loading: false,
     error: null
@@ -234,7 +224,8 @@ export function useApi<T>(url: string) {
   </div>
 </template>
 
-<script setup lang="ts">
+<script setup>
+import { onMounted } from 'vue'
 import { useApi } from '@/composables/useApi'
 import { useStudents } from '@/composables/useStudents'
 
@@ -287,8 +278,8 @@ onMounted(() => {
   </div>
 </template>
 
-<script setup lang="ts">
-import { ref, computed, watch } from 'vue'
+<script setup>
+import { ref, computed, watch, onMounted } from 'vue'
 import { useStudents } from '@/composables/useStudents'
 
 const { students, loading, fetchStudents, updateStudent, deleteStudent } = useStudents()
@@ -318,15 +309,19 @@ watch([searchTerm, major], () => {
   fetchStudents()
 }, { deep: true })
 
-const handleUpdate = async (id: string, data: Partial<Student>) => {
+const handleUpdate = async (id, data) => {
   await updateStudent(id, data)
 }
 
-const handleDelete = async (id: string) => {
+const handleDelete = async (id) => {
   if (confirm('Are you sure you want to delete this student?')) {
     await deleteStudent(id)
   }
 }
+
+onMounted(() => {
+  fetchStudents()
+})
 </script>
 ```
 
@@ -369,20 +364,25 @@ const handleDelete = async (id: string) => {
   </form>
 </template>
 
-<script setup lang="ts">
+<script setup>
 import { reactive, ref } from 'vue'
 import { useStudents } from '@/composables/useStudents'
 
-interface Props {
-  studentId: string
-  initialData: Student
-}
+const props = defineProps({
+  studentId: {
+    type: String,
+    required: true
+  },
+  initialData: {
+    type: Object,
+    required: true
+  }
+})
 
-const props = defineProps<Props>()
 const { updateStudent } = useStudents()
 
 const formData = reactive({ ...props.initialData })
-const errors = reactive<Record<string, string>>({})
+const errors = reactive({})
 const isSubmitting = ref(false)
 
 const handleSubmit = async () => {
@@ -435,19 +435,18 @@ const handleSubmit = async () => {
   </div>
 </template>
 
-<script setup lang="ts">
+<script setup>
 import { ref } from 'vue'
 import { useStudents } from '@/composables/useStudents'
 
-interface Props {
-  student: Student
-}
+const props = defineProps({
+  student: {
+    type: Object,
+    required: true
+  }
+})
 
-const props = defineProps<Props>()
-const emit = defineEmits<{
-  cancel: []
-  deleted: []
-}>()
+const emit = defineEmits(['cancel', 'deleted'])
 
 const { deleteStudent } = useStudents()
 const isDeleting = ref(false)
@@ -484,11 +483,11 @@ const handleDelete = async () => {
   <slot v-else />
 </template>
 
-<script setup lang="ts">
+<script setup>
 import { ref, onErrorCaptured } from 'vue'
 
 const hasError = ref(false)
-const error = ref<Error | null>(null)
+const error = ref(null)
 
 onErrorCaptured((err, instance, info) => {
   console.error("API Error caught by boundary:", err, info)
@@ -557,7 +556,8 @@ const reloadPage = () => {
   </div>
 </template>
 
-<script setup lang="ts">
+<script setup>
+import { onMounted } from 'vue'
 import { useApi } from '@/composables/useApi'
 
 const { data: students, loading, error, refetch, isFetching } = useApi('http://localhost:5000/api/students')
@@ -618,7 +618,7 @@ onMounted(() => {
 
 ### 1. Environment Configuration
 
-```typescript
+```javascript
 // config/api.ts
 const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api'
 
@@ -645,7 +645,7 @@ export const apiClient = {
 
 ### 2. Optimistic Updates
 
-```typescript
+```javascript
 // composables/useOptimisticStudents.ts
 import { ref } from 'vue'
 import { apiClient } from '@/config/api'
@@ -682,7 +682,7 @@ export function useOptimisticStudents() {
 
 ### 3. Request Caching and Deduplication
 
-```typescript
+```javascript
 // composables/useStudent.ts
 import { ref, computed } from 'vue'
 

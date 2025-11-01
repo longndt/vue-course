@@ -94,46 +94,21 @@
   </div>
 </template>
 
-<script setup lang="ts">
+<script setup>
 import { ref, reactive, computed, watch } from 'vue';
-import { useMutation, useQueryClient } from '@tanstack/vue-query';
 import axios from 'axios';
 
-interface Task {
-  _id?: string;
-  title: string;
-  description: string;
-  completed: boolean;
-  priority: 'low' | 'medium' | 'high';
-  createdAt?: string;
-  updatedAt?: string;
-}
-
-interface TaskFormData {
-  title: string;
-  description: string;
-  priority: 'low' | 'medium' | 'high';
-  completed: boolean;
-}
-
-interface Props {
-  editingTask?: Task | null;
-}
-
-interface Emits {
-  (e: 'taskCreated', task: Task): void;
-  (e: 'taskUpdated', task: Task): void;
-  (e: 'cancel'): void;
-}
-
-const props = withDefaults(defineProps<Props>(), {
-  editingTask: null,
+const props = defineProps({
+  editingTask: {
+    type: Object,
+    default: null
+  }
 });
 
-const emit = defineEmits<Emits>();
+const emit = defineEmits(['taskCreated', 'taskUpdated', 'cancel']);
 
 // Form state
-const form = reactive<TaskFormData>({
+const form = reactive({
   title: '',
   description: '',
   priority: 'medium',
@@ -150,60 +125,51 @@ const errors = reactive({
 // UI state
 const isSubmitting = ref(false);
 const submitMessage = ref('');
-const messageType = ref<'success' | 'error'>('success');
+const messageType = ref('success');
 
 // API functions
-const createTask = async (taskData: Omit<Task, '_id' | 'createdAt' | 'updatedAt'>): Promise<Task> => {
+const createTask = async (taskData) => {
   const response = await axios.post('/api/tasks', taskData);
   return response.data;
 };
 
-const updateTask = async (task: Task): Promise<Task> => {
+const updateTask = async (task) => {
   const response = await axios.put(`/api/tasks/${task._id}`, task);
   return response.data;
 };
 
-// Vue Query
-const queryClient = useQueryClient();
-
-const { mutate: createTaskMutation } = useMutation({
-  mutationFn: createTask,
-  onMutate: () => {
+// Handle task creation
+const handleCreateTask = async (taskData) => {
+  try {
     isSubmitting.value = true;
     clearMessages();
-  },
-  onSuccess: (data) => {
-    queryClient.invalidateQueries({ queryKey: ['tasks'] });
+    const data = await createTask(taskData);
     showMessage('Task created successfully!', 'success');
     emit('taskCreated', data);
     resetForm();
     isSubmitting.value = false;
-  },
-  onError: (error: any) => {
+  } catch (error) {
     console.error('Failed to create task:', error);
     showMessage('Failed to create task. Please try again.', 'error');
     isSubmitting.value = false;
-  },
-});
+  }
+};
 
-const { mutate: updateTaskMutation } = useMutation({
-  mutationFn: updateTask,
-  onMutate: () => {
+// Handle task update
+const handleUpdateTask = async (task) => {
+  try {
     isSubmitting.value = true;
     clearMessages();
-  },
-  onSuccess: (data) => {
-    queryClient.invalidateQueries({ queryKey: ['tasks'] });
+    const data = await updateTask(task);
     showMessage('Task updated successfully!', 'success');
     emit('taskUpdated', data);
     isSubmitting.value = false;
-  },
-  onError: (error: any) => {
+  } catch (error) {
     console.error('Failed to update task:', error);
     showMessage('Failed to update task. Please try again.', 'error');
     isSubmitting.value = false;
-  },
-});
+  }
+};
 
 // Computed properties
 const isFormValid = computed(() => {
@@ -211,7 +177,7 @@ const isFormValid = computed(() => {
 });
 
 // Methods
-const validateForm = (): boolean => {
+const validateForm = () => {
   // Reset errors
   errors.title = '';
   errors.description = '';
@@ -260,13 +226,13 @@ const handleSubmit = () => {
 
   if (props.editingTask) {
     // Update existing task
-    updateTaskMutation({
+    handleUpdateTask({
       ...props.editingTask,
       ...taskData,
     });
   } else {
     // Create new task
-    createTaskMutation(taskData);
+    handleCreateTask(taskData);
   }
 };
 
@@ -289,7 +255,7 @@ const cancelEdit = () => {
   emit('cancel');
 };
 
-const showMessage = (message: string, type: 'success' | 'error') => {
+const showMessage = (message, type) => {
   submitMessage.value = message;
   messageType.value = type;
 

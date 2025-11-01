@@ -2,7 +2,7 @@
 
 ## 🎯 **Advanced Component Patterns**
 
-### **Composition API with TypeScript**
+### **Composition API with JavaScript**
 ```vue
 <template>
   <div class="user-card">
@@ -18,31 +18,21 @@
   </div>
 </template>
 
-<script setup lang="ts">
+<script setup>
 import { ref, computed, watch } from 'vue'
 
-interface User {
-  id: number
-  name: string
-  email: string
-  role: string
-}
-
-interface Props {
-  user: User
-  editable?: boolean
-}
-
-interface Emits {
-  update: [user: User]
-  delete: [id: number]
-}
-
-const props = withDefaults(defineProps<Props>(), {
-  editable: true
+const props = defineProps({
+  user: {
+    type: Object,
+    required: true
+  },
+  editable: {
+    type: Boolean,
+    default: true
+  }
 })
 
-const emit = defineEmits<Emits>()
+const emit = defineEmits(['update', 'delete'])
 
 // Reactive state
 const isEditing = ref(false)
@@ -91,8 +81,8 @@ const deleteUser = () => {
 ```
 
 ### **Custom Composables**
-```typescript
-// composables/useCounter.ts
+```javascript
+// composables/useCounter.js
 import { ref, computed } from 'vue'
 
 export function useCounter(initialValue = 0) {
@@ -115,17 +105,11 @@ export function useCounter(initialValue = 0) {
   }
 }
 
-// composables/useApi.ts
+// composables/useApi.js
 import { ref, computed } from 'vue'
 
-interface ApiState<T> {
-  data: T | null
-  loading: boolean
-  error: string | null
-}
-
-export function useApi<T>(url: string) {
-  const state = ref<ApiState<T>>({
+export function useApi(url) {
+  const state = ref({
     data: null,
     loading: false,
     error: null
@@ -161,12 +145,13 @@ export function useApi<T>(url: string) {
 }
 
 // Usage in component
-<script setup lang="ts">
+<script setup>
 import { useCounter } from '@/composables/useCounter'
 import { useApi } from '@/composables/useApi'
+import { onMounted } from 'vue'
 
 const { count, increment, decrement } = useCounter(10)
-const { data: users, loading, error, fetch } = useApi<User[]>('/api/users')
+const { data: users, loading, error, fetch } = useApi('/api/users')
 
 onMounted(() => {
   fetch()
@@ -175,24 +160,17 @@ onMounted(() => {
 ```
 
 ### **State Management with Pinia**
-```typescript
-// stores/user.ts
+```javascript
+// stores/user.js
 import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
 
-interface User {
-  id: number
-  name: string
-  email: string
-  role: string
-}
-
 export const useUserStore = defineStore('user', () => {
   // State
-  const users = ref<User[]>([])
-  const currentUser = ref<User | null>(null)
+  const users = ref([])
+  const currentUser = ref(null)
   const loading = ref(false)
-  const error = ref<string | null>(null)
+  const error = ref(null)
 
   // Getters
   const activeUsers = computed(() =>
@@ -201,7 +179,7 @@ export const useUserStore = defineStore('user', () => {
 
   const userCount = computed(() => users.value.length)
 
-  const getUserById = computed(() => (id: number) =>
+  const getUserById = computed(() => (id) =>
     users.value.find(user => user.id === id)
   )
 
@@ -331,49 +309,41 @@ export const useUserStore = defineStore('user', () => {
   </form>
 </template>
 
-<script setup lang="ts">
-import { ref, reactive, computed, watch } from 'vue'
+<script setup>
+import { ref, reactive, computed } from 'vue'
 
-interface UserForm {
-  name: string
-  email: string
-  role: string
-}
+const props = defineProps({
+  initialData: {
+    type: Object,
+    default: () => ({})
+  },
+  onSubmit: {
+    type: Function,
+    required: true
+  }
+})
 
-interface FormErrors {
-  name?: string
-  email?: string
-}
-
-const props = defineProps<{
-  initialData?: Partial<UserForm>
-  onSubmit: (data: UserForm) => Promise<void>
-}>()
-
-const emit = defineEmits<{
-  success: []
-  error: [message: string]
-}>()
+const emit = defineEmits(['success', 'error'])
 
 // Form state
-const form = reactive<UserForm>({
+const form = reactive({
   name: '',
   email: '',
   role: '',
   ...props.initialData
 })
 
-const errors = reactive<FormErrors>({})
+const errors = reactive({})
 const isSubmitting = ref(false)
 
 // Validation rules
 const validationRules = {
-  name: (value: string) => {
+  name: (value) => {
     if (!value.trim()) return 'Name is required'
     if (value.length < 2) return 'Name must be at least 2 characters'
     return null
   },
-  email: (value: string) => {
+  email: (value) => {
     if (!value.trim()) return 'Email is required'
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
     if (!emailRegex.test(value)) return 'Invalid email format'
@@ -384,23 +354,23 @@ const validationRules = {
 // Computed properties
 const isValid = computed(() => {
   return Object.keys(validationRules).every(field => {
-    const value = form[field as keyof UserForm] as string
-    return !validationRules[field as keyof typeof validationRules](value)
+    const value = form[field]
+    return !validationRules[field](value)
   })
 })
 
 // Methods
-const validateField = (field: keyof UserForm) => {
-  const value = form[field] as string
-  const rule = validationRules[field as keyof typeof validationRules]
+const validateField = (field) => {
+  const value = form[field]
+  const rule = validationRules[field]
   if (rule) {
-    errors[field as keyof FormErrors] = rule(value) || undefined
+    errors[field] = rule(value) || undefined
   }
 }
 
 const validateForm = () => {
   Object.keys(validationRules).forEach(field => {
-    validateField(field as keyof UserForm)
+    validateField(field)
   })
 }
 
@@ -412,7 +382,7 @@ const resetForm = () => {
     ...props.initialData
   })
   Object.keys(errors).forEach(key => {
-    delete errors[key as keyof FormErrors]
+    delete errors[key]
   })
 }
 
@@ -463,22 +433,22 @@ watch(() => props.initialData, (newData) => {
   </div>
 </template>
 
-<script setup lang="ts">
-interface Props {
-  variant?: 'default' | 'primary' | 'success' | 'warning' | 'danger'
-  clickable?: boolean
-}
-
-const props = withDefaults(defineProps<Props>(), {
-  variant: 'default',
-  clickable: false
+<script setup>
+const props = defineProps({
+  variant: {
+    type: String,
+    default: 'default',
+    validator: (value) => ['default', 'primary', 'success', 'warning', 'danger'].includes(value)
+  },
+  clickable: {
+    type: Boolean,
+    default: false
+  }
 })
 
-const emit = defineEmits<{
-  click: [event: MouseEvent]
-}>()
+const emit = defineEmits(['click'])
 
-const handleClick = (event: MouseEvent) => {
+const handleClick = (event) => {
   if (props.clickable) {
     emit('click', event)
   }
@@ -514,30 +484,17 @@ const handleClick = (event: MouseEvent) => {
   </BaseCard>
 </template>
 
-<script setup lang="ts">
+<script setup>
 import BaseCard from './BaseCard.vue'
 
-interface User {
-  id: number
-  name: string
-  email: string
-  role: string
-  isActive: boolean
-  lastLogin: string
-}
+const props = defineProps({
+  user: {
+    type: Object,
+    required: true
+  }
+})
 
-interface Props {
-  user: User
-}
-
-interface Emits {
-  edit: [user: User]
-  delete: [id: number]
-  click: [user: User]
-}
-
-const props = defineProps<Props>()
-const emit = defineEmits<Emits>()
+const emit = defineEmits(['edit', 'delete', 'click'])
 
 const handleCardClick = () => {
   emit('click', props.user)
@@ -553,14 +510,14 @@ const deleteUser = () => {
   }
 }
 
-const formatDate = (dateString: string) => {
+const formatDate = (dateString) => {
   return new Date(dateString).toLocaleDateString()
 }
 </script>
 ```
 
 ### **Advanced Reactive Patterns**
-```typescript
+```javascript
 // Deep reactive objects
 const state = reactive({
   user: {
@@ -635,7 +592,7 @@ watch(
   </div>
 </template>
 
-<script setup lang="ts">
+<script setup>
 import { ref, onErrorCaptured } from 'vue'
 
 const hasError = ref(false)
@@ -661,12 +618,12 @@ const retry = () => {
 2. **Prefer `reactive()`** for objects, `ref()` for primitives
 3. **Use `computed()`** for derived state
 4. **Implement proper error handling** with try/catch
-5. **Use TypeScript interfaces** for type safety
-6. **Compose components** using slots and props
-7. **Implement validation** for forms
-8. **Use Pinia** for complex state management
-9. **Handle loading states** in async operations
-10. **Use `onErrorCaptured`** for error boundaries
+5. **Compose components** using slots and props
+6. **Implement validation** for forms
+7. **Use Pinia** for complex state management
+8. **Handle loading states** in async operations
+9. **Use `onErrorCaptured`** for error boundaries
+10. **Validate props** using prop validators for runtime type checking
 
 ## 📚 **Next Steps**
 

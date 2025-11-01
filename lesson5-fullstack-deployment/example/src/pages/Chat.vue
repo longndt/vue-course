@@ -62,36 +62,22 @@
   </div>
 </template>
 
-<script setup lang="ts">
+<script setup>
 import { ref, reactive, onMounted, onUnmounted, nextTick } from 'vue'
 
-interface Message {
-  id: string
-  userId: string
-  username: string
-  text: string
-  timestamp: Date
-}
-
-interface User {
-  id: string
-  name: string
-  avatar: string
-}
-
 // Reactive state
-const messages = ref<Message[]>([])
+const messages = ref([])
 const newMessage = ref('')
 const isConnected = ref(false)
-const messagesContainer = ref<HTMLElement>()
+const messagesContainer = ref(null)
 
-const currentUser = reactive<User>({
+const currentUser = reactive({
   id: 'user-' + Math.random().toString(36).substr(2, 9),
   name: 'You',
   avatar: '😊'
 })
 
-const onlineUsers = ref<User[]>([
+const onlineUsers = ref([
   currentUser,
   { id: 'user-2', name: 'Alice', avatar: '👩' },
   { id: 'user-3', name: 'Bob', avatar: '👨' },
@@ -99,8 +85,8 @@ const onlineUsers = ref<User[]>([
 ])
 
 // Mock WebSocket simulation
-let messageInterval: NodeJS.Timeout
-let connectionTimeout: NodeJS.Timeout
+let messageInterval = null
+let connectionTimeout = null
 
 const connectToChat = () => {
   // Simulate connection delay
@@ -157,7 +143,7 @@ const startMessageSimulation = () => {
   }, 3000)
 }
 
-const addMessage = (message: Message) => {
+const addMessage = (message) => {
   messages.value.push(message)
   nextTick(() => {
     scrollToBottom()
@@ -167,7 +153,7 @@ const addMessage = (message: Message) => {
 const sendMessage = () => {
   if (!newMessage.value.trim() || !isConnected.value) return
 
-  const message: Message = {
+  const message = {
     id: 'msg-' + Date.now(),
     userId: currentUser.id,
     username: currentUser.name,
@@ -179,7 +165,7 @@ const sendMessage = () => {
   newMessage.value = ''
 }
 
-const formatTime = (date: Date): string => {
+const formatTime = (date) => {
   return date.toLocaleTimeString('en-US', {
     hour: '2-digit',
     minute: '2-digit'

@@ -9,7 +9,7 @@
 
     <!-- Error State -->
     <div v-else-if="error" class="error">
-      <p>Error loading tasks: {{ error.message }}</p>
+      <p>Error loading tasks: {{ error }}</p>
       <button @click="refetch" class="btn btn-secondary">
         Try Again
       </button>
@@ -75,98 +75,108 @@
   </div>
 </template>
 
-<script setup lang="ts">
-import { ref } from 'vue';
-import { useQuery, useMutation, useQueryClient } from '@tanstack/vue-query';
+<script setup>
+import { ref, onMounted } from 'vue';
 import axios from 'axios';
 
-interface Task {
-  _id: string;
-  title: string;
-  description: string;
-  completed: boolean;
-  priority: 'low' | 'medium' | 'high';
-  createdAt: string;
-  updatedAt: string;
-}
-
 // API functions
-const fetchTasks = async (): Promise<Task[]> => {
+const fetchTasks = async () => {
   const response = await axios.get('/api/tasks');
   return response.data;
 };
 
-const updateTask = async (task: Task): Promise<Task> => {
+const updateTask = async (task) => {
   const response = await axios.put(`/api/tasks/${task._id}`, task);
   return response.data;
 };
 
-const deleteTaskApi = async (taskId: string): Promise<void> => {
+const deleteTaskApi = async (taskId) => {
   await axios.delete(`/api/tasks/${taskId}`);
 };
 
-// Vue Query
-const queryClient = useQueryClient();
-
-const {
-  data: tasks,
-  isLoading,
-  error,
-  refetch,
-  isRefetching
-} = useQuery({
-  queryKey: ['tasks'],
-  queryFn: fetchTasks,
-  staleTime: 1000 * 60 * 5, // 5 minutes
-});
-
-// Mutations
-const { mutate: updateTaskMutation } = useMutation({
-  mutationFn: updateTask,
-  onSuccess: () => {
-    queryClient.invalidateQueries({ queryKey: ['tasks'] });
-  },
-  onError: (error) => {
-    console.error('Failed to update task:', error);
-    alert('Failed to update task. Please try again.');
-  },
-});
-
+// State
+const tasks = ref([]);
+const isLoading = ref(true);
+const error = ref(null);
+const isRefetching = ref(false);
 const isDeletingTask = ref(false);
 
-const { mutate: deleteTaskMutation } = useMutation({
-  mutationFn: deleteTaskApi,
-  onMutate: () => {
-    isDeletingTask.value = true;
-  },
-  onSuccess: () => {
-    queryClient.invalidateQueries({ queryKey: ['tasks'] });
-    isDeletingTask.value = false;
-  },
-  onError: (error) => {
-    console.error('Failed to delete task:', error);
-    alert('Failed to delete task. Please try again.');
-    isDeletingTask.value = false;
-  },
-});
-
-// Methods
-const toggleComplete = (task: Task) => {
-  updateTaskMutation({
-    ...task,
-    completed: !task.completed,
-  });
-};
-
-const deleteTask = (taskId: string) => {
-  if (confirm('Are you sure you want to delete this task?')) {
-    deleteTaskMutation(taskId);
+// Fetch tasks
+const loadTasks = async () => {
+  try {
+    isLoading.value = true;
+    error.value = null;
+    const data = await fetchTasks();
+    tasks.value = data;
+    isLoading.value = false;
+  } catch (err) {
+    console.error('Failed to load tasks:', err);
+    error.value = err.message || 'Failed to load tasks';
+    isLoading.value = false;
   }
 };
 
-const formatDate = (dateString: string) => {
+// Refetch tasks
+const refetch = async () => {
+  isRefetching.value = true;
+  await loadTasks();
+  isRefetching.value = false;
+};
+
+// Handle task update
+const handleUpdateTask = async (task) => {
+  try {
+    const updatedTask = await updateTask({
+      ...task,
+      completed: !task.completed,
+    });
+    // Update the task in the list
+    const index = tasks.value.findIndex(t => t._id === task._id);
+    if (index !== -1) {
+      tasks.value[index] = updatedTask;
+    }
+  } catch (err) {
+    console.error('Failed to update task:', err);
+    alert('Failed to update task. Please try again.');
+  }
+};
+
+// Handle task deletion
+const handleDeleteTask = async (taskId) => {
+  if (!confirm('Are you sure you want to delete this task?')) {
+    return;
+  }
+  
+  try {
+    isDeletingTask.value = true;
+    await deleteTaskApi(taskId);
+    // Remove task from list
+    tasks.value = tasks.value.filter(t => t._id !== taskId);
+    isDeletingTask.value = false;
+  } catch (err) {
+    console.error('Failed to delete task:', err);
+    alert('Failed to delete task. Please try again.');
+    isDeletingTask.value = false;
+  }
+};
+
+// Methods
+const toggleComplete = (task) => {
+  handleUpdateTask(task);
+};
+
+const deleteTask = (taskId) => {
+  handleDeleteTask(taskId);
+};
+
+const formatDate = (dateString) => {
   return new Date(dateString).toLocaleDateString();
 };
+
+// Load tasks on mount
+onMounted(() => {
+  loadTasks();
+});
 </script>
 
 <style scoped>

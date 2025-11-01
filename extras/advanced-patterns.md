@@ -16,14 +16,15 @@ Create components that work together as a cohesive unit, using Vue's provide/inj
 
 ```vue
 <!-- Modal.vue - Parent Component -->
-<script setup lang="ts">
+<script setup>
 import { provide } from 'vue'
 
-interface Props {
-  isOpen: boolean
-}
-
-const props = defineProps<Props>()
+const props = defineProps({
+  isOpen: {
+    type: Boolean,
+    required: true
+  }
+})
 const emit = defineEmits(['close'])
 
 function onClose() {
@@ -50,7 +51,7 @@ provide('modal', {
 
 ```vue
 <!-- ModalHeader.vue - Child Component -->
-<script setup lang="ts">
+<script setup>
 import { inject } from 'vue'
 
 const modal = inject('modal')
@@ -117,23 +118,19 @@ Share data between components using Vue's scoped slots for flexible rendering.
 
 ```vue
 <!-- DataFetcher.vue with Scoped Slots -->
-<script setup lang="ts" generic="T">
-interface Props {
-  url: string
-}
+<script setup>
+import { ref, onMounted } from 'vue'
 
-interface SlotProps {
-  data: T | null
-  loading: boolean
-  error: string | null
-  refetch: () => void
-}
+const props = defineProps({
+  url: {
+    type: String,
+    required: true
+  }
+})
 
-const props = defineProps<Props>()
-
-const data = ref<T | null>(null)
+const data = ref(null)
 const loading = ref(true)
-const error = ref<string | null>(null)
+const error = ref(null)
 
 const fetchData = async () => {
   loading.value = true

@@ -74,7 +74,7 @@
   </div>
 </template>
 
-<script setup lang="ts">
+<script setup>
 import { reactive, onMounted } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
 import { useAuthStore } from '../stores/auth';
@@ -121,12 +121,12 @@ const handleLogin = async () => {
 
   if (success) {
     // Redirect to intended page or home
-    const redirectPath = route.query.redirect as string || '/';
+    const redirectPath = route.query.redirect || '/';
     router.push(redirectPath);
   }
 };
 
-const fillDemo = (type: 'admin' | 'user') => {
+const fillDemo = (type) => {
   if (type === 'admin') {
     form.username = 'admin';
     form.password = 'admin123';

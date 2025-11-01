@@ -55,7 +55,7 @@
   </div>
 </template>
 
-<script setup lang="ts">
+<script setup>
 // Home page - static content
 </script>
 

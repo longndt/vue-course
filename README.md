@@ -2,7 +2,7 @@
 
 ## Course Overview
 
-This course teaches **Vue 3 with JavaScript** development using industry-standard practices through hands-on examples. All examples and code use JavaScript (not TypeScript) for easier learning.
+This course teaches **Vue 3 with JavaScript** development using industry-standard practices through hands-on examples. 
 
 **Format** Theory, hands-on practice, and project-based learning
 
@@ -45,7 +45,7 @@ This course teaches **Vue 3 with JavaScript** development using industry-standar
 - Understanding Vue basics and JavaScript integration
 - Creating your first Vue components
 - Basic styling and project structure
-- **Lab Project** Build a simple welcome page with components
+- **Lab Project** Student Dashboard application with Vue 3 components
 
 ### Lesson 2: Component Architecture & Vue Composition API
 - Component composition and props with JavaScript
@@ -53,7 +53,7 @@ This course teaches **Vue 3 with JavaScript** development using industry-standar
 - Custom composables with proper structure
 - Form handling with validation
 - Building reusable component libraries
-- **Lab Project** Build a data management interface with CRUD operations
+- **Lab Project** Build a component library with advanced composition patterns
 
 ### Lesson 3: API Integration & Data Management
 - Connecting Vue to Node.js/Express backend & MongoDB database

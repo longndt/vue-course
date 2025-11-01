@@ -24,7 +24,7 @@ After completing this lesson, you will be able to:
 
 ## 📋 Prerequisites
 
-- ✅ Vue fundamentals and TypeScript setup
+- ✅ Vue fundamentals and project setup
 - ✅ Understanding of component basics and props
 - ✅ Experience with reactive state (ref, reactive)
 - ✅ Familiarity with Vue template syntax
@@ -59,15 +59,17 @@ npm run dev
 ## What's Next
 
 ### Ready to Continue?
-- **Completed this lesson?** → Proceed to [Lesson 3: API Integration & Data Management](../lesson3-api-data/)
+- **Completed this lesson?** → Proceed to [Lesson 3: API Integration & Data Management](../lesson3-api-data/readme.md)
 
 ### Need More Practice?
 - **Study theory** → [theory2.md](./theory/theory2.md) - Deep dive into component patterns
 - **View examples** → [example/](./example/) - See advanced components in action
 - **Practice exercises** → [lab2.md](./lab/lab2.md) - Component library project
+- **Check solutions** → [lab2-solution.md](./lab/solution/lab2-solution.md) - Complete solutions
 
 ### Additional Resources
 - **Quiz yourself** → [quiz2.html](./quiz/quiz2.html) - Test your component knowledge
+- **Quick reference** → [reference2.md](./reference/reference2.md) - Code snippets and patterns
 - **General questions?** → Review the reference guide
 - **Still confused?** → [Check Troubleshooting Guide](../../extras/troubleshooting-guide.md)
 

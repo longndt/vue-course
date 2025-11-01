@@ -122,18 +122,9 @@
   </div>
 </template>
 
-<script setup lang="ts">
+<script setup>
 import { ref, computed, reactive } from 'vue';
 import { useRouter } from 'vue-router';
-
-interface CartItem {
-  id: number;
-  name: string;
-  description: string;
-  price: number;
-  image: string;
-  quantity: number;
-}
 
 const router = useRouter();
 
@@ -141,11 +132,11 @@ const router = useRouter();
 const isProcessing = ref(false);
 const message = reactive({
   text: '',
-  type: 'success' as 'success' | 'error'
+  type: 'success'
 });
 
 // Mock cart data
-const cartItems = ref<CartItem[]>([
+const cartItems = ref([
   {
     id: 1,
     name: "Wireless Headphones",
@@ -190,7 +181,7 @@ const total = computed(() => {
 });
 
 // Methods
-const updateQuantity = (itemId: number, newQuantity: number) => {
+const updateQuantity = (itemId, newQuantity) => {
   if (newQuantity < 1) return;
 
   const item = cartItems.value.find(item => item.id === itemId);
@@ -200,7 +191,7 @@ const updateQuantity = (itemId: number, newQuantity: number) => {
   }
 };
 
-const removeItem = (itemId: number) => {
+const removeItem = (itemId) => {
   const index = cartItems.value.findIndex(item => item.id === itemId);
   if (index > -1) {
     const removedItem = cartItems.value[index];
@@ -239,7 +230,7 @@ const proceedToCheckout = async () => {
   }
 };
 
-const showMessage = (text: string, type: 'success' | 'error') => {
+const showMessage = (text, type) => {
   message.text = text;
   message.type = type;
 

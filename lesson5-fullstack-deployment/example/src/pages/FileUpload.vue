@@ -78,22 +78,15 @@
   </div>
 </template>
 
-<script setup lang="ts">
+<script setup>
 import { ref, reactive } from 'vue'
 
-interface UploadedFile {
-  id: string
-  name: string
-  type: string
-  url: string
-}
-
 // Reactive state
-const files = ref<File[]>([])
-const uploadProgress = reactive<number[]>([])
+const files = ref([])
+const uploadProgress = reactive([])
 const isUploading = ref(false)
 const isDragOver = ref(false)
-const uploadedFiles = ref<UploadedFile[]>([])
+const uploadedFiles = ref([])
 
 // File handling methods
 const handleDragOver = () => {
@@ -104,24 +97,24 @@ const handleDragLeave = () => {
   isDragOver.value = false
 }
 
-const handleDrop = (event: DragEvent) => {
+const handleDrop = (event) => {
   isDragOver.value = false
   const droppedFiles = Array.from(event.dataTransfer?.files || [])
   addFiles(droppedFiles)
 }
 
-const handleFileSelect = (event: Event) => {
-  const target = event.target as HTMLInputElement
+const handleFileSelect = (event) => {
+  const target = event.target
   const selectedFiles = Array.from(target.files || [])
   addFiles(selectedFiles)
 }
 
-const addFiles = (newFiles: File[]) => {
+const addFiles = (newFiles) => {
   files.value.push(...newFiles)
   newFiles.forEach(() => uploadProgress.push(0))
 }
 
-const removeFile = (index: number) => {
+const removeFile = (index) => {
   files.value.splice(index, 1)
   uploadProgress.splice(index, 1)
 }
@@ -144,7 +137,7 @@ const uploadFiles = async () => {
   isUploading.value = false
 }
 
-const uploadFile = async (file: File, index: number): Promise<void> => {
+const uploadFile = async (file, index) => {
   return new Promise((resolve) => {
     // Simulate file upload with progress
     let progress = 0
@@ -170,7 +163,7 @@ const uploadFile = async (file: File, index: number): Promise<void> => {
 }
 
 // Utility methods
-const formatFileSize = (bytes: number): string => {
+const formatFileSize = (bytes) => {
   if (bytes === 0) return '0 Bytes'
   const k = 1024
   const sizes = ['Bytes', 'KB', 'MB', 'GB']
@@ -178,7 +171,7 @@ const formatFileSize = (bytes: number): string => {
   return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i]
 }
 
-const getFileIcon = (type: string): string => {
+const getFileIcon = (type) => {
   if (type.startsWith('image/')) return '🖼️'
   if (type.startsWith('video/')) return '🎥'
   if (type.startsWith('audio/')) return '🎵'

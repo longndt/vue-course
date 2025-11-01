@@ -44,8 +44,7 @@ npm install
 
 # 2. Install routing and auth dependencies
 npm install vue-router@4 pinia
-npm install @vueuse/core jsonwebtoken
-npm install -D @types/jsonwebtoken
+npm install @vueuse/core
 
 # 3. Set up routing
 # Select Vue Router when prompted
@@ -68,9 +67,11 @@ npm run dev
 - **Study theory** → [theory4.md](./theory/theory4.md) - Deep dive into routing and auth
 - **View examples** → [example/](./example/) - See authentication in action
 - **Practice exercises** → [lab4.md](./lab/lab4.md) - E-commerce project
+- **Check solutions** → [lab4-solution.md](./lab/solution/lab4-solution.md) - Complete solutions
 
 ### Additional Resources
 - **Quiz yourself** → [quiz4.html](./quiz/quiz4.html) - Test your routing knowledge
+- **Quick reference** → [reference4.md](./reference/reference4.md) - Code snippets and patterns
 - **General questions?** → Review the reference guide
 - **Still confused?** → [Check Troubleshooting Guide](../../extras/troubleshooting-guide.md)
 

@@ -191,7 +191,7 @@
   </div>
 </template>
 
-<script setup lang="ts">
+<script setup>
 import { ref, reactive, onMounted } from 'vue';
 import { useAuthStore } from '../stores/auth';
 
@@ -201,7 +201,7 @@ const authStore = useAuthStore();
 const activeTab = ref('account');
 const message = reactive({
   text: '',
-  type: 'success' as 'success' | 'error'
+  type: 'success'
 });
 
 const tabs = [
@@ -279,7 +279,7 @@ const toggleAvatarEdit = () => {
   showMessage('Avatar edit feature coming soon!', 'success');
 };
 
-const showMessage = (text: string, type: 'success' | 'error') => {
+const showMessage = (text, type) => {
   message.text = text;
   message.type = type;
 
@@ -288,7 +288,7 @@ const showMessage = (text: string, type: 'success' | 'error') => {
   }, 3000);
 };
 
-const formatDate = (date: Date) => {
+const formatDate = (date) => {
   return date.toLocaleDateString('en-US', {
     year: 'numeric',
     month: 'long',

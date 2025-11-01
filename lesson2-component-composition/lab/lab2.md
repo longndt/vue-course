@@ -11,14 +11,14 @@ _For learning objectives and prerequisites, see [../readme.md](../readme.md)_
 - [ ] Lab 1 completed successfully
 - [ ] Node.js v18+ and npm installed
 - [ ] VS Code with Vue extensions
-- [ ] Basic TypeScript understanding
+- [ ] Basic JavaScript ES6+ understanding
 - [ ] Vue 3 Composition API knowledge from previous lessons
 
 ## Exercises
 
 ### Exercise 1: Component Composition
 
-**💡 Architecture Note:** We'll use TypeScript for better development experience and type safety, consistent with Lab 1.
+**💡 Architecture Note:** We'll use JavaScript for all components and composables.
 
 Create a Card component system using composition:
 

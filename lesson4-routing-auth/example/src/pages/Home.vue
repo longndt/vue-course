@@ -45,7 +45,7 @@
   </div>
 </template>
 
-<script setup lang="ts">
+<script setup>
 // Home page component - no reactive logic needed
 </script>
 

@@ -52,7 +52,7 @@ After completing this lesson, you will be able to:
 2. **Better Developer Experience**: Composition API makes code more maintainable
 3. **Industry Standard**: Most companies are migrating to Vue 3
 4. **Performance**: Significantly faster rendering and smaller bundles
-5. **Modern Features**: Built for modern JavaScript and TypeScript
+5. **Modern Features**: Built for modern JavaScript
 6. **Ecosystem**: All major libraries now support Vue 3
 
 ### Migration Path
@@ -64,7 +64,7 @@ After completing this lesson, you will be able to:
 
 ## 🚀 Quick Start
 
-> 🎯 Goal: Master Vue fundamentals with TypeScript for modern development
+> 🎯 Goal: Master Vue fundamentals with JavaScript for modern development
 
 ### Setup
 ```bash
@@ -74,7 +74,7 @@ npm --version   # Should be 9+
 
 # 2. Create Vue project
 npm create vue@latest my-first-vue-app
-# Select: TypeScript ❌, Router ❌, Pinia ❌, Testing ❌, ESLint ✅, Prettier ✅
+# Select: ❌ TypeScript, ❌ Router, ❌ Pinia, ❌ Testing, ✅ ESLint, ✅ Prettier
 
 # 3. Start development
 cd my-first-vue-app
@@ -92,15 +92,17 @@ npm run dev
 ## What's Next
 
 ### Ready to Continue?
-- **Completed this lesson?** → Proceed to [Lesson 2: Component Architecture & Vue Composition API](../lesson2-component-composition/)
+- **Completed this lesson?** → Proceed to [Lesson 2: Component Architecture & Vue Composition API](../lesson2-component-composition/readme.md)
 
 ### Need More Practice?
 - **Study theory** → [theory1.md](./theory/theory1.md) - Deep dive into Vue concepts
 - **View examples** → [example/](./example/) - See Vue in action
 - **Practice exercises** → [lab1.md](./lab/lab1.md) - Student Dashboard project
+- **Check solutions** → [lab1-solution.md](./lab/solution/lab1-solution.md) - Complete solutions
 
 ### Additional Resources
 - **Quiz yourself** → [quiz1.html](./quiz/quiz1.html) - Test your Vue knowledge
+- **Quick reference** → [reference1.md](./reference/reference1.md) - Code snippets and patterns
 - **General questions?** → Review the reference guide
 - **Still confused?** → [Check Troubleshooting Guide](../../extras/troubleshooting-guide.md)
 

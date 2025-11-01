@@ -70,7 +70,7 @@ After this lesson, you will:
   </div>
 </template>
 
-<script setup lang="ts">
+<script setup>
 import { ref, computed } from 'vue';
 
 // Simple counter - perfect for local state
@@ -86,20 +86,10 @@ const handleIncrement = () => {
 **Complex form state - still local but more sophisticated:**
 
 ```vue
-<script setup lang="ts">
+<script setup>
 import { reactive, ref } from 'vue';
 
-interface FormData {
-  name: string;
-  email: string;
-  courses: string[];
-  preferences: {
-    notifications: boolean;
-    theme: string;
-  };
-}
-
-const formData = reactive<FormData>({
+const formData = reactive({
   name: '',
   email: '',
   courses: [],
@@ -109,10 +99,10 @@ const formData = reactive<FormData>({
   }
 });
 
-const errors = ref<Record<string, string>>({});
+const errors = ref({});
 const isSubmitting = ref(false);
 
-const handleFieldChange = (field: string, value: any) => {
+const handleFieldChange = (field, value) => {
   formData[field] = value;
 
   // Clear error when user starts typing
@@ -133,28 +123,15 @@ const handleFieldChange = (field: string, value: any) => {
 
 **Best for:** Complex state updates, multiple related state variables
 
-```typescript
+```javascript
 // State management for a shopping cart using Pinia
 import { defineStore } from 'pinia';
 import { ref, computed } from 'vue';
 
-interface CartItem {
-  id: string;
-  name: string;
-  price: number;
-  quantity: number;
-}
-
-interface Discount {
-  id: string;
-  amount: number;
-  type: 'percentage' | 'fixed';
-}
-
 export const useCartStore = defineStore('cart', () => {
   // State
-  const items = ref<CartItem[]>([]);
-  const discounts = ref<Discount[]>([]);
+  const items = ref([]);
+  const discounts = ref([]);
   const isLoading = ref(false);
 
   // Computed
@@ -167,7 +144,7 @@ export const useCartStore = defineStore('cart', () => {
   });
 
   // Actions
-  const addItem = (newItem: CartItem) => {
+  const addItem = (newItem) => {
     const existingItem = items.value.find(item => item.id === newItem.id);
     if (existingItem) {
       existingItem.quantity += 1;
@@ -176,25 +153,25 @@ export const useCartStore = defineStore('cart', () => {
     }
   };
 
-  const removeItem = (itemId: string) => {
+  const removeItem = (itemId) => {
     const index = items.value.findIndex(item => item.id === itemId);
     if (index > -1) {
       items.value.splice(index, 1);
     }
   };
 
-  const updateQuantity = (itemId: string, quantity: number) => {
+  const updateQuantity = (itemId, quantity) => {
     const item = items.value.find(item => item.id === itemId);
     if (item) {
       item.quantity = quantity;
     }
   };
 
-  const applyDiscount = (discount: Discount) => {
+  const applyDiscount = (discount) => {
     discounts.value.push(discount);
   };
 
-  const setLoading = (loading: boolean) => {
+  const setLoading = (loading) => {
     isLoading.value = loading;
   };
 
@@ -219,12 +196,12 @@ export const useCartStore = defineStore('cart', () => {
 ```
 
 ```vue
-<script setup lang="ts">
+<script setup>
 import { useCartStore } from './stores/cart';
 
 const cartStore = useCartStore();
 
-const addToCart = (product: Product) => {
+const addToCart = (product) => {
   cartStore.addItem({
     id: product.id,
     name: product.name,
@@ -292,14 +269,14 @@ Use state when something needs to change:
   </form>
 </template>
 
-<script setup lang="ts">
+<script setup>
 import { ref, reactive } from 'vue';
 
 // Store form data in refs
 const name = ref('');
 const email = ref('');
 const isSubmitting = ref(false);
-const errors = reactive<Record<string, string>>({});
+const errors = reactive({});
 
 // Handle form submission
 const handleSubmit = async () => {
@@ -410,14 +387,14 @@ button:disabled {
   </div>
 </template>
 
-<script setup lang="ts">
+<script setup>
 import { ref } from 'vue';
 import ScoreDisplay from './ScoreDisplay.vue';
 import ScoreButtons from './ScoreButtons.vue';
 
 const score = ref(0);
 
-const updateScore = (newScore: number) => {
+const updateScore = (newScore) => {
   score.value = newScore;
 };
 </script>
@@ -427,12 +404,13 @@ const updateScore = (newScore: number) => {
   <div class="score">Points: {{ score }}</div>
 </template>
 
-<script setup lang="ts">
-interface Props {
-  score: number;
-}
-
-defineProps<Props>();
+<script setup>
+defineProps({
+  score: {
+    type: Number,
+    required: true
+  }
+});
 </script>
 
 <style scoped>
@@ -454,10 +432,8 @@ defineProps<Props>();
   </div>
 </template>
 
-<script setup lang="ts">
-const emit = defineEmits<{
-  'update-score': [value: number];
-}>();
+<script setup>
+const emit = defineEmits(['update-score']);
 
 const addPoint = () => {
   emit('update-score', 1);
@@ -525,17 +501,17 @@ button:hover {
   </div>
 </template>
 
-<script setup lang="ts">
-import { provide, ref } from 'vue';
+<script setup>
+import { provide } from 'vue';
 
-interface Props {
-  isOpen: boolean;
-}
+const props = defineProps({
+  isOpen: {
+    type: Boolean,
+    required: true
+  }
+});
 
-const props = defineProps<Props>();
-const emit = defineEmits<{
-  close: [];
-}>();
+const emit = defineEmits(['close']);
 
 const close = () => {
   emit('close');
@@ -555,10 +531,10 @@ provide('modal', {
   </div>
 </template>
 
-<script setup lang="ts">
+<script setup>
 import { inject } from 'vue';
 
-const modal = inject('modal') as { close: () => void };
+const modal = inject('modal');
 const close = modal.close;
 </script>
 
@@ -608,14 +584,15 @@ const close = modal.close;
   </div>
 </template>
 
-<script setup lang="ts">
+<script setup>
 import { ref, onMounted } from 'vue';
 
-interface Props {
-  url: string;
-}
-
-const props = defineProps<Props>();
+const props = defineProps({
+  url: {
+    type: String,
+    required: true
+  }
+});
 
 const data = ref(null);
 const loading = ref(false);
@@ -671,7 +648,7 @@ onMounted(() => {
 ### 1. Changing State Directly
 
 ```vue
-<script setup lang="ts">
+<script setup>
 import { ref } from 'vue';
 
 // ❌ Wrong - Don't reassign ref itself
@@ -686,7 +663,7 @@ score.value = 10;
 ### 2. Forgetting .value with refs
 
 ```vue
-<script setup lang="ts">
+<script setup>
 import { ref, computed } from 'vue';
 
 const count = ref(0);
@@ -702,7 +679,7 @@ const doubleCount = computed(() => count.value * 2);
 ### 3. Complex State Updates
 
 ```vue
-<script setup lang="ts">
+<script setup>
 import { ref, reactive } from 'vue';
 
 // ❌ Wrong - too complex for single ref
@@ -774,16 +751,10 @@ Create a simple todo list:
   </div>
 </template>
 
-<script setup lang="ts">
+<script setup>
 import { ref, computed } from 'vue';
 
-interface Todo {
-  id: number;
-  text: string;
-  completed: boolean;
-}
-
-const todos = ref<Todo[]>([]);
+const todos = ref([]);
 const input = ref('');
 
 const completedCount = computed(() =>
@@ -805,14 +776,14 @@ const addTodo = () => {
   }
 };
 
-const toggleTodo = (id: number) => {
+const toggleTodo = (id) => {
   const todo = todos.value.find(t => t.id === id);
   if (todo) {
     todo.completed = !todo.completed;
   }
 };
 
-const deleteTodo = (id: number) => {
+const deleteTodo = (id) => {
   const index = todos.value.findIndex(t => t.id === id);
   if (index > -1) {
     todos.value.splice(index, 1);
@@ -923,7 +894,7 @@ Create a button that switches between light and dark theme:
   </div>
 </template>
 
-<script setup lang="ts">
+<script setup>
 import { ref, onMounted } from 'vue';
 
 const isDark = ref(false);

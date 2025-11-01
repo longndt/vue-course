@@ -1,4 +1,4 @@
-# Vue 3 Fundamentals & TypeScript Setup - Quick Reference
+# Vue 3 Fundamentals & JavaScript Setup - Quick Reference
 
 ## 🎯 **Vue 3 Core Concepts**
 
@@ -12,17 +12,20 @@
   </div>
 </template>
 
-<script setup lang="ts">
-// TypeScript logic
-interface Props {
-  title: string
-  count?: number
-}
+<script setup>
+// JavaScript logic
+const props = defineProps({
+  title: {
+    type: String,
+    required: true
+  },
+  count: {
+    type: Number,
+    default: 0
+  }
+})
 
-const props = defineProps<Props>()
-const emit = defineEmits<{
-  click: [value: string]
-}>()
+const emit = defineEmits(['click'])
 
 const handleClick = () => {
   emit('click', 'Hello from component')
@@ -38,7 +41,7 @@ const handleClick = () => {
 ```
 
 ### **Reactive Data with Composition API**
-```typescript
+```javascript
 import { ref, reactive, computed, watch } from 'vue'
 
 // Primitive values
@@ -67,29 +70,30 @@ watch(user, (newUser) => {
 }, { deep: true })
 ```
 
-### **Props & Emits with TypeScript**
-```typescript
-// Props interface
-interface Props {
-  title: string
-  count?: number
-  items: string[]
-  user?: {
-    name: string
-    email: string
+### **Props & Emits with JavaScript**
+```javascript
+// Props definition
+const props = defineProps({
+  title: {
+    type: String,
+    required: true
+  },
+  count: {
+    type: Number,
+    default: 0
+  },
+  items: {
+    type: Array,
+    required: true
+  },
+  user: {
+    type: Object,
+    default: null
   }
-}
+})
 
-// Emits interface
-interface Emits {
-  update: [value: string]
-  delete: [id: number]
-  'user-change': [user: User]
-}
-
-// Component definition
-const props = defineProps<Props>()
-const emit = defineEmits<Emits>()
+// Emits definition
+const emit = defineEmits(['update', 'delete', 'user-change'])
 
 // Usage
 emit('update', 'new value')
@@ -115,19 +119,19 @@ emit('user-change', { name: 'Jane', email: 'jane@example.com' })
   <button @click="emitCustomEvent">Emit custom</button>
 </template>
 
-<script setup lang="ts">
+<script setup>
 const inputValue = ref('')
 
 const handleClick = () => {
   console.log('Button clicked')
 }
 
-const handleClickWithEvent = (event: MouseEvent) => {
+const handleClickWithEvent = (event) => {
   console.log('Event:', event)
 }
 
-const handleInput = (event: Event) => {
-  const target = event.target as HTMLInputElement
+const handleInput = (event) => {
+  const target = event.target
   console.log('Input value:', target.value)
 }
 
@@ -252,17 +256,8 @@ const emitCustomEvent = () => {
   </form>
 </template>
 
-<script setup lang="ts">
-interface FormData {
-  name: string
-  email: string
-  role: string
-  agreed: boolean
-  gender: string
-  message: string
-}
-
-const form = reactive<FormData>({
+<script setup>
+const form = reactive({
   name: '',
   email: '',
   role: '',
@@ -285,7 +280,7 @@ const handleSubmit = () => {
 ```
 
 ### **Component Communication**
-```typescript
+```javascript
 // Parent Component
 <template>
   <ChildComponent
@@ -296,15 +291,15 @@ const handleSubmit = () => {
   />
 </template>
 
-<script setup lang="ts">
+<script setup>
 const parentTitle = ref('Parent Title')
 const parentItems = ref(['item1', 'item2', 'item3'])
 
-const handleUpdate = (value: string) => {
+const handleUpdate = (value) => {
   console.log('Updated:', value)
 }
 
-const handleDelete = (index: number) => {
+const handleDelete = (index) => {
   parentItems.value.splice(index, 1)
 }
 </script>
@@ -323,19 +318,19 @@ const handleDelete = (index: number) => {
   </div>
 </template>
 
-<script setup lang="ts">
-interface Props {
-  title: string
-  items: string[]
-}
+<script setup>
+const props = defineProps({
+  title: {
+    type: String,
+    required: true
+  },
+  items: {
+    type: Array,
+    required: true
+  }
+})
 
-interface Emits {
-  update: [value: string]
-  delete: [index: number]
-}
-
-const props = defineProps<Props>()
-const emit = defineEmits<Emits>()
+const emit = defineEmits(['update', 'delete'])
 
 const newItem = ref('')
 
@@ -346,14 +341,14 @@ const addItem = () => {
   }
 }
 
-const deleteItem = (index: number) => {
+const deleteItem = (index) => {
   emit('delete', index)
 }
 </script>
 ```
 
 ### **Lifecycle Hooks**
-```typescript
+```javascript
 import {
   onMounted,
   onUpdated,
@@ -391,39 +386,9 @@ onUnmounted(() => {
 })
 ```
 
-### **TypeScript Configuration**
-```json
-// tsconfig.json
-{
-  "compilerOptions": {
-    "target": "ES2020",
-    "useDefineForClassFields": true,
-    "lib": ["ES2020", "DOM", "DOM.Iterable"],
-    "module": "ESNext",
-    "skipLibCheck": true,
-    "moduleResolution": "bundler",
-    "allowImportingTsExtensions": true,
-    "resolveJsonModule": true,
-    "isolatedModules": true,
-    "noEmit": true,
-    "jsx": "preserve",
-    "strict": true,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
-    "noFallthroughCasesInSwitch": true,
-    "baseUrl": "./src",
-    "paths": {
-      "@/*": ["*"]
-    }
-  },
-  "include": ["src/**/*.ts", "src/**/*.tsx", "src/**/*.vue"],
-  "references": [{ "path": "./tsconfig.node.json" }]
-}
-```
-
-### **Vite Configuration**
-```typescript
-// vite.config.ts
+### **JavaScript Configuration**
+```javascript
+// vite.config.js
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import { resolve } from 'path'
@@ -447,7 +412,7 @@ export default defineConfig({
 ```
 
 ### **Common Patterns**
-```typescript
+```javascript
 // Loading state pattern
 const isLoading = ref(false)
 const data = ref(null)

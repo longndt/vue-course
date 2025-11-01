@@ -3,8 +3,8 @@
 ## 🎯 **Vue Router Setup**
 
 ### **Router Configuration**
-```typescript
-// router/index.ts
+```javascript
+// router/index.js
 import { createRouter, createWebHistory } from 'vue-router'
 import { useAuthStore } from '@/stores/auth'
 
@@ -82,7 +82,7 @@ router.beforeEach(async (to, from, next) => {
   }
 
   // Check role requirements
-  if (to.meta.requiresRole && !authStore.hasRole(to.meta.requiresRole as string)) {
+  if (to.meta.requiresRole && !authStore.hasRole(to.meta.requiresRole)) {
     next({ name: 'Dashboard' })
     return
   }
@@ -123,8 +123,9 @@ export default router
   </nav>
 </template>
 
-<script setup lang="ts">
+<script setup>
 import { useRouter, useRoute } from 'vue-router'
+import { ref, computed, watch } from 'vue'
 
 const router = useRouter()
 const route = useRoute()
@@ -155,38 +156,18 @@ const queryParams = computed(() => route.query)
 ## 🔐 **Authentication System**
 
 ### **Auth Store with Pinia**
-```typescript
-// stores/auth.ts
+```javascript
+// stores/auth.js
 import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
 import { api } from '@/services/api'
 
-interface User {
-  id: number
-  name: string
-  email: string
-  role: string
-  avatar?: string
-}
-
-interface LoginCredentials {
-  email: string
-  password: string
-}
-
-interface RegisterData {
-  name: string
-  email: string
-  password: string
-  confirmPassword: string
-}
-
 export const useAuthStore = defineStore('auth', () => {
   // State
-  const user = ref<User | null>(null)
-  const token = ref<string | null>(localStorage.getItem('token'))
+  const user = ref(null)
+  const token = ref(localStorage.getItem('token'))
   const loading = ref(false)
-  const error = ref<string | null>(null)
+  const error = ref(null)
 
   // Getters
   const isAuthenticated = computed(() => !!token.value && !!user.value)
@@ -194,12 +175,12 @@ export const useAuthStore = defineStore('auth', () => {
   const isAdmin = computed(() => user.value?.role === 'admin')
 
   // Actions
-  const login = async (credentials: LoginCredentials) => {
+  const login = async (credentials) => {
     loading.value = true
     error.value = null
 
     try {
-      const response = await api.post<{ user: User; token: string }>('/auth/login', credentials)
+      const response = await api.post('/auth/login', credentials)
 
       user.value = response.data.user
       token.value = response.data.token
@@ -219,12 +200,12 @@ export const useAuthStore = defineStore('auth', () => {
     }
   }
 
-  const register = async (data: RegisterData) => {
+  const register = async (data) => {
     loading.value = true
     error.value = null
 
     try {
-      const response = await api.post<{ user: User; token: string }>('/auth/register', data)
+      const response = await api.post('/auth/register', data)
 
       user.value = response.data.user
       token.value = response.data.token
@@ -252,7 +233,7 @@ export const useAuthStore = defineStore('auth', () => {
     if (!token.value) return
 
     try {
-      const response = await api.get<User>('/auth/me')
+      const response = await api.get('/auth/me')
       user.value = response.data
     } catch (err) {
       // Token might be invalid
@@ -260,11 +241,11 @@ export const useAuthStore = defineStore('auth', () => {
     }
   }
 
-  const hasRole = (role: string) => {
+  const hasRole = (role) => {
     return user.value?.role === role
   }
 
-  const hasAnyRole = (roles: string[]) => {
+  const hasAnyRole = (roles) => {
     return roles.includes(user.value?.role || '')
   }
 
@@ -353,10 +334,11 @@ export const useAuthStore = defineStore('auth', () => {
   </div>
 </template>
 
-<script setup lang="ts">
-import { reactive, ref, computed } from 'vue'
+<script setup>
+import { reactive, computed } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import { useAuthStore } from '@/stores/auth'
+import { storeToRefs } from 'pinia'
 
 const router = useRouter()
 const route = useRoute()
@@ -399,7 +381,7 @@ const handleLogin = async () => {
     })
 
     // Redirect to intended page or dashboard
-    const redirect = route.query.redirect as string || '/dashboard'
+    const redirect = route.query.redirect || '/dashboard'
     router.push(redirect)
   } catch (err) {
     // Error is handled by the store
@@ -433,16 +415,21 @@ const handleLogin = async () => {
   </div>
 </template>
 
-<script setup lang="ts">
+<script setup>
 import { computed, onMounted } from 'vue'
 import { useAuthStore } from '@/stores/auth'
+import { storeToRefs } from 'pinia'
 
-interface Props {
-  requiredRole?: string
-  requiredRoles?: string[]
-}
-
-const props = defineProps<Props>()
+const props = defineProps({
+  requiredRole: {
+    type: String,
+    default: null
+  },
+  requiredRoles: {
+    type: Array,
+    default: null
+  }
+})
 
 const authStore = useAuthStore()
 const { user, loading, isAuthenticated } = storeToRefs(authStore)
@@ -472,7 +459,7 @@ onMounted(() => {
 ## 🔄 **Advanced Patterns**
 
 ### **Route-based Code Splitting**
-```typescript
+```javascript
 // Lazy load components
 const Home = () => import('@/views/Home.vue')
 const Dashboard = () => import('@/views/Dashboard.vue')
@@ -489,19 +476,9 @@ const AsyncComponent = defineAsyncComponent({
 ```
 
 ### **Route Meta Fields**
-```typescript
-// router/meta.ts
-export interface RouteMeta {
-  requiresAuth?: boolean
-  guestOnly?: boolean
-  requiresRole?: string
-  requiresRoles?: string[]
-  title?: string
-  description?: string
-  breadcrumb?: string
-  icon?: string
-  hidden?: boolean
-}
+```javascript
+// router/meta.js
+// Route meta is just a plain object in JavaScript
 
 // Usage in routes
 {
@@ -543,7 +520,7 @@ export interface RouteMeta {
   </nav>
 </template>
 
-<script setup lang="ts">
+<script setup>
 import { computed } from 'vue'
 import { useRoute } from 'vue-router'
 
@@ -553,7 +530,7 @@ const breadcrumbs = computed(() => {
   const matched = route.matched.filter(record => record.meta.breadcrumb)
 
   return matched.map(record => ({
-    name: record.meta.breadcrumb as string,
+    name: record.meta.breadcrumb,
     path: record.path
   }))
 })
@@ -570,7 +547,7 @@ const breadcrumbs = computed(() => {
   </router-view>
 </template>
 
-<script setup lang="ts">
+<script setup>
 import { computed } from 'vue'
 import { useRoute } from 'vue-router'
 
@@ -611,11 +588,11 @@ const transitionName = computed(() => {
 ```
 
 ### **Global Error Handling**
-```typescript
-// router/errorHandler.ts
+```javascript
+// router/errorHandler.js
 import { Router } from 'vue-router'
 
-export function setupErrorHandling(router: Router) {
+export function setupErrorHandling(router) {
   router.onError((error) => {
     console.error('Router error:', error)
 

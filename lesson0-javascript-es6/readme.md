@@ -357,7 +357,7 @@ const fetchData = async () => {
 ## What's Next
 
 ### Ready to Continue?
-- **Completed this lesson?** → Proceed to [Lesson 1: Vue Fundamentals & Project Setup](../lesson1-fundamentals-setup/)
+- **Completed this lesson?** → Proceed to [Lesson 1: Vue Fundamentals & Project Setup](../lesson1-fundamentals-setup/readme.md)
 
 ### Need More Practice?
 - **Study theory** → [theory0.md](./theory/theory0.md) - Deep dive into JavaScript ES6+ concepts
@@ -366,6 +366,7 @@ const fetchData = async () => {
 
 ### Additional Resources
 - **Quiz yourself** → [quiz0.html](./quiz/quiz0.html) - Test your JavaScript knowledge
+- **Quick reference** → [reference0.md](./reference/reference0.md) - Code snippets and patterns
 - **General questions?** → Review the reference guide
 - **Still confused?** → [Check Troubleshooting Guide](../../extras/troubleshooting-guide.md)
 

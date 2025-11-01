@@ -278,21 +278,14 @@ export const getUsers = async (req, res, next) => {
 ## 🌐 **Frontend Integration**
 
 ### **API Service with Authentication**
-```typescript
-// frontend/src/services/api.ts
+```javascript
+// frontend/src/services/api.js
 import axios from 'axios'
 
-interface ApiResponse<T> {
-  success: boolean
-  data: T
-  message?: string
-}
-
 class ApiService {
-  private baseURL: string
-  private token: string | null = null
-
-  constructor(baseURL: string) {
+  constructor(baseURL) {
+    this.baseURL = baseURL
+    this.token = localStorage.getItem('token')
     this.baseURL = baseURL
     this.token = localStorage.getItem('token')
 
@@ -300,7 +293,7 @@ class ApiService {
     this.setupAxios()
   }
 
-  private setupAxios() {
+  setupAxios() {
     axios.defaults.baseURL = this.baseURL
     axios.defaults.timeout = 10000
 
@@ -328,7 +321,7 @@ class ApiService {
     )
   }
 
-  setToken(token: string) {
+  setToken(token) {
     this.token = token
     localStorage.setItem('token', token)
   }
@@ -338,22 +331,22 @@ class ApiService {
     localStorage.removeItem('token')
   }
 
-  async get<T>(url: string): Promise<ApiResponse<T>> {
+  async get(url) {
     const response = await axios.get(url)
     return response.data
   }
 
-  async post<T>(url: string, data: any): Promise<ApiResponse<T>> {
+  async post(url, data) {
     const response = await axios.post(url, data)
     return response.data
   }
 
-  async put<T>(url: string, data: any): Promise<ApiResponse<T>> {
+  async put(url, data) {
     const response = await axios.put(url, data)
     return response.data
   }
 
-  async delete<T>(url: string): Promise<ApiResponse<T>> {
+  async delete(url) {
     const response = await axios.delete(url)
     return response.data
   }
@@ -410,41 +403,37 @@ export const api = new ApiService(import.meta.env.VITE_API_URL || 'http://localh
   </div>
 </template>
 
-<script setup lang="ts">
+<script setup>
 import { ref, computed } from 'vue'
 import { api } from '@/services/api'
 
-interface UploadedFile {
-  id: string
-  name: string
-  size: number
-  url: string
-}
-
-interface Props {
-  accept?: string
-  multiple?: boolean
-  maxSize?: number // in MB
-  onUpload?: (files: UploadedFile[]) => void
-}
-
-const props = withDefaults(defineProps<Props>(), {
-  accept: '*/*',
-  multiple: false,
-  maxSize: 10
+const props = defineProps({
+  accept: {
+    type: String,
+    default: '*/*'
+  },
+  multiple: {
+    type: Boolean,
+    default: false
+  },
+  maxSize: {
+    type: Number,
+    default: 10 // in MB
+  },
+  onUpload: {
+    type: Function,
+    default: null
+  }
 })
 
-const emit = defineEmits<{
-  upload: [files: UploadedFile[]]
-  error: [message: string]
-}>()
+const emit = defineEmits(['upload', 'error'])
 
 // State
-const fileInput = ref<HTMLInputElement>()
+const fileInput = ref(null)
 const isDragOver = ref(false)
 const uploading = ref(false)
 const progress = ref(0)
-const uploadedFiles = ref<UploadedFile[]>([])
+const uploadedFiles = ref([])
 
 // Computed
 const acceptText = computed(() => {
@@ -457,14 +446,14 @@ const triggerFileInput = () => {
   fileInput.value?.click()
 }
 
-const handleFileSelect = (event: Event) => {
-  const target = event.target as HTMLInputElement
+const handleFileSelect = (event) => {
+  const target = event.target
   if (target.files) {
     handleFiles(Array.from(target.files))
   }
 }
 
-const handleDrop = (event: DragEvent) => {
+const handleDrop = (event) => {
   event.preventDefault()
   isDragOver.value = false
 
@@ -473,7 +462,7 @@ const handleDrop = (event: DragEvent) => {
   }
 }
 
-const handleDragOver = (event: DragEvent) => {
+const handleDragOver = (event) => {
   event.preventDefault()
   isDragOver.value = true
 }
@@ -500,7 +489,7 @@ const handleFiles = async (files: File[]) => {
       formData.append('files', file)
     })
 
-    const response = await api.post<UploadedFile[]>('/upload', formData, {
+    const response = await api.post('/upload', formData, {
       headers: {
         'Content-Type': 'multipart/form-data'
       },
@@ -523,11 +512,11 @@ const handleFiles = async (files: File[]) => {
   }
 }
 
-const removeFile = (fileId: string) => {
+const removeFile = (fileId) => {
   uploadedFiles.value = uploadedFiles.value.filter(file => file.id !== fileId)
 }
 
-const formatFileSize = (bytes: number) => {
+const formatFileSize = (bytes) => {
   if (bytes === 0) return '0 Bytes'
   const k = 1024
   const sizes = ['Bytes', 'KB', 'MB', 'GB']
@@ -538,21 +527,15 @@ const formatFileSize = (bytes: number) => {
 ```
 
 ### **Real-time Features with WebSockets**
-```typescript
-// frontend/src/composables/useWebSocket.ts
+```javascript
+// frontend/src/composables/useWebSocket.js
 import { ref, onMounted, onUnmounted } from 'vue'
 
-interface WebSocketMessage {
-  type: string
-  data: any
-  timestamp: string
-}
-
-export function useWebSocket(url: string) {
-  const socket = ref<WebSocket | null>(null)
+export function useWebSocket(url) {
+  const socket = ref(null)
   const isConnected = ref(false)
-  const messages = ref<WebSocketMessage[]>([])
-  const error = ref<string | null>(null)
+  const messages = ref([])
+  const error = ref(null)
 
   const connect = () => {
     try {
@@ -566,7 +549,7 @@ export function useWebSocket(url: string) {
 
       socket.value.onmessage = (event) => {
         try {
-          const message: WebSocketMessage = JSON.parse(event.data)
+          const message = JSON.parse(event.data)
           messages.value.push(message)
         } catch (err) {
           console.error('Failed to parse WebSocket message:', err)
@@ -595,13 +578,13 @@ export function useWebSocket(url: string) {
     }
   }
 
-  const send = (message: any) => {
+  const send = (message) => {
     if (socket.value && isConnected.value) {
       socket.value.send(JSON.stringify(message))
     }
   }
 
-  const subscribe = (type: string, callback: (data: any) => void) => {
+  const subscribe = (type, callback) => {
     const unsubscribe = () => {
       // Remove listener logic here
     }
@@ -630,7 +613,7 @@ export function useWebSocket(url: string) {
 }
 
 // Usage in component
-<script setup lang="ts">
+<script setup>
 import { useWebSocket } from '@/composables/useWebSocket'
 
 const { isConnected, messages, send, subscribe } = useWebSocket('ws://localhost:5000')
@@ -724,16 +707,9 @@ volumes:
 ```
 
 ### **Environment Configuration**
-```typescript
-// frontend/src/config/env.ts
-interface EnvConfig {
-  API_URL: string
-  WS_URL: string
-  APP_NAME: string
-  VERSION: string
-}
-
-const config: EnvConfig = {
+```javascript
+// frontend/src/config/env.js
+const config = {
   API_URL: import.meta.env.VITE_API_URL || 'http://localhost:5000/api',
   WS_URL: import.meta.env.VITE_WS_URL || 'ws://localhost:5000',
   APP_NAME: import.meta.env.VITE_APP_NAME || 'Vue App',
@@ -744,8 +720,8 @@ export default config
 ```
 
 ### **Build Optimization**
-```typescript
-// vite.config.ts
+```javascript
+// vite.config.js
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import { resolve } from 'path'

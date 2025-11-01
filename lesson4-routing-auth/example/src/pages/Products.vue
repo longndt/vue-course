@@ -63,29 +63,20 @@
   </div>
 </template>
 
-<script setup lang="ts">
+<script setup>
 import { ref, computed, onMounted } from 'vue';
-
-interface Product {
-  id: number;
-  name: string;
-  description: string;
-  price: number;
-  image: string;
-  category: string;
-}
 
 // State
 const searchQuery = ref('');
 const selectedCategory = ref('');
 const isLoading = ref(true);
-const isAddingToCart = ref<number | null>(null);
+const isAddingToCart = ref(null);
 const showToast = ref(false);
 const toastMessage = ref('');
-const toastType = ref<'success' | 'error'>('success');
+const toastType = ref('success');
 
 // Mock products data
-const products = ref<Product[]>([
+const products = ref([
   {
     id: 1,
     name: "Wireless Headphones",
@@ -148,7 +139,7 @@ const filteredProducts = computed(() => {
 });
 
 // Methods
-const addToCart = async (product: Product) => {
+const addToCart = async (product) => {
   isAddingToCart.value = product.id;
 
   try {
@@ -164,7 +155,7 @@ const addToCart = async (product: Product) => {
   }
 };
 
-const showToastMessage = (message: string, type: 'success' | 'error') => {
+const showToastMessage = (message, type) => {
   toastMessage.value = message;
   toastType.value = type;
   showToast.value = true;
